@@ -1,0 +1,89 @@
+%%
+%% This is file `japanese.ldf',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% japanese.dtx  (with options: `code')
+%% 
+%% This file is part of the `japanese' package,
+%% providing Japanese language.
+%% 
+%% Copyright (C) 2007 by ING
+%% 
+%% This package is free software that can be redistributed and/or
+%% modified under the terms of the LaTeX Project Public License as
+%% specified in the file `macros/latex/base/lppl.txt on any CTAN
+%% archive server, such as http://ring.wakwak.com/pub/text/CTAN/.
+%% 
+%% Maintained by ING,
+%% using ideas by bookworm, Tony, and Ohishi.
+%% 
+%% Please report errors to: ING
+%%                          t-ing@tbh.t-com.ne.jp
+%% 
+\ProvidesLanguage{japanese}
+%% File 'japanese.dtx'
+%% Babel package for LaTeX version 2e
+%% Copyright (C) 1989 - 2007
+%%           by Johannes Braams, TeXniek
+\LdfInit{japanese}\captionsjapanese
+\ifx\l@japanese\@undefined
+  \@nopatterns{Japanese}
+  \adddialect\l@japanese0\fi
+\addto\captionsjapanese{%
+  \def\prepartname{第}%
+  \def\postpartnam{部}%
+  \def\prechaptername{第}%
+  \def\postchaptername{章}%
+  \def\presectionname{}%  第
+  \def\postsectionname{}% 節
+  \def\prefacename{前書き}%
+  \def\refname{参考文献}%
+  \def\bibname{参考文献}%
+  \def\abstractname{概要}%
+  \def\appendixname{付録}%
+  \def\contentsname{目次}%
+  \def\listfigurename{図目次}%
+  \def\listtablename{表目次}%
+  \def\indexname{索引}%
+  \def\figurename{図}%
+  \def\tablename{表}%
+  }
+\newif\if西暦 \西暦true%
+\def\西暦{\西暦true}%
+\def\和暦{\西暦false}%
+{\advance\year-1988\relax
+ \xdef\the@heisei{\the\year}}
+\def\datejapanese{%
+  \def\today{%
+    \if西暦%
+      \number\year 年%
+      \number\month 月%
+      \number\day 日%
+    \else
+      平成\the@heisei 年%
+      \number\month 月%
+      \number\day 日%
+    \fi}}
+\ldf@finish{japanese}
+%%
+%% \CharacterTable
+%%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+%%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+%%   Digits        \0\1\2\3\4\5\6\7\8\9
+%%   Exclamation   \!     Double quote  \"     Hash (number) \#
+%%   Dollar        \$     Percent       \%     Ampersand     \&
+%%   Acute accent  \'     Left paren    \(     Right paren   \)
+%%   Asterisk      \*     Plus          \+     Comma         \,
+%%   Minus         \-     Point         \.     Solidus       \/
+%%   Colon         \:     Semicolon     \;     Less than     \<
+%%   Equals        \=     Greater than  \>     Question mark \?
+%%   Commercial at \@     Left bracket  \[     Backslash     \\
+%%   Right bracket \]     Circumflex    \^     Underscore    \_
+%%   Grave accent  \`     Left brace    \{     Vertical bar  \|
+%%   Right brace   \}     Tilde         \~}
+%%
+\endinput
+%%
+%% End of file `japanese.ldf'.

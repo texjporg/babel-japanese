@@ -1,0 +1,245 @@
+% \iffalse meta-comment
+%
+% Copyright 1989-2007 Johannes L. Braams and any individual authors
+% listed elsewhere in this file.  All rights reserved.
+% 
+% It may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3 or later is part of all distributions of LaTeX
+% version 2003/12/01 or later.
+% 
+% This work has the LPPL maintenance status "maintained".
+% 
+% The Current Maintainer of this work is Johannes Braams.
+% 
+% \fi
+%\iffalse
+%    Tell the \LaTeX\ system who we are and write an entry on the
+%    transcript.
+%<*dtx>
+\ProvidesFile{japanese.dtx}
+%</dtx>
+%<code>\ProvidesLanguage{japanese}
+%\fi
+%\ProvidesFile{japanese.dtx}
+%        [2007/12/08 v1.3 Japanese support]
+%\iffalse
+%% File 'japanese.dtx'
+%% Babel package for LaTeX version 2e
+%% Copyright (C) 1989 - 2007
+%%           by Johannes Braams, TeXniek
+%
+%<*filedriver>
+\documentclass{ltxdoc}
+\setcounter{StandardModuleDepth}{1}
+\CodelineNumbered
+\MakeShortVerb{\|}
+\OnlyDescription
+\newcommand*\babel{\textsf{babel}}
+\newcommand*\langvar{$\langle \it lang \rangle$}
+\newcommand*\Lopt[1]{\textsf{#1}}
+\newcommand*\file[1]{\texttt{#1}}
+\begin{document}
+ \DocInput{japanese.dtx}
+\end{document}
+%</filedriver>
+%\fi
+% \GetFileInfo{japanese.dtx}
+%
+% \parindent=1zw
+% \title{Babel-Option {\sffamily japanese} \\ {\Large version 1.3}}
+% \author{\copyright\ 1999--2007 ING}
+% \date{}
+% \maketitle
+% \baselineskip=14pt
+%
+%  \section*{The Japanese language}
+%
+% japaneseパッケージは日本語による見出し語と日付を出力するためのマクロを
+% 定義しています。\babel のオプションの最後で日本語を指定します。
+% \begin{quote}
+% |\usepackage[...,japanese]{babel}| 
+% \end{quote}
+%
+%    \begin{macrocode}
+%<*code>
+\LdfInit{japanese}\captionsjapanese
+%    \end{macrocode}
+% \DescribeMacro{\l@japanese}
+% ここでは|\l@japanese|が定義されているか否かを判断し，定義されていれば
+% 日本語用ハイフネーションパターンを読み込みます。
+% \DescribeMacro{\adddialect}
+% しかし，日本語にはハイフネーションパタンが存在しないので
+% |\adddialect|に|\l@japanese|を代入し，\file{language.dat}
+% で最初に指定した言語（言語番号0，通常は英語）のハイフネーションパターンを
+% 使用します。
+% 従って，本パッケージを用いて文章ファイルをコンパイルすると次の警告が
+% でますが，無視することにします。
+% \begin{quote}\small\begin{verbatim}
+% Package babel Warning: No hyphenation patterns were loaded for
+% (babel)                the language `Japanese'
+% (babel)                I will use the patterns loaded for \language=0
+%                        instead.
+% \end{verbatim}\end{quote}
+%
+%    \begin{macrocode}
+\ifx\l@japanese\@undefined
+  \@nopatterns{Japanese}
+  \adddialect\l@japanese0\fi
+%    \end{macrocode}
+%
+% \DescribeMacro{\captionsjapanese}
+% |\captionsjapanese|マクロはp\LaTeX{}の標準のクラスファイルで使われる
+% 見出し語を日本語で出力します。
+%
+%    \begin{macrocode}
+\addto\captionsjapanese{%
+  \def\prepartname{第}%
+  \def\postpartnam{部}%
+  \def\prechaptername{第}%
+  \def\postchaptername{章}%
+  \def\presectionname{}%  第
+  \def\postsectionname{}% 節
+  \def\prefacename{前書き}%
+  \def\refname{参考文献}%
+  \def\bibname{参考文献}%
+  \def\abstractname{概要}%
+  \def\appendixname{付録}%
+  \def\contentsname{目次}%
+  \def\listfigurename{図目次}%
+  \def\listtablename{表目次}%
+  \def\indexname{索引}%
+  \def\figurename{図}%
+  \def\tablename{表}%
+  }
+%    \end{macrocode}
+% \DescribeMacro{\datejapanese}
+% |\datejapanese|マクロは日本語で日付を出力するように |\today|コマンドを
+% 再定義します。デフォルトの出力は西暦です。和暦を使用する際は，プリアンブルで 
+% |\和暦| を指定するか，本文で |\和暦\today| のように指定します。
+%    \begin{macrocode}
+\newif\if西暦 \西暦true%
+\def\西暦{\西暦true}%
+\def\和暦{\西暦false}%
+{\advance\year-1988\relax
+ \xdef\the@heisei{\the\year}}
+\def\datejapanese{%
+  \def\today{%
+    \if西暦%
+      \number\year 年% 
+      \number\month 月% 
+      \number\day 日%
+    \else
+      平成\the@heisei 年%
+      \number\month 月%
+      \number\day 日%
+    \fi}}
+\ldf@finish{japanese}
+%</code>
+%    \end{macrocode}
+%
+% \section*{謝辞}
+%
+% Babel-Option \Lopt{japanese}の作成に当って，バグフィックスや改良案を
+% ご提案いただいた方に感謝します。
+% bookworm $<$BYV01204$>$さんから，新しい言語を定義し，それに固有の
+% 言語番号を付けるマクロ \verb+\addlanguage+の機能について，詳しい
+% 解説をいただきました。本パッケージでは採用していませんが，\babel
+% の言語切り替え機能を理解する上でたいへん参考になりました。
+% Tony $<$PAG01322$>$さんから，キャプションと日付の定義について
+% ご提案をいただきました。
+% 大石勝 $<$DZH00446$>$さんから，初版に含まれていた \verb+\ifx\undefined+
+% のバグをご指摘いただきました。
+%
+% \section*{変更履歴}
+% \begin{itemize}
+% \item 2005年2月：日付の定義を修正しました。
+% \item 2007年10月：ZRさんからいただいた詳細なご指摘をもとに修正しました。\\
+% \verb|http://oku.edu.mie-u.ac.jp/~okumura/texfaq/qa/48625.html|
+% \item 2007年12月：ZRさん，ttkさんからいただいたご指摘を反映しました。
+% \end{itemize}
+%
+% \StopEventually{}
+%
+%    \begin{macrocode}
+%<*sample>
+\documentclass{jbook}
+\usepackage[german,english,japanese]{babel}
+\makeatletter
+\def\tbcaption{\def\@captype{table}\caption{キャプションの例}}
+\def\fgcaption{\def\@captype{figure}\caption{キャプションの例}}
+\makeatother
+\def\yes{--- はい。}
+\def\no{--- いいえ。}
+\def\TEXT{Textverarbeitung mit einem Rechner kann in vielf\"altiger Weise
+erfolgen. Eigenschaften und Leistungsf\"ahigkeit sind hierbei weniger
+vom jeweiligen Rechnertype, sondern vielmehr vom verwendeten
+\textit{Textverarbeitungsprogramm} bestimmt.}
+\def\se{\selectlanguage{english}}
+\def\sj{\selectlanguage{japanese}}
+\def\sg{\selectlanguage{german}}
+\setlength{\hoffset}{-13mm}
+\setlength{\textwidth}{16cm}
+\begin{document}
+
+\chapter{babel}
+\section{japaneseパッケージ}
+japaneseパッケージは日本語による見出し語と日付を出力するためのマクロを
+定義しています。
+
+\fgcaption
+
+\begin{itemize}
+\se
+\item ここで英語（\texttt{english}）に変更します。（languageの値は\the\language）
+
+\TEXT
+
+ここは英語？ \iflanguage{english}{\yes}{\no}\par
+ここはドイツ語？ \iflanguage{german}{\yes}{\no}\par
+ここは日本語？ \iflanguage{japanese}{\yes}{\no}
+
+※ \verb:\adddialect\l@japanese0: と設定しているため，日本語？も「はい」となります。
+
+\sg
+\item ここでドイツ語（\texttt{german}）に変更します。(languageの値は\the\language）
+
+\TEXT
+
+ここは英語？ \iflanguage{english}{\yes}{\no}\par
+ここはドイツ語？ \iflanguage{german}{\yes}{\no}\par
+ここは日本語？ \iflanguage{japanese}{\yes}{\no}
+
+※ ハイフネーションがドイツ語―旧正書法―に切り替わっている点に注目。
+なお，新正書法（\texttt{ngerman}）では\texttt{Leis-tungs-f\"a-hig-keit}のように分綴します。
+
+\sj
+\item ここで日本語（\texttt{japanese}）に変更します。(languageの値は\the\language）
+\tbcaption
+\item \verb:\和暦: は日付の表示をデフォルトの西暦「\today 」から和暦「\和暦\today 」に変更します。
+\end{itemize}
+\end{document}
+%</sample>
+%    \end{macrocode>
+% \Finale
+%%
+%% \CharacterTable
+%%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+%%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+%%   Digits        \0\1\2\3\4\5\6\7\8\9
+%%   Exclamation   \!     Double quote  \"     Hash (number) \#
+%%   Dollar        \$     Percent       \%     Ampersand     \&
+%%   Acute accent  \'     Left paren    \(     Right paren   \)
+%%   Asterisk      \*     Plus          \+     Comma         \,
+%%   Minus         \-     Point         \.     Solidus       \/
+%%   Colon         \:     Semicolon     \;     Less than     \<
+%%   Equals        \=     Greater than  \>     Question mark \?
+%%   Commercial at \@     Left bracket  \[     Backslash     \\
+%%   Right bracket \]     Circumflex    \^     Underscore    \_
+%%   Grave accent  \`     Left brace    \{     Vertical bar  \|
+%%   Right brace   \}     Tilde         \~}
+%%
+\endinput
