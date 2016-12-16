@@ -22,7 +22,7 @@ jsclasses, ltj(s)classes in LuaTeX-ja are well-supported.
 
 ## Installation
 
-1. Process japanese.ins with some tex engine. For example, using lualatex:
+1) Process japanese.ins with some tex engine. For example, using lualatex:
 
         lualatex japanese.ins
 
@@ -33,12 +33,12 @@ When you use platex, give -kanji=utf8 option.
 You will get japanese.ldf (the main code) and japanese-sample.tex (sample
 document for pLaTeX).
 
-2. Process documentation, japanese.dtx and japanese-sample.tex, as you wish.
+2) Process documentation, japanese.dtx and japanese-sample.tex, as you wish.
 japanese-sample.tex is written for pLaTeX.
 
         platex -kanji=utf8 japanese-sample.tex
 
-3. Deploy the directory or files in an appropriate place under the TEXMF tree.
+3) Deploy the directory or files in an appropriate place under the TEXMF tree.
 
     * japanese.ldf
                => $TEXMF/tex/latex/japanese
@@ -47,7 +47,7 @@ japanese-sample.tex is written for pLaTeX.
     * japanese.pdf, japanese-sample.tex, japanese-sample.pdf
                => $TEXMF/doc/latex/japanese
 
-4. Execute mktexlsr.
+4) Execute mktexlsr.
 
 
 ## Repository
