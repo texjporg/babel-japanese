@@ -135,18 +135,33 @@
 % |\adddialect|に|\l@japanese|を代入し，\file{language.dat}
 % で最初に指定した言語（言語番号0，通常は英語）のハイフネーションパターンを
 % 使用します。
-% 従って，本パッケージを用いて文章ファイルをコンパイルすると次の警告が
-% でますが，無視することにします。
-% \begin{quote}\small\begin{verbatim}
+%
+% [2016-12-16] 旧バージョン(v1.3)では
+%\begin{quote}\small\begin{verbatim}
 % Package babel Warning: No hyphenation patterns were loaded for
 % (babel)                the language `Japanese'
 % (babel)                I will use the patterns loaded for \language=0
 %                        instead.
-% \end{verbatim}\end{quote}
+%\end{verbatim}\end{quote}
+% という警告が出るのを無視する方針でしたが，新しい\babel では警告が
+% よりうるさくなっていました。
+%\begin{quote}\small\begin{verbatim}
+% Package babel Warning: No hyphenation patterns were preloaded for
+% (babel)                the language `Japanese' into the format.
+% (babel)                Please, configure your TeX system to add them and
+% (babel)                rebuild the format. Now I will use the patterns
+% (babel)                preloaded for english instead on input line 47.
+%\end{verbatim}\end{quote}
+% そこで，新しいバージョン(v2.0)からは警告を出さないことにして，代わりに
+% ログファイルにのみInfoを出力します。
 %
 %    \begin{macrocode}
 \ifx\l@japanese\@undefined
-  \@nopatterns{Japanese}
+%  \@nopatterns{Japanese}% comment out (2016-12-16)
+  \PackageInfo{babel}{%
+    No hyphenation patterns are available for Japanese,\MessageBreak
+    so I will use the patterns preloaded for \bbl@nulllanguage\MessageBreak
+    instead}
   \adddialect\l@japanese0\fi
 %    \end{macrocode}
 %

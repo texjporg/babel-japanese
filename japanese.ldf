@@ -36,7 +36,10 @@
 \fi\fi\fi
 \LdfInit\CurrentOption{captions\CurrentOption}
 \ifx\l@japanese\@undefined
-  \@nopatterns{Japanese}
+  \PackageInfo{babel}{%
+    No hyphenation patterns are available for Japanese,\MessageBreak
+    so I will use the patterns preloaded for \bbl@nulllanguage\MessageBreak
+    instead}
   \adddialect\l@japanese0\fi
 \ifx\kanjiskip\@undefined
   \def\bbl@jpn@prefacename{前書き}%
