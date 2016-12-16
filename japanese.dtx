@@ -189,6 +189,8 @@
   \kansujichar8=\jis"4974\relax % 部
   \xdef\bbl@jpn@prechaptername{\kansuji1}%
   \xdef\bbl@jpn@postchaptername{\kansuji2}%
+  \xdef\bbl@jpn@presectionname{}%
+  \xdef\bbl@jpn@postsectionname{}%
   \xdef\bbl@jpn@appendixname{\kansuji45}%
   \xdef\bbl@jpn@indexname{\kansuji67}%
   \xdef\bbl@jpn@prepartname{\kansuji1}%
@@ -224,8 +226,8 @@
   %\def\chaptername{Chapter}%
   \let\prechaptername\bbl@jpn@prechaptername   % -- added
   \let\postchaptername\bbl@jpn@postchaptername % -- added
-  \def\presectionname{}%  第  -- added
-  \def\postsectionname{}% 節  -- added
+  \let\presectionname\bbl@jpn@presectionname   % -- added
+  \let\postsectionname\bbl@jpn@postsectionname % -- added
   \let\appendixname\bbl@jpn@appendixname
   \let\contentsname\bbl@jpn@contentsname
   \let\listfigurename\bbl@jpn@listfigurename
@@ -292,14 +294,14 @@
   \kansujichar4=\jis"4A3F\relax % 平
   \kansujichar5=\jis"402E\relax % 成
   \xdef\bbl@jpn@SeirekiToday{%
-    \number\year\expandafter\@firstofone\expandafter{\kansuji1}%
-    \number\month\expandafter\@firstofone\expandafter{\kansuji2}%
-    \number\day\expandafter\@firstofone\expandafter{\kansuji3}}
+    \number\year\kansuji1 %
+    \number\month\kansuji2 %
+    \number\day\kansuji3 }
   \xdef\bbl@jpn@WarekiToday{%
-    \expandafter\@firstofone\expandafter{\kansuji45}%
-    \the@heisei\expandafter\@firstofone\expandafter{\kansuji1}%
-    \number\month\expandafter\@firstofone\expandafter{\kansuji2}%
-    \number\day\expandafter\@firstofone\expandafter{\kansuji3}}
+    \expandafter\kansuji45 %
+    \the@heisei\kansuji1 %
+    \number\month\kansuji2 %
+    \number\day\kansuji3 }
 \endgroup
 \fi
 %    \end{macrocode}
