@@ -34,17 +34,20 @@ You will get japanese.ldf (the main code) and japanese-sample.tex (sample
 document for pLaTeX).
 
 2) Process documentation, japanese.dtx and japanese-sample.tex, as you wish.
-japanese-sample.tex is written for pLaTeX.
+Currently both documents are written for pLaTeX.
 
+        platex -kanji=utf8 japanese.dtx
+        dvipdfmx japanese.dvi
         platex -kanji=utf8 japanese-sample.tex
+        dvipdfmx japanese-sample.dvi
 
 3) Deploy the directory or files in an appropriate place under the TEXMF tree.
 
-    * japanese.ldf
+        * japanese.ldf
                => $TEXMF/tex/latex/japanese
-    * japanese.dtx
+        * japanese.dtx
                => $TEXMF/source/latex/japanese
-    * japanese.pdf, japanese-sample.tex, japanese-sample.pdf
+        * japanese.pdf, japanese-sample.tex, japanese-sample.pdf
                => $TEXMF/doc/latex/japanese
 
 4) Execute mktexlsr.
