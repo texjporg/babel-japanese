@@ -58,8 +58,8 @@
 %
 %  \section*{The Japanese language}
 %
-% japanese$B%Q%C%1!<%8$OF|K\8l$K$h$k8+=P$78l$HF|IU$r=PNO$9$k$?$a$N%^%/%m$r(B
-% $BDj5A$7$F$$$^$9!#(B\babel $B$N%*%W%7%g%s$N:G8e$GF|K\8l$r;XDj$7$^$9!#(B
+% japaneseパッケージは日本語による見出し語と日付を出力するためのマクロを
+% 定義しています。\babel のオプションの最後で日本語を指定します。
 % \begin{quote}
 % |\usepackage[...,japanese]{babel}| 
 % \end{quote}
@@ -69,15 +69,15 @@
 \LdfInit{japanese}\captionsjapanese
 %    \end{macrocode}
 % \DescribeMacro{\l@japanese}
-% $B$3$3$G$O(B|\l@japanese|$B$,Dj5A$5$l$F$$$k$+H]$+$rH=CG$7!$Dj5A$5$l$F$$$l$P(B
-% $BF|K\8lMQ%O%$%U%M!<%7%g%s%Q%?!<%s$rFI$_9~$_$^$9!#(B
+% ここでは|\l@japanese|が定義されているか否かを判断し，定義されていれば
+% 日本語用ハイフネーションパターンを読み込みます。
 % \DescribeMacro{\adddialect}
-% $B$7$+$7!$F|K\8l$K$O%O%$%U%M!<%7%g%s%Q%?%s$,B8:_$7$J$$$N$G(B
-% |\adddialect|$B$K(B|\l@japanese|$B$rBeF~$7!$(B\file{language.dat}
-% $B$G:G=i$K;XDj$7$?8@8l!J8@8lHV9f(B0$B!$DL>o$O1Q8l!K$N%O%$%U%M!<%7%g%s%Q%?!<%s$r(B
-% $B;HMQ$7$^$9!#(B
-% $B=>$C$F!$K\%Q%C%1!<%8$rMQ$$$FJ8>O%U%!%$%k$r%3%s%Q%$%k$9$k$H<!$N7Y9p$,(B
-% $B$G$^$9$,!$L5;k$9$k$3$H$K$7$^$9!#(B
+% しかし，日本語にはハイフネーションパタンが存在しないので
+% |\adddialect|に|\l@japanese|を代入し，\file{language.dat}
+% で最初に指定した言語（言語番号0，通常は英語）のハイフネーションパターンを
+% 使用します。
+% 従って，本パッケージを用いて文章ファイルをコンパイルすると次の警告が
+% でますが，無視することにします。
 % \begin{quote}\small\begin{verbatim}
 % Package babel Warning: No hyphenation patterns were loaded for
 % (babel)                the language `Japanese'
@@ -92,74 +92,74 @@
 %    \end{macrocode}
 %
 % \DescribeMacro{\captionsjapanese}
-% |\captionsjapanese|$B%^%/%m$O(Bp\LaTeX{}$B$NI8=`$N%/%i%9%U%!%$%k$G;H$o$l$k(B
-% $B8+=P$78l$rF|K\8l$G=PNO$7$^$9!#(B
+% |\captionsjapanese|マクロはp\LaTeX{}の標準のクラスファイルで使われる
+% 見出し語を日本語で出力します。
 %
 %    \begin{macrocode}
 \addto\captionsjapanese{%
-  \def\prepartname{$BBh(B}%
-  \def\postpartnam{$BIt(B}%
-  \def\prechaptername{$BBh(B}%
-  \def\postchaptername{$B>O(B}%
-  \def\presectionname{}%  $BBh(B
-  \def\postsectionname{}% $B@a(B
-  \def\prefacename{$BA0=q$-(B}%
-  \def\refname{$B;29MJ88%(B}%
-  \def\bibname{$B;29MJ88%(B}%
-  \def\abstractname{$B35MW(B}%
-  \def\appendixname{$BIUO?(B}%
-  \def\contentsname{$BL\<!(B}%
-  \def\listfigurename{$B?^L\<!(B}%
-  \def\listtablename{$BI=L\<!(B}%
-  \def\indexname{$B:w0z(B}%
-  \def\figurename{$B?^(B}%
-  \def\tablename{$BI=(B}%
+  \def\prepartname{第}%
+  \def\postpartnam{部}%
+  \def\prechaptername{第}%
+  \def\postchaptername{章}%
+  \def\presectionname{}%  第
+  \def\postsectionname{}% 節
+  \def\prefacename{前書き}%
+  \def\refname{参考文献}%
+  \def\bibname{参考文献}%
+  \def\abstractname{概要}%
+  \def\appendixname{付録}%
+  \def\contentsname{目次}%
+  \def\listfigurename{図目次}%
+  \def\listtablename{表目次}%
+  \def\indexname{索引}%
+  \def\figurename{図}%
+  \def\tablename{表}%
   }
 %    \end{macrocode}
 % \DescribeMacro{\datejapanese}
-% |\datejapanese|$B%^%/%m$OF|K\8l$GF|IU$r=PNO$9$k$h$&$K(B |\today|$B%3%^%s%I$r(B
-% $B:FDj5A$7$^$9!#%G%U%)%k%H$N=PNO$O@>Nq$G$9!#OBNq$r;HMQ$9$k:]$O!$%W%j%"%s%V%k$G(B 
-% |\$BOBNq(B| $B$r;XDj$9$k$+!$K\J8$G(B |\$BOBNq(B\today| $B$N$h$&$K;XDj$7$^$9!#(B
+% |\datejapanese|マクロは日本語で日付を出力するように |\today|コマンドを
+% 再定義します。デフォルトの出力は西暦です。和暦を使用する際は，プリアンブルで 
+% |\和暦| を指定するか，本文で |\和暦\today| のように指定します。
 %    \begin{macrocode}
-\newif\if$B@>Nq(B \$B@>Nq(Btrue%
-\def\$B@>Nq(B{\$B@>Nq(Btrue}%
-\def\$BOBNq(B{\$B@>Nq(Bfalse}%
+\newif\if西暦 \西暦true%
+\def\西暦{\西暦true}%
+\def\和暦{\西暦false}%
 {\advance\year-1988\relax
  \xdef\the@heisei{\the\year}}
 \def\datejapanese{%
   \def\today{%
-    \if$B@>Nq(B%
-      \number\year $BG/(B% 
-      \number\month $B7n(B% 
-      \number\day $BF|(B%
+    \if西暦%
+      \number\year 年% 
+      \number\month 月% 
+      \number\day 日%
     \else
-      $BJ?@.(B\the@heisei $BG/(B%
-      \number\month $B7n(B%
-      \number\day $BF|(B%
+      平成\the@heisei 年%
+      \number\month 月%
+      \number\day 日%
     \fi}}
 \ldf@finish{japanese}
 %</code>
 %    \end{macrocode}
 %
-% \section*{$B<U<-(B}
+% \section*{謝辞}
 %
-% Babel-Option \Lopt{japanese}$B$N:n@.$KEv$C$F!$%P%0%U%#%C%/%9$d2~NI0F$r(B
-% $B$4Ds0F$$$?$@$$$?J}$K46<U$7$^$9!#(B
-% bookworm $<$BYV01204$>$$B$5$s$+$i!$?7$7$$8@8l$rDj5A$7!$$=$l$K8GM-$N(B
-% $B8@8lHV9f$rIU$1$k%^%/%m(B \verb+\addlanguage+$B$N5!G=$K$D$$$F!$>\$7$$(B
-% $B2r@b$r$$$?$@$-$^$7$?!#K\%Q%C%1!<%8$G$O:NMQ$7$F$$$^$;$s$,!$(B\babel
-% $B$N8@8l@Z$jBX$(5!G=$rM}2r$9$k>e$G$?$$$X$s;29M$K$J$j$^$7$?!#(B
-% Tony $<$PAG01322$>$$B$5$s$+$i!$%-%c%W%7%g%s$HF|IU$NDj5A$K$D$$$F(B
-% $B$4Ds0F$r$$$?$@$-$^$7$?!#(B
-% $BBg@P>!(B $<$DZH00446$>$$B$5$s$+$i!$=iHG$K4^$^$l$F$$$?(B \verb+\ifx\undefined+
-% $B$N%P%0$r$4;XE&$$$?$@$-$^$7$?!#(B
+% Babel-Option \Lopt{japanese}の作成に当って，バグフィックスや改良案を
+% ご提案いただいた方に感謝します。
+% bookworm $<$BYV01204$>$さんから，新しい言語を定義し，それに固有の
+% 言語番号を付けるマクロ \verb+\addlanguage+の機能について，詳しい
+% 解説をいただきました。本パッケージでは採用していませんが，\babel
+% の言語切り替え機能を理解する上でたいへん参考になりました。
+% Tony $<$PAG01322$>$さんから，キャプションと日付の定義について
+% ご提案をいただきました。
+% 大石勝 $<$DZH00446$>$さんから，初版に含まれていた \verb+\ifx\undefined+
+% のバグをご指摘いただきました。
 %
-% \section*{$BJQ99MzNr(B}
+% \section*{変更履歴}
 % \begin{itemize}
-% \item 2005$BG/(B2$B7n!'F|IU$NDj5A$r=$@5$7$^$7$?!#(B
-% \item 2007$BG/(B10$B7n!'(BZR$B$5$s$+$i$$$?$@$$$?>\:Y$J$4;XE&$r$b$H$K=$@5$7$^$7$?!#(B\\
+% \item 2005年2月：日付の定義を修正しました。
+% \item 2007年10月：ZRさんからいただいた詳細なご指摘をもとに修正しました。\\
 % \verb|http://oku.edu.mie-u.ac.jp/~okumura/texfaq/qa/48625.html|
-% \item 2007$BG/(B12$B7n!'(BZR$B$5$s!$(Bttk$B$5$s$+$i$$$?$@$$$?$4;XE&$rH?1G$7$^$7$?!#(B
+% \item 2007年12月：ZRさん，ttkさんからいただいたご指摘を反映しました。
 % \end{itemize}
 %
 % \StopEventually{}
@@ -169,11 +169,11 @@
 \documentclass{jbook}
 \usepackage[german,english,japanese]{babel}
 \makeatletter
-\def\tbcaption{\def\@captype{table}\caption{$B%-%c%W%7%g%s$NNc(B}}
-\def\fgcaption{\def\@captype{figure}\caption{$B%-%c%W%7%g%s$NNc(B}}
+\def\tbcaption{\def\@captype{table}\caption{キャプションの例}}
+\def\fgcaption{\def\@captype{figure}\caption{キャプションの例}}
 \makeatother
-\def\yes{--- $B$O$$!#(B}
-\def\no{--- $B$$$$$(!#(B}
+\def\yes{--- はい。}
+\def\no{--- いいえ。}
 \def\TEXT{Textverarbeitung mit einem Rechner kann in vielf\"altiger Weise
 erfolgen. Eigenschaften und Leistungsf\"ahigkeit sind hierbei weniger
 vom jeweiligen Rechnertype, sondern vielmehr vom verwendeten
@@ -186,40 +186,40 @@ vom jeweiligen Rechnertype, sondern vielmehr vom verwendeten
 \begin{document}
 
 \chapter{babel}
-\section{japanese$B%Q%C%1!<%8(B}
-japanese$B%Q%C%1!<%8$OF|K\8l$K$h$k8+=P$78l$HF|IU$r=PNO$9$k$?$a$N%^%/%m$r(B
-$BDj5A$7$F$$$^$9!#(B
+\section{japaneseパッケージ}
+japaneseパッケージは日本語による見出し語と日付を出力するためのマクロを
+定義しています。
 
 \fgcaption
 
 \begin{itemize}
 \se
-\item $B$3$3$G1Q8l!J(B\texttt{english}$B!K$KJQ99$7$^$9!#!J(Blanguage$B$NCM$O(B\the\language$B!K(B
+\item ここで英語（\texttt{english}）に変更します。（languageの値は\the\language）
 
 \TEXT
 
-$B$3$3$O1Q8l!)(B \iflanguage{english}{\yes}{\no}\par
-$B$3$3$O%I%$%D8l!)(B \iflanguage{german}{\yes}{\no}\par
-$B$3$3$OF|K\8l!)(B \iflanguage{japanese}{\yes}{\no}
+ここは英語？ \iflanguage{english}{\yes}{\no}\par
+ここはドイツ語？ \iflanguage{german}{\yes}{\no}\par
+ここは日本語？ \iflanguage{japanese}{\yes}{\no}
 
-$B"((B \verb:\adddialect\l@japanese0: $B$H@_Dj$7$F$$$k$?$a!$F|K\8l!)$b!V$O$$!W$H$J$j$^$9!#(B
+※ \verb:\adddialect\l@japanese0: と設定しているため，日本語？も「はい」となります。
 
 \sg
-\item $B$3$3$G%I%$%D8l!J(B\texttt{german}$B!K$KJQ99$7$^$9!#(B(language$B$NCM$O(B\the\language$B!K(B
+\item ここでドイツ語（\texttt{german}）に変更します。(languageの値は\the\language）
 
 \TEXT
 
-$B$3$3$O1Q8l!)(B \iflanguage{english}{\yes}{\no}\par
-$B$3$3$O%I%$%D8l!)(B \iflanguage{german}{\yes}{\no}\par
-$B$3$3$OF|K\8l!)(B \iflanguage{japanese}{\yes}{\no}
+ここは英語？ \iflanguage{english}{\yes}{\no}\par
+ここはドイツ語？ \iflanguage{german}{\yes}{\no}\par
+ここは日本語？ \iflanguage{japanese}{\yes}{\no}
 
-$B"((B $B%O%$%U%M!<%7%g%s$,%I%$%D8l!=5l@5=qK!!=$K@Z$jBX$o$C$F$$$kE@$KCmL\!#(B
-$B$J$*!$?7@5=qK!!J(B\texttt{ngerman}$B!K$G$O(B\texttt{Leis-tungs-f\"a-hig-keit}$B$N$h$&$KJ,DV$7$^$9!#(B
+※ ハイフネーションがドイツ語―旧正書法―に切り替わっている点に注目。
+なお，新正書法（\texttt{ngerman}）では\texttt{Leis-tungs-f\"a-hig-keit}のように分綴します。
 
 \sj
-\item $B$3$3$GF|K\8l!J(B\texttt{japanese}$B!K$KJQ99$7$^$9!#(B(language$B$NCM$O(B\the\language$B!K(B
+\item ここで日本語（\texttt{japanese}）に変更します。(languageの値は\the\language）
 \tbcaption
-\item \verb:\$BOBNq(B: $B$OF|IU$NI=<($r%G%U%)%k%H$N@>Nq!V(B\today $B!W$+$iOBNq!V(B\$BOBNq(B\today $B!W$KJQ99$7$^$9!#(B
+\item \verb:\和暦: は日付の表示をデフォルトの西暦「\today 」から和暦「\和暦\today 」に変更します。
 \end{itemize}
 \end{document}
 %</sample>

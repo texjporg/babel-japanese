@@ -32,39 +32,39 @@
   \@nopatterns{Japanese}
   \adddialect\l@japanese0\fi
 \addto\captionsjapanese{%
-  \def\prepartname{$BBh(B}%
-  \def\postpartnam{$BIt(B}%
-  \def\prechaptername{$BBh(B}%
-  \def\postchaptername{$B>O(B}%
-  \def\presectionname{}%  $BBh(B
-  \def\postsectionname{}% $B@a(B
-  \def\prefacename{$BA0=q$-(B}%
-  \def\refname{$B;29MJ88%(B}%
-  \def\bibname{$B;29MJ88%(B}%
-  \def\abstractname{$B35MW(B}%
-  \def\appendixname{$BIUO?(B}%
-  \def\contentsname{$BL\<!(B}%
-  \def\listfigurename{$B?^L\<!(B}%
-  \def\listtablename{$BI=L\<!(B}%
-  \def\indexname{$B:w0z(B}%
-  \def\figurename{$B?^(B}%
-  \def\tablename{$BI=(B}%
+  \def\prepartname{第}%
+  \def\postpartnam{部}%
+  \def\prechaptername{第}%
+  \def\postchaptername{章}%
+  \def\presectionname{}%  第
+  \def\postsectionname{}% 節
+  \def\prefacename{前書き}%
+  \def\refname{参考文献}%
+  \def\bibname{参考文献}%
+  \def\abstractname{概要}%
+  \def\appendixname{付録}%
+  \def\contentsname{目次}%
+  \def\listfigurename{図目次}%
+  \def\listtablename{表目次}%
+  \def\indexname{索引}%
+  \def\figurename{図}%
+  \def\tablename{表}%
   }
-\newif\if$B@>Nq(B \$B@>Nq(Btrue%
-\def\$B@>Nq(B{\$B@>Nq(Btrue}%
-\def\$BOBNq(B{\$B@>Nq(Bfalse}%
+\newif\if西暦 \西暦true%
+\def\西暦{\西暦true}%
+\def\和暦{\西暦false}%
 {\advance\year-1988\relax
  \xdef\the@heisei{\the\year}}
 \def\datejapanese{%
   \def\today{%
-    \if$B@>Nq(B%
-      \number\year $BG/(B%
-      \number\month $B7n(B%
-      \number\day $BF|(B%
+    \if西暦%
+      \number\year 年%
+      \number\month 月%
+      \number\day 日%
     \else
-      $BJ?@.(B\the@heisei $BG/(B%
-      \number\month $B7n(B%
-      \number\day $BF|(B%
+      平成\the@heisei 年%
+      \number\month 月%
+      \number\day 日%
     \fi}}
 \ldf@finish{japanese}
 %%
