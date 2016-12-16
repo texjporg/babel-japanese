@@ -13,30 +13,19 @@
 %%               2016--     by Japanese TeX Development Community
 %% 
 %% This package is free software that can be redistributed and/or
-%% modified under the terms of the LaTeX Project Public License as
-%% specified in the file `macros/latex/base/lppl.txt on any CTAN
-%% archive server, such as http://ring.wakwak.com/pub/text/CTAN/.
+%% modified under the terms of the LaTeX Project Public License.
 %% 
-%% Maintained by ING, based on ideas by bookworm, Tony, and Ohishi.
+%% Previous version of this work was written by ING, based on ideas
+%% from bookworm, Tony and Ohishi.
+%% Current maintainer is Japanese TeX Development Community.
 %% 
-%% Please report errors to:
-%%   Japanese TeX Development Community <issue@texjp.org>
-%%   ING <t-ing@tbh.t-com.ne.jp>
+%% Please report errors to
+%%   Japanese TeX Development Community Issue List <issue@texjp.org>
+%% or, GitHub repository is also available:
+%%   https://github.com/texjporg/babel-japanese
 %% 
 \ProvidesLanguage{japanese}
-        [2016/12/15 v2.0 Japanese support for babel (ING, texjporg)]
-%%
-%% File 'japanese.dtx' supports the following Babel package:
-%%
-%% Babel package for LaTeX2e.
-%% Copyright (C) 1989-2008 by Johannes Braams,
-%%                            TeXniek
-%%                            all rights reserved.
-%% Copyright (C) 2013-2016 by Johannes Braams
-%%                            TeXniek
-%%                            by Javier Bezos
-%%                            all rights reserved.
-%%
+        [2016/12/15 v2.0 Japanese support for babel (texjporg)]
 \ifx\kanjiskip\@undefined\ifx\XeTeXversion\@undefined\ifx\directlua\@undefined
   \@latex@error{babel-japanese supports one of the followings:\MessageBreak
                 pTeX, upTeX, XeTeX, LuaTeX\MessageBreak
