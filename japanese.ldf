@@ -24,6 +24,9 @@
 %% or, GitHub repository is also available:
 %%   https://github.com/texjporg/babel-japanese
 %% 
+\ifx\epTeXinputencoding\undefined\else
+  \epTeXinputencoding utf8
+\fi
 \ProvidesLanguage{japanese}
         [2016/12/15 v2.0 Japanese support for babel (texjporg)]
 \ifx\kanjiskip\@undefined\ifx\XeTeXversion\@undefined\ifx\directlua\@undefined
@@ -174,8 +177,7 @@
     \number\month\kansuji2 %
     \number\day\kansuji3 }
   \xdef\bbl@jpn@WarekiToday{%
-    \expandafter\kansuji45 %
-    \the@heisei\kansuji1 %
+    \kansuji45 \the@heisei\kansuji1 %
     \number\month\kansuji2 %
     \number\day\kansuji3 }
 \endgroup

@@ -34,7 +34,8 @@ You will get japanese.ldf (the main code) and japanese-sample.tex (sample
 document for pLaTeX).
 
 2) Process documentation, japanese.dtx and japanese-sample.tex, as you wish.
-Currently both documents are written for pLaTeX.
+japanese.dtx can be processed with pLaTeX, upLaTeX or LuaLaTeX.
+japanese-sample.tex is written for pLaTeX.
 
         platex -kanji=utf8 japanese.dtx
         dvipdfmx japanese.dvi

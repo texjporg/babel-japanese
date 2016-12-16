@@ -1,9 +1,9 @@
 # Makefile for babel-japanese
 # Note that all files are UTF-8 (without BOM) encoded!
 
-STRIPTARGET = japanese.ldf japenese-sample.tex
-PDFTARGET = japanese.pdf japenese-sample.pdf
-DVITARGET = japanese.dvi japenese-sample.dvi
+STRIPTARGET = japanese.ldf japanese-sample.tex
+PDFTARGET = japanese.pdf japanese-sample.pdf
+DVITARGET = japanese.dvi japanese-sample.dvi
 KANJI = --kanji=utf8
 FONTMAP = -f ptex-ipaex.map -f ipaex.map
 
@@ -17,10 +17,6 @@ japanese.ldf: japanese.dtx
 japanese.dvi: japanese.dtx
 	platex $(KANJI) japanese.dtx
 	platex $(KANJI) japanese.dtx
-
-japanese-sample.dvi: japanese-sample.tex
-	platex $(KANJI) japanese-sample.tex
-	platex $(KANJI) japanese-sample.tex
 
 .SUFFIXES: .tex .dvi .pdf
 .tex.dvi:

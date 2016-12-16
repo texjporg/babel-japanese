@@ -30,6 +30,12 @@
 %
 % \fi
 %
+% ^^A  Ensure UTF-8 input encoding for pLaTeX
+% ^^A  (effective since e-pTeX 20160201, thus TeX Live 2016)
+\ifx\epTeXinputencoding\undefined\else
+  \epTeXinputencoding utf8
+\fi
+%
 %\iffalse
 %    Tell the \LaTeX\ system who we are and write an entry on the
 %    transcript.
@@ -46,7 +52,11 @@
 %\iffalse
 %
 %<*filedriver>
-\documentclass{jltxdoc}
+\ifx\directlua\undefined
+  \documentclass{jltxdoc}
+\else
+  \documentclass{ltjltxdoc}
+\fi
 \GetFileInfo{japanese.dtx}
 \setcounter{StandardModuleDepth}{1}
 \CodelineNumbered
@@ -63,7 +73,6 @@
 %
 %\fi
 %
-% \parindent=1zw
 % \title{Babel-Option {\sffamily japanese} {\Large version \fileversion}}
 % \author{\copyright\ 1999--2007 ING\\ 2016-- Japanese \TeX\ Development Community}
 % \date{\filedate}
@@ -81,7 +90,13 @@
 % バージョンv2.0以降では，p\TeX{}系（p\LaTeX{}，up\LaTeX{}）に加えて，
 % 新しいUnicodeな\TeX{}エンジン（Xe\TeX{}，Lua\TeX{}）もサポートしました。
 % このため，ファイルはUTF-8エンコーディングで保存するようにしてください。
-% p\TeX{}系でなく，かつUnicodeな\TeX{}でない場合は最初にエラーを出します。
+% この文書ファイル(\jobname.pdf)自体はp\LaTeX{}，up\LaTeX{}，Lua\LaTeX{}で
+% 処理できるようになっています。
+%
+% \section*{コード}
+%
+% p\TeX{}系（p\LaTeX{}，up\LaTeX{}）でなく，かつUnicodeな\TeX{}（Xe\LaTeX{}，
+% Lua\LaTeX{}）でもない場合は，最初にエラーを出します。
 %
 %    \begin{macrocode}
 %<*code>
@@ -298,8 +313,7 @@
     \number\month\kansuji2 %
     \number\day\kansuji3 }
   \xdef\bbl@jpn@WarekiToday{%
-    \expandafter\kansuji45 %
-    \the@heisei\kansuji1 %
+    \kansuji45 \the@heisei\kansuji1 %
     \number\month\kansuji2 %
     \number\day\kansuji3 }
 \endgroup
