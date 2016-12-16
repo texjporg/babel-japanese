@@ -7,83 +7,198 @@
 %% japanese.dtx  (with options: `code')
 %% 
 %% This file is part of the `japanese' package,
-%% providing Japanese language.
+%% providing Japanese language support for Babel.
 %% 
-%% Copyright (C) 2007 by ING
+%% Copyright (C) 1999--2007 by ING (Toru INAGAKI)
+%%               2016--     by Japanese TeX Development Community
 %% 
 %% This package is free software that can be redistributed and/or
 %% modified under the terms of the LaTeX Project Public License as
 %% specified in the file `macros/latex/base/lppl.txt on any CTAN
 %% archive server, such as http://ring.wakwak.com/pub/text/CTAN/.
 %% 
-%% Maintained by ING,
-%% using ideas by bookworm, Tony, and Ohishi.
+%% Maintained by ING, based on ideas by bookworm, Tony, and Ohishi.
 %% 
-%% Please report errors to: ING
-%%                          t-ing@tbh.t-com.ne.jp
+%% Please report errors to:
+%%   Japanese TeX Development Community <issue@texjp.org>
+%%   ING <t-ing@tbh.t-com.ne.jp>
 %% 
 \ProvidesLanguage{japanese}
-%% File 'japanese.dtx'
-%% Babel package for LaTeX version 2e
-%% Copyright (C) 1989 - 2007
-%%           by Johannes Braams, TeXniek
-\LdfInit{japanese}\captionsjapanese
+        [2016/12/15 v2.0 Japanese support for babel (ING, texjporg)]
+%%
+%% File 'japanese.dtx' supports the following Babel package:
+%%
+%% Babel package for LaTeX2e.
+%% Copyright (C) 1989-2008 by Johannes Braams,
+%%                            TeXniek
+%%                            all rights reserved.
+%% Copyright (C) 2013-2016 by Johannes Braams
+%%                            TeXniek
+%%                            by Javier Bezos
+%%                            all rights reserved.
+%%
+\ifx\kanjiskip\@undefined\ifx\XeTeXversion\@undefined\ifx\directlua\@undefined
+  \@latex@error{babel-japanese supports one of the followings:\MessageBreak
+                pTeX, upTeX, XeTeX, LuaTeX\MessageBreak
+                It seems you are running unsupported engine!}\@ehc
+\fi\fi\fi
+\LdfInit\CurrentOption{captions\CurrentOption}
 \ifx\l@japanese\@undefined
   \@nopatterns{Japanese}
   \adddialect\l@japanese0\fi
-\addto\captionsjapanese{%
-  \def\prepartname{第}%
-  \def\postpartnam{部}%
-  \def\prechaptername{第}%
-  \def\postchaptername{章}%
-  \def\presectionname{}%  第
-  \def\postsectionname{}% 節
-  \def\prefacename{前書き}%
-  \def\refname{参考文献}%
-  \def\bibname{参考文献}%
-  \def\abstractname{概要}%
-  \def\appendixname{付録}%
-  \def\contentsname{目次}%
-  \def\listfigurename{図目次}%
-  \def\listtablename{表目次}%
-  \def\indexname{索引}%
-  \def\figurename{図}%
-  \def\tablename{表}%
+\ifx\kanjiskip\@undefined
+  \def\bbl@jpn@prefacename{前書き}%
+  \def\bbl@jpn@refname{参考文献}%
+  \def\bbl@jpn@abstractname{概要}%
+  \def\bbl@jpn@bibname{参考文献}%
+  %\def\bbl@jpn@chaptername{Chapter}%
+  \def\bbl@jpn@prechaptername{第}%    -- added
+  \def\bbl@jpn@postchaptername{章}%   -- added
+  \def\bbl@jpn@presectionname{}%  第  -- added
+  \def\bbl@jpn@postsectionname{}% 節  -- added
+  \def\bbl@jpn@appendixname{付録}%
+  \def\bbl@jpn@contentsname{目次}%
+  \def\bbl@jpn@listfigurename{図目次}%
+  \def\bbl@jpn@listtablename{表目次}%
+  \def\bbl@jpn@indexname{索引}%
+  \def\bbl@jpn@figurename{図}%
+  \def\bbl@jpn@tablename{表}%
+  %\def\bbl@jpn@partname{Part}%
+  \def\bbl@jpn@prepartname{第}%       -- added
+  \def\bbl@jpn@postpartname{部}%      -- added
+  %\def\bbl@jpn@enclname{encl}%     同封物
+  %\def\bbl@jpn@ccname{cc}%         Cc
+  %\def\bbl@jpn@headtoname{To}%     To（宛先）
+  %\def\bbl@jpn@pagename{Page}%     ページ
+  %\def\bbl@jpn@seename{see}%       参照
+  %\def\bbl@jpn@alsoname{see also}% も参照
+  \def\bbl@jpn@proofname{証明}%
+  \def\bbl@jpn@glossaryname{用語集}%
+\else
+\begingroup
+  \kansujichar1=\jis"4130\relax % 前
+  \kansujichar2=\jis"3D71\relax % 書
+  \kansujichar3=\jis"242D\relax % き
+  \kansujichar4=\jis"3B32\relax % 参
+  \kansujichar5=\jis"394D\relax % 考
+  \kansujichar6=\jis"4A38\relax % 文
+  \kansujichar7=\jis"3825\relax % 献
+  \kansujichar8=\jis"3335\relax % 概
+  \kansujichar9=\jis"4D57\relax % 要
+  \xdef\bbl@jpn@prefacename{\kansuji123}%
+  \xdef\bbl@jpn@refname{\kansuji4567}%
+  \xdef\bbl@jpn@abstractname{\kansuji89}%
+  \xdef\bbl@jpn@bibname{\kansuji4567}%
+  \kansujichar1=\jis"4268\relax % 第
+  \kansujichar2=\jis"3E4F\relax % 章
+  \kansujichar3=\jis"4061\relax % 節
+  \kansujichar4=\jis"4955\relax % 付
+  \kansujichar5=\jis"4F3F\relax % 録
+  \kansujichar6=\jis"3A77\relax % 索
+  \kansujichar7=\jis"307A\relax % 引
+  \kansujichar8=\jis"4974\relax % 部
+  \xdef\bbl@jpn@prechaptername{\kansuji1}%
+  \xdef\bbl@jpn@postchaptername{\kansuji2}%
+  \xdef\bbl@jpn@appendixname{\kansuji45}%
+  \xdef\bbl@jpn@indexname{\kansuji67}%
+  \xdef\bbl@jpn@prepartname{\kansuji1}%
+  \xdef\bbl@jpn@postpartname{\kansuji8}%
+  \kansujichar1=\jis"4C5C\relax % 目
+  \kansujichar2=\jis"3C21\relax % 次
+  \kansujichar3=\jis"3F5E\relax % 図
+  \kansujichar4=\jis"493D\relax % 表
+  \kansujichar5=\jis"3E5A\relax % 証
+  \kansujichar6=\jis"4C40\relax % 明
+  \kansujichar7=\jis"4D51\relax % 用
+  \kansujichar8=\jis"386C\relax % 語
+  \kansujichar9=\jis"3D38\relax % 集
+  \xdef\bbl@jpn@contentsname{\kansuji12}%
+  \xdef\bbl@jpn@listfigurename{\kansuji312}%
+  \xdef\bbl@jpn@listtablename{\kansuji412}%
+  \xdef\bbl@jpn@figurename{\kansuji3}%
+  \xdef\bbl@jpn@tablename{\kansuji4}%
+  \xdef\bbl@jpn@proofname{\kansuji56}%
+  \xdef\bbl@jpn@glossaryname{\kansuji789}%
+\endgroup
+\fi
+\@namedef{captions\CurrentOption}{%
+  \let\prefacename\bbl@jpn@prefacename
+  \let\refname\bbl@jpn@refname
+  \let\abstractname\bbl@jpn@abstractname
+  \let\bibname\bbl@jpn@bibname
+  %\def\chaptername{Chapter}%
+  \let\prechaptername\bbl@jpn@prechaptername   % -- added
+  \let\postchaptername\bbl@jpn@postchaptername % -- added
+  \def\presectionname{}%  第  -- added
+  \def\postsectionname{}% 節  -- added
+  \let\appendixname\bbl@jpn@appendixname
+  \let\contentsname\bbl@jpn@contentsname
+  \let\listfigurename\bbl@jpn@listfigurename
+  \let\listtablename\bbl@jpn@listtablename
+  \let\indexname\bbl@jpn@indexname
+  \let\figurename\bbl@jpn@figurename
+  \let\tablename\bbl@jpn@tablename
+  %\def\partname{Part}%
+  \let\prepartname\bbl@jpn@prepartname   % -- added
+  \let\postpartname\bbl@jpn@postpartname % -- added
+  %\def\enclname{encl}%     同封物
+  %\def\ccname{cc}%         Cc
+  %\def\headtoname{To}%     To（宛先）
+  %\def\pagename{Page}%     ページ
+  %\def\seename{see}%       参照
+  %\def\alsoname{see also}% も参照
+  \let\proofname\bbl@jpn@proofname
+  \let\glossaryname\bbl@jpn@glossaryname
   }
-\newif\if西暦 \西暦true%
-\def\西暦{\西暦true}%
-\def\和暦{\西暦false}%
+\newif\ifbbl@jpn@Seireki \bbl@jpn@Seirekitrue
 {\advance\year-1988\relax
  \xdef\the@heisei{\the\year}}
-\def\datejapanese{%
-  \def\today{%
-    \if西暦%
+\ifx\kanjiskip\@undefined
+  \def\西暦{\bbl@jpn@Seirekitrue}%
+  \def\和暦{\bbl@jpn@Seirekifalse}%
+  \def\bbl@jpn@SeirekiToday{%
       \number\year 年%
       \number\month 月%
-      \number\day 日%
-    \else
+      \number\day 日}
+  \def\bbl@jpn@WarekiToday{%
       平成\the@heisei 年%
       \number\month 月%
-      \number\day 日%
+      \number\day 日}
+\else
+\begingroup
+  \kansujichar1=\jis"403E\relax % 西
+  \kansujichar2=\jis"4F42\relax % 和
+  \kansujichar3=\jis"4E71\relax % 暦
+  \expandafter\expandafter\expandafter\gdef
+  \expandafter\csname\kansuji13\endcsname{\bbl@jpn@Seirekitrue}%
+  \expandafter\expandafter\expandafter\gdef
+  \expandafter\csname\kansuji23\endcsname{\bbl@jpn@Seirekifalse}%
+  \kansujichar1=\jis"472F\relax % 年
+  \kansujichar2=\jis"376E\relax % 月
+  \kansujichar3=\jis"467C\relax % 日
+  \kansujichar4=\jis"4A3F\relax % 平
+  \kansujichar5=\jis"402E\relax % 成
+  \xdef\bbl@jpn@SeirekiToday{%
+    \number\year\expandafter\@firstofone\expandafter{\kansuji1}%
+    \number\month\expandafter\@firstofone\expandafter{\kansuji2}%
+    \number\day\expandafter\@firstofone\expandafter{\kansuji3}}
+  \xdef\bbl@jpn@WarekiToday{%
+    \expandafter\@firstofone\expandafter{\kansuji45}%
+    \the@heisei\expandafter\@firstofone\expandafter{\kansuji1}%
+    \number\month\expandafter\@firstofone\expandafter{\kansuji2}%
+    \number\day\expandafter\@firstofone\expandafter{\kansuji3}}
+\endgroup
+\fi
+\@namedef{date\CurrentOption}{%
+  \def\today{%
+    \ifbbl@jpn@Seireki
+      \bbl@jpn@SeirekiToday
+    \else
+      \bbl@jpn@WarekiToday
     \fi}}
-\ldf@finish{japanese}
-%%
-%% \CharacterTable
-%%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
-%%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
-%%   Digits        \0\1\2\3\4\5\6\7\8\9
-%%   Exclamation   \!     Double quote  \"     Hash (number) \#
-%%   Dollar        \$     Percent       \%     Ampersand     \&
-%%   Acute accent  \'     Left paren    \(     Right paren   \)
-%%   Asterisk      \*     Plus          \+     Comma         \,
-%%   Minus         \-     Point         \.     Solidus       \/
-%%   Colon         \:     Semicolon     \;     Less than     \<
-%%   Equals        \=     Greater than  \>     Question mark \?
-%%   Commercial at \@     Left bracket  \[     Backslash     \\
-%%   Right bracket \]     Circumflex    \^     Underscore    \_
-%%   Grave accent  \`     Left brace    \{     Vertical bar  \|
-%%   Right brace   \}     Tilde         \~}
-%%
+\@namedef{extras\CurrentOption}{}
+\@namedef{noextras\CurrentOption}{}
+\ldf@finish\CurrentOption
 \endinput
 %%
 %% End of file `japanese.ldf'.
