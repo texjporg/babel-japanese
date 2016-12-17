@@ -28,7 +28,7 @@
   \epTeXinputencoding utf8
 \fi
 \ProvidesLanguage{japanese}
-        [2016/12/15 v2.0 Japanese support for babel (texjporg)]
+        [2016/12/16 v2.0 Japanese support for babel (texjporg)]
 \ifx\kanjiskip\@undefined\ifx\XeTeXversion\@undefined\ifx\directlua\@undefined
   \@latex@error{babel-japanese supports one of the followings:\MessageBreak
                 pTeX, upTeX, XeTeX, LuaTeX\MessageBreak
