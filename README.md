@@ -68,7 +68,7 @@ Copyright (C) 1999-2007 by ING (Toru Inagaki)
 Copyright (C) 2016-     by Japanese TeX Development Community
 
 This package is free software that can be redistributed and/or
-modified under the terms of the LaTeX Project Public License.
+modified under the terms of the LaTeX Project Public License 1.3.
 
 
 ## Release Date
