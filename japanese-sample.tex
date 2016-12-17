@@ -9,7 +9,11 @@
 \ifx\epTeXinputencoding\undefined\else
   \epTeXinputencoding utf8
 \fi
-\documentclass{jbook}
+\ifx\directlua\undefined
+  \documentclass{jbook}
+\else
+  \documentclass{ltjbook}
+\fi
 \usepackage[german,english,japanese]{babel}
 \makeatletter
 \def\tbcaption{\def\@captype{table}\caption{キャプションの例}}

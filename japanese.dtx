@@ -397,7 +397,11 @@
 %
 %    \begin{macrocode}
 %<*sample>
-\documentclass{jbook}
+\ifx\directlua\undefined
+  \documentclass{jbook}
+\else
+  \documentclass{ltjbook}
+\fi
 \usepackage[german,english,japanese]{babel}
 \makeatletter
 \def\tbcaption{\def\@captype{table}\caption{キャプションの例}}
