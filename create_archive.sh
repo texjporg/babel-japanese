@@ -1,6 +1,6 @@
 #!/bin/sh
 
-PROJECT=japanese
+PROJECT=babel-japanese
 TMP=/tmp
 PWDF=`pwd`
 LATESTRELEASEDATE=`git tag | sort -r | head -n 1`
