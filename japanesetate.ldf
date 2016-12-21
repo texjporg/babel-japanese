@@ -27,25 +27,22 @@
 \ifx\epTeXinputencoding\undefined\else
   \epTeXinputencoding utf8
 \fi
-\ProvidesLanguage{japanesetate}
+\ProvidesLanguage{japanese}
         [2016/12/16 v2.0 Japanese support for babel (texjporg)]
 \ifx\kanjiskip\@undefined\ifx\directlua\@undefined
+\ifx\XeTeXversion\@undefined
   \@latex@error{Option '\CurrentOption' supports one of the followings:\MessageBreak
-                pTeX, upTeX, LuaTeX\MessageBreak
+                pTeX, upTeX, XeTeX, LuaTeX\MessageBreak
                 It seems you are running unsupported engine!}\@ehc
-\else
-\ifx\luatexjaLoaded\@undefined
-  \@latex@error{Option '\CurrentOption' requires LuaTeX-ja package\MessageBreak
-                on LuaTeX!}\@ehc
 \fi
 \fi\fi
 \LdfInit\CurrentOption{captions\CurrentOption}
-\ifx\l@japanesetate\@undefined
+\ifx\l@japanese\@undefined
   \PackageInfo{babel}{%
     No hyphenation patterns are available for Japanese,\MessageBreak
     so I will use the patterns preloaded for \bbl@nulllanguage\MessageBreak
     instead}
-  \adddialect\l@japanesetate0\fi
+  \adddialect\l@japanese0\fi
 \ifx\kanjiskip\@undefined
   \def\bbl@jpn@prefacename{前書き}%
   \def\bbl@jpn@refname{参考文献}%
@@ -158,11 +155,11 @@
 \ifx\kanjiskip\@undefined
   \def\西暦{\bbl@jpn@Seirekitrue}%
   \def\和暦{\bbl@jpn@Seirekifalse}%
-  \def\bbl@jpn@TateSeirekiToday{%
+  \def\bbl@jpn@KanjiSeirekiToday{%
       \kansuji\year 年%
       \kansuji\month 月%
       \kansuji\day 日}
-  \def\bbl@jpn@TateWarekiToday{%
+  \def\bbl@jpn@KanjiWarekiToday{%
       平成\kansuji\the@heisei 年%
       \kansuji\month 月%
       \kansuji\day 日}
@@ -193,11 +190,11 @@
   \xdef\bbl@jpn@kanjinichi{\kansuji3}%
   \xdef\bbl@jpn@kanjiheisei{\kansuji45}%
 \endgroup
-  \def\bbl@jpn@TateSeirekiToday{%
+  \def\bbl@jpn@KanjiSeirekiToday{%
     \kansuji\year\bbl@jpn@kanjinen
     \kansuji\month\bbl@jpn@kanjigatsu
     \kansuji\day\bbl@jpn@kanjinichi}
-  \def\bbl@jpn@TateWarekiToday{%
+  \def\bbl@jpn@KanjiWarekiToday{%
     \bbl@jpn@kanjiheisei\kansuji\the@heisei\bbl@jpn@kanjinen
     \kansuji\month\bbl@jpn@kanjigatsu
     \kansuji\day\bbl@jpn@kanjinichi}
@@ -212,33 +209,48 @@
 \fi
 \chardef\bbl@jpn@l@catcode=\catcode`\L\relax
 \chardef\bbl@jpn@p@catcode=\catcode`\P\relax
+\chardef\bbl@jpn@x@catcode=\catcode`\X\relax
 \ifx\directlua\@undefined
-  \catcode`\L=14\relax
-  \catcode`\P=9\relax
+  \ifx\XeTeXversion\@undefined    % ptex/uptex
+    \catcode`\L=14\relax
+    \catcode`\P=9\relax
+    \catcode`\X=9\relax
+  \else                           % xetex
+    \catcode`\L=14\relax
+    \catcode`\P=14\relax
+    \catcode`\X=14\relax
 \else
-  \catcode`\L=9\relax
-  \catcode`\P=14\relax
+  \ifx\luatexjaLoaded\@undefined  % luatex
+    \catcode`\L=14\relax
+    \catcode`\P=14\relax
+    \catcode`\X=14\relax
+  \else                           % luatex + luatexja
+    \catcode`\L=9\relax
+    \catcode`\P=14\relax
+    \catcode`\X=9\relax
+  \fi
 \fi
 \@namedef{date\CurrentOption}{%
   \def\today{%
 P  \iftdir
 L  \ifnum\ltjgetparameter{direction}=3
-    \ifbbl@jpn@Seireki
-      \bbl@jpn@TateSeirekiToday
-    \else
-      \bbl@jpn@TateWarekiToday
-    \fi
-   \else
+X   \ifbbl@jpn@Seireki
+X     \bbl@jpn@KanjiSeirekiToday
+X   \else
+X     \bbl@jpn@KanjiWarekiToday
+X   \fi
+X  \else
     \ifbbl@jpn@Seireki
       \bbl@jpn@SeirekiToday
     \else
       \bbl@jpn@WarekiToday
     \fi
-   \fi
+X  \fi
   }%
 }
 \catcode`\L=\bbl@jpn@l@catcode\relax
 \catcode`\P=\bbl@jpn@p@catcode\relax
+\catcode`\X=\bbl@jpn@x@catcode\relax
 \@namedef{extras\CurrentOption}{}
 \@namedef{noextras\CurrentOption}{}
 \ldf@finish\CurrentOption

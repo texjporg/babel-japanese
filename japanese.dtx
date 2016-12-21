@@ -42,10 +42,7 @@
 %<*dtx>
 \ProvidesFile{japanese.dtx}
 %</dtx>
-%<*code>
-%<yoko>\ProvidesLanguage{japanese}
-%<tate>\ProvidesLanguage{japanesetate}
-%</code>
+%<code>\ProvidesLanguage{japanese}
 %<*!sample>
 %\ProvidesFile{japanese.dtx}
         [2016/12/16 v2.0 Japanese support for babel (texjporg)]
@@ -117,21 +114,15 @@
 %
 % p\TeX{}系（p\LaTeX{}，up\LaTeX{}）でなく，かつUnicodeな\TeX{}（Xe\LaTeX{}，
 % Lua\LaTeX{}）でもない場合は，最初にエラーを出します。
-% 縦組でLua\LaTeX{}を使用している場合は，Lua\TeX-jaパッケージに依存します。
+%
 %    \begin{macrocode}
 %<*code>
 \ifx\kanjiskip\@undefined\ifx\directlua\@undefined
-%<yoko>\ifx\XeTeXversion\@undefined
+\ifx\XeTeXversion\@undefined
   \@latex@error{Option '\CurrentOption' supports one of the followings:\MessageBreak
-%<yoko>                pTeX, upTeX, XeTeX, LuaTeX\MessageBreak
-%<tate>                pTeX, upTeX, LuaTeX\MessageBreak
+                pTeX, upTeX, XeTeX, LuaTeX\MessageBreak
                 It seems you are running unsupported engine!}\@ehc
-%<yoko>\fi
-%<tate>\else
-%<tate>\ifx\luatexjaLoaded\@undefined
-%<tate>  \@latex@error{Option '\CurrentOption' requires LuaTeX-ja package\MessageBreak
-%<tate>                on LuaTeX!}\@ehc
-%<tate>\fi
+\fi
 \fi\fi
 %    \end{macrocode}
 %
@@ -167,15 +158,13 @@
 % ログファイルにのみInfoを出力します。
 %
 %    \begin{macrocode}
-%<yoko>\ifx\l@japanese\@undefined
-%<tate>\ifx\l@japanesetate\@undefined
+\ifx\l@japanese\@undefined
 %  \@nopatterns{Japanese}% comment out (2016-12-16)
   \PackageInfo{babel}{%
     No hyphenation patterns are available for Japanese,\MessageBreak
     so I will use the patterns preloaded for \bbl@nulllanguage\MessageBreak
     instead}
-%<yoko>  \adddialect\l@japanese0\fi
-%<tate>  \adddialect\l@japanesetate0\fi
+  \adddialect\l@japanese0\fi
 %    \end{macrocode}
 %
 % \DescribeMacro{\captionsjapanese}
@@ -323,20 +312,19 @@
 %
 % Unicodeな\TeX{}エンジン（Xe\TeX{}，Lua\TeX{}）の場合は，
 % UTF-8エンコーディングで直接和文文字を記述します。
+% Xe\TeX{}の場合は |\bbl@jpn@Kanji...| の2つは実際には使いません。
 %    \begin{macrocode}
 \ifx\kanjiskip\@undefined
   \def\西暦{\bbl@jpn@Seirekitrue}%
   \def\和暦{\bbl@jpn@Seirekifalse}%
-%<*tate>
-  \def\bbl@jpn@TateSeirekiToday{%
+  \def\bbl@jpn@KanjiSeirekiToday{%
       \kansuji\year 年%
       \kansuji\month 月%
       \kansuji\day 日}
-  \def\bbl@jpn@TateWarekiToday{%
+  \def\bbl@jpn@KanjiWarekiToday{%
       平成\kansuji\the@heisei 年%
       \kansuji\month 月%
       \kansuji\day 日}
-%</tate>
   \def\bbl@jpn@SeirekiToday{%
       \number\year 年%
       \number\month 月%
@@ -368,16 +356,14 @@
   \xdef\bbl@jpn@kanjinichi{\kansuji3}%
   \xdef\bbl@jpn@kanjiheisei{\kansuji45}%
 \endgroup
-%<*tate>
-  \def\bbl@jpn@TateSeirekiToday{%
+  \def\bbl@jpn@KanjiSeirekiToday{%
     \kansuji\year\bbl@jpn@kanjinen
     \kansuji\month\bbl@jpn@kanjigatsu
     \kansuji\day\bbl@jpn@kanjinichi}
-  \def\bbl@jpn@TateWarekiToday{%
+  \def\bbl@jpn@KanjiWarekiToday{%
     \bbl@jpn@kanjiheisei\kansuji\the@heisei\bbl@jpn@kanjinen
     \kansuji\month\bbl@jpn@kanjigatsu
     \kansuji\day\bbl@jpn@kanjinichi}
-%</tate>
   \def\bbl@jpn@SeirekiToday{%
     \number\year\bbl@jpn@kanjinen
     \number\month\bbl@jpn@kanjigatsu
@@ -389,46 +375,62 @@
 \fi
 %    \end{macrocode}
 %
-% 縦組向けオプションでは，(u)p\LaTeXe{}とLua\TeX-jaで組方向判定方法が
-% 異なるため，|\catcode| のトリックで別々のコードを使い分けます。
+% (u)p\LaTeXe{}とLua\TeX-jaで組方向判定方法が異なるため，|\catcode| のトリックで
+% 別々のコードを使い分けます。Xe\LaTeX{}の場合，およびLua\LaTeX{}でLua\TeX-ja不使用の
+% 場合は，縦組をサポートしません。
 %    \begin{macrocode}
-%<tate>\chardef\bbl@jpn@l@catcode=\catcode`\L\relax
-%<tate>\chardef\bbl@jpn@p@catcode=\catcode`\P\relax
-%<tate>\ifx\directlua\@undefined
-%<tate>  \catcode`\L=14\relax
-%<tate>  \catcode`\P=9\relax
-%<tate>\else
-%<tate>  \catcode`\L=9\relax
-%<tate>  \catcode`\P=14\relax
-%<tate>\fi
+\chardef\bbl@jpn@l@catcode=\catcode`\L\relax
+\chardef\bbl@jpn@p@catcode=\catcode`\P\relax
+\chardef\bbl@jpn@x@catcode=\catcode`\X\relax
+\ifx\directlua\@undefined
+  \ifx\XeTeXversion\@undefined    % ptex/uptex
+    \catcode`\L=14\relax
+    \catcode`\P=9\relax
+    \catcode`\X=9\relax
+  \else                           % xetex
+    \catcode`\L=14\relax
+    \catcode`\P=14\relax
+    \catcode`\X=14\relax
+\else
+  \ifx\luatexjaLoaded\@undefined  % luatex
+    \catcode`\L=14\relax
+    \catcode`\P=14\relax
+    \catcode`\X=14\relax
+  \else                           % luatex + luatexja
+    \catcode`\L=9\relax
+    \catcode`\P=14\relax
+    \catcode`\X=9\relax
+  \fi
+\fi
 %    \end{macrocode}
 %
 % 実際に使用する命令にコピーします。
 %    \begin{macrocode}
 \@namedef{date\CurrentOption}{%
   \def\today{%
-%<tate>P  \iftdir
-%<tate>L  \ifnum\ltjgetparameter{direction}=3
-%<tate>    \ifbbl@jpn@Seireki
-%<tate>      \bbl@jpn@TateSeirekiToday
-%<tate>    \else
-%<tate>      \bbl@jpn@TateWarekiToday
-%<tate>    \fi
-%<tate>   \else
+P  \iftdir
+L  \ifnum\ltjgetparameter{direction}=3
+X   \ifbbl@jpn@Seireki
+X     \bbl@jpn@KanjiSeirekiToday
+X   \else
+X     \bbl@jpn@KanjiWarekiToday
+X   \fi
+X  \else
     \ifbbl@jpn@Seireki
       \bbl@jpn@SeirekiToday
     \else
       \bbl@jpn@WarekiToday
     \fi
-%<tate>   \fi
+X  \fi
   }%
 }
 %    \end{macrocode}
 %
 % トリックに使用した文字の |\catcode| を元に戻します。
 %    \begin{macrocode}
-%<tate>\catcode`\L=\bbl@jpn@l@catcode\relax
-%<tate>\catcode`\P=\bbl@jpn@p@catcode\relax
+\catcode`\L=\bbl@jpn@l@catcode\relax
+\catcode`\P=\bbl@jpn@p@catcode\relax
+\catcode`\X=\bbl@jpn@x@catcode\relax
 %    \end{macrocode}
 %
 %    \begin{macrocode}
