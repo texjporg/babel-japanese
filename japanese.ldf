@@ -4,7 +4,7 @@
 %%
 %% The original source files were:
 %%
-%% japanese.dtx  (with options: `code,yoko')
+%% japanese.dtx  (with options: `code')
 %% 
 %% This file is part of the `japanese' package,
 %% providing Japanese language support for Babel.
@@ -155,14 +155,14 @@
 \ifx\kanjiskip\@undefined
   \def\西暦{\bbl@jpn@Seirekitrue}%
   \def\和暦{\bbl@jpn@Seirekifalse}%
-  \def\bbl@jpn@KanjiSeirekiToday{%
-      \kansuji\year 年%
-      \kansuji\month 月%
-      \kansuji\day 日}
-  \def\bbl@jpn@KanjiWarekiToday{%
-      平成\kansuji\the@heisei 年%
-      \kansuji\month 月%
-      \kansuji\day 日}
+  \def\bbl@jpn@TateSeirekiToday{%
+      \bbl@jpn@maybekansuji\year 年%
+      \bbl@jpn@maybekansuji\month 月%
+      \bbl@jpn@maybekansuji\day 日}
+  \def\bbl@jpn@TateWarekiToday{%
+      平成\bbl@jpn@maybekansuji\the@heisei 年%
+      \bbl@jpn@maybekansuji\month 月%
+      \bbl@jpn@maybekansuji\day 日}
   \def\bbl@jpn@SeirekiToday{%
       \number\year 年%
       \number\month 月%
@@ -190,14 +190,14 @@
   \xdef\bbl@jpn@kanjinichi{\kansuji3}%
   \xdef\bbl@jpn@kanjiheisei{\kansuji45}%
 \endgroup
-  \def\bbl@jpn@KanjiSeirekiToday{%
-    \kansuji\year\bbl@jpn@kanjinen
-    \kansuji\month\bbl@jpn@kanjigatsu
-    \kansuji\day\bbl@jpn@kanjinichi}
-  \def\bbl@jpn@KanjiWarekiToday{%
-    \bbl@jpn@kanjiheisei\kansuji\the@heisei\bbl@jpn@kanjinen
-    \kansuji\month\bbl@jpn@kanjigatsu
-    \kansuji\day\bbl@jpn@kanjinichi}
+  \def\bbl@jpn@TateSeirekiToday{%
+    \bbl@jpn@maybekansuji\year\bbl@jpn@kanjinen
+    \bbl@jpn@maybekansuji\month\bbl@jpn@kanjigatsu
+    \bbl@jpn@maybekansuji\day\bbl@jpn@kanjinichi}
+  \def\bbl@jpn@TateWarekiToday{%
+    \bbl@jpn@kanjiheisei\bbl@jpn@maybekansuji\the@heisei\bbl@jpn@kanjinen
+    \bbl@jpn@maybekansuji\month\bbl@jpn@kanjigatsu
+    \bbl@jpn@maybekansuji\day\bbl@jpn@kanjinichi}
   \def\bbl@jpn@SeirekiToday{%
     \number\year\bbl@jpn@kanjinen
     \number\month\bbl@jpn@kanjigatsu
@@ -235,9 +235,9 @@
 P  \iftdir
 L  \ifnum\ltjgetparameter{direction}=3
 X   \ifbbl@jpn@Seireki
-X     \bbl@jpn@KanjiSeirekiToday
+X     \bbl@jpn@TateSeirekiToday
 X   \else
-X     \bbl@jpn@KanjiWarekiToday
+X     \bbl@jpn@TateWarekiToday
 X   \fi
 X  \else
     \ifbbl@jpn@Seireki
@@ -248,6 +248,8 @@ X  \else
 X  \fi
   }%
 }
+\let\bbl@jpn@maybekansuji\number
+\bbl@declare@ttribute{japanese}{kansujitoday}{\let\bbl@jpn@maybekansuji\kansuji}
 \catcode`\L=\bbl@jpn@l@catcode\relax
 \catcode`\P=\bbl@jpn@p@catcode\relax
 \catcode`\X=\bbl@jpn@x@catcode\relax

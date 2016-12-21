@@ -312,19 +312,19 @@
 %
 % Unicodeな\TeX{}エンジン（Xe\TeX{}，Lua\TeX{}）の場合は，
 % UTF-8エンコーディングで直接和文文字を記述します。
-% Xe\TeX{}の場合は |\bbl@jpn@Kanji...| の2つは実際には使いません。
+% Xe\TeX{}の場合は |\bbl@jpn@Tate...| の2つは実際には使いません。
 %    \begin{macrocode}
 \ifx\kanjiskip\@undefined
   \def\西暦{\bbl@jpn@Seirekitrue}%
   \def\和暦{\bbl@jpn@Seirekifalse}%
-  \def\bbl@jpn@KanjiSeirekiToday{%
-      \kansuji\year 年%
-      \kansuji\month 月%
-      \kansuji\day 日}
-  \def\bbl@jpn@KanjiWarekiToday{%
-      平成\kansuji\the@heisei 年%
-      \kansuji\month 月%
-      \kansuji\day 日}
+  \def\bbl@jpn@TateSeirekiToday{%
+      \bbl@jpn@maybekansuji\year 年%
+      \bbl@jpn@maybekansuji\month 月%
+      \bbl@jpn@maybekansuji\day 日}
+  \def\bbl@jpn@TateWarekiToday{%
+      平成\bbl@jpn@maybekansuji\the@heisei 年%
+      \bbl@jpn@maybekansuji\month 月%
+      \bbl@jpn@maybekansuji\day 日}
   \def\bbl@jpn@SeirekiToday{%
       \number\year 年%
       \number\month 月%
@@ -356,14 +356,14 @@
   \xdef\bbl@jpn@kanjinichi{\kansuji3}%
   \xdef\bbl@jpn@kanjiheisei{\kansuji45}%
 \endgroup
-  \def\bbl@jpn@KanjiSeirekiToday{%
-    \kansuji\year\bbl@jpn@kanjinen
-    \kansuji\month\bbl@jpn@kanjigatsu
-    \kansuji\day\bbl@jpn@kanjinichi}
-  \def\bbl@jpn@KanjiWarekiToday{%
-    \bbl@jpn@kanjiheisei\kansuji\the@heisei\bbl@jpn@kanjinen
-    \kansuji\month\bbl@jpn@kanjigatsu
-    \kansuji\day\bbl@jpn@kanjinichi}
+  \def\bbl@jpn@TateSeirekiToday{%
+    \bbl@jpn@maybekansuji\year\bbl@jpn@kanjinen
+    \bbl@jpn@maybekansuji\month\bbl@jpn@kanjigatsu
+    \bbl@jpn@maybekansuji\day\bbl@jpn@kanjinichi}
+  \def\bbl@jpn@TateWarekiToday{%
+    \bbl@jpn@kanjiheisei\bbl@jpn@maybekansuji\the@heisei\bbl@jpn@kanjinen
+    \bbl@jpn@maybekansuji\month\bbl@jpn@kanjigatsu
+    \bbl@jpn@maybekansuji\day\bbl@jpn@kanjinichi}
   \def\bbl@jpn@SeirekiToday{%
     \number\year\bbl@jpn@kanjinen
     \number\month\bbl@jpn@kanjigatsu
@@ -411,9 +411,9 @@
 P  \iftdir
 L  \ifnum\ltjgetparameter{direction}=3
 X   \ifbbl@jpn@Seireki
-X     \bbl@jpn@KanjiSeirekiToday
+X     \bbl@jpn@TateSeirekiToday
 X   \else
-X     \bbl@jpn@KanjiWarekiToday
+X     \bbl@jpn@TateWarekiToday
 X   \fi
 X  \else
     \ifbbl@jpn@Seireki
@@ -424,6 +424,11 @@ X  \else
 X  \fi
   }%
 }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\let\bbl@jpn@maybekansuji\number
+\bbl@declare@ttribute{japanese}{kansujitoday}{\let\bbl@jpn@maybekansuji\kansuji}
 %    \end{macrocode}
 %
 % トリックに使用した文字の |\catcode| を元に戻します。
