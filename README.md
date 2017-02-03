@@ -35,7 +35,14 @@ document for pLaTeX).
 
 2) Process documentation, japanese.dtx and japanese-sample.tex, as you wish.
 japanese.dtx can be processed with pLaTeX, upLaTeX or LuaLaTeX.
-japanese-sample.tex is written for pLaTeX.
+japanese-sample.tex is written for pLaTeX or LuaLaTeX.
+
+If you use lualatex:
+
+        lualatex japanese.dtx
+        lualatex japanese-sample.tex
+
+If you use platex:
 
         platex -kanji=utf8 japanese.dtx
         dvipdfmx japanese.dvi
