@@ -45,7 +45,7 @@
 %<code>\ProvidesLanguage{japanese}
 %<*!sample>
 %\ProvidesFile{japanese.dtx}
-        [2016/12/16 v2.0 Japanese support for babel (texjporg)]
+        [2017/02/05 v2.1 Japanese support for babel (texjporg)]
 %</!sample>
 %\fi
 %
@@ -391,6 +391,7 @@
     \catcode`\L=14\relax
     \catcode`\P=14\relax
     \catcode`\X=14\relax
+  \fi
 \else
   \ifx\luatexjaLoaded\@undefined  % luatex
     \catcode`\L=14\relax
@@ -426,6 +427,8 @@ X  \fi
 }
 %    \end{macrocode}
 %
+% [2017-02-05] 新機能：|\languageattribute{japanese}{kansujitoday}|を指定すると，
+% 縦書きでは |\today| の表記が漢数字（例：二〇一六年一二月二八日）になります。
 %    \begin{macrocode}
 \let\bbl@jpn@maybekansuji\number
 \bbl@declare@ttribute{japanese}{kansujitoday}{\let\bbl@jpn@maybekansuji\kansuji}
