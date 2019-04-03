@@ -28,7 +28,7 @@
   \epTeXinputencoding utf8
 \fi
 \ProvidesLanguage{japanese}
-        [2017/02/05 v2.1 Japanese support for babel (texjporg)]
+        [2019/04/03 v2.2 Japanese support for babel (texjporg)]
 \ifx\kanjiskip\@undefined\ifx\directlua\@undefined
 \ifx\XeTeXversion\@undefined
   \@latex@error{Option '\CurrentOption' requires one of the followings:\MessageBreak
@@ -150,17 +150,19 @@
   \let\glossaryname\bbl@jpn@glossaryname
   }
 \newif\ifbbl@jpn@Seireki \bbl@jpn@Seirekitrue
-{\advance\year-1988\relax
- \xdef\the@heisei{\the\year}}
 \ifx\kanjiskip\@undefined
   \def\西暦{\bbl@jpn@Seirekitrue}%
   \def\和暦{\bbl@jpn@Seirekifalse}%
+  \def\bbl@jpn@kanjishowa{昭和}
+  \def\bbl@jpn@kanjiheisei{平成}
+  \def\bbl@jpn@kanjireiwa{令和}
+  \def\bbl@jpn@kanjigan{元}%
   \def\bbl@jpn@TateSeirekiToday{%
       \bbl@jpn@maybekansuji\year 年%
       \bbl@jpn@maybekansuji\month 月%
       \bbl@jpn@maybekansuji\day 日}
   \def\bbl@jpn@TateWarekiToday{%
-      平成\bbl@jpn@maybekansuji\the@heisei 年%
+      \bbl@jpn@gengo\bbl@jpn@maybekansuji\bbl@jpn@gengoyear 年%
       \bbl@jpn@maybekansuji\month 月%
       \bbl@jpn@maybekansuji\day 日}
   \def\bbl@jpn@SeirekiToday{%
@@ -168,11 +170,17 @@
       \number\month 月%
       \number\day 日}
   \def\bbl@jpn@WarekiToday{%
-      平成\the@heisei 年%
+      \bbl@jpn@gengo\number\bbl@jpn@gengoyear 年%
       \number\month 月%
       \number\day 日}
 \else
 \begingroup
+  \kansujichar1=\jis"472F\relax % 年
+  \kansujichar2=\jis"376E\relax % 月
+  \kansujichar3=\jis"467C\relax % 日
+  \xdef\bbl@jpn@kanjinen{\kansuji1}%
+  \xdef\bbl@jpn@kanjigatsu{\kansuji2}%
+  \xdef\bbl@jpn@kanjinichi{\kansuji3}%
   \kansujichar1=\jis"403E\relax % 西
   \kansujichar2=\jis"4F42\relax % 和
   \kansujichar3=\jis"4E71\relax % 暦
@@ -180,22 +188,22 @@
   \expandafter\csname\kansuji13\endcsname{\bbl@jpn@Seirekitrue}%
   \expandafter\expandafter\expandafter\gdef
   \expandafter\csname\kansuji23\endcsname{\bbl@jpn@Seirekifalse}%
-  \kansujichar1=\jis"472F\relax % 年
-  \kansujichar2=\jis"376E\relax % 月
-  \kansujichar3=\jis"467C\relax % 日
   \kansujichar4=\jis"4A3F\relax % 平
   \kansujichar5=\jis"402E\relax % 成
-  \xdef\bbl@jpn@kanjinen{\kansuji1}%
-  \xdef\bbl@jpn@kanjigatsu{\kansuji2}%
-  \xdef\bbl@jpn@kanjinichi{\kansuji3}%
+  \kansujichar6=\jis"3E3C\relax % 昭
+  \kansujichar7=\jis"4E61\relax % 令
+  \xdef\bbl@jpn@kanjishowa{\kansuji62}%
   \xdef\bbl@jpn@kanjiheisei{\kansuji45}%
+  \xdef\bbl@jpn@kanjireiwa{\kansuji72}%
+  \kansujichar0=\jis"3835\relax % 元
+  \xdef\bbl@jpn@kanjigan{\kansuji0}%
 \endgroup
   \def\bbl@jpn@TateSeirekiToday{%
     \bbl@jpn@maybekansuji\year\bbl@jpn@kanjinen
     \bbl@jpn@maybekansuji\month\bbl@jpn@kanjigatsu
     \bbl@jpn@maybekansuji\day\bbl@jpn@kanjinichi}
   \def\bbl@jpn@TateWarekiToday{%
-    \bbl@jpn@kanjiheisei\bbl@jpn@maybekansuji\the@heisei\bbl@jpn@kanjinen
+    \bbl@jpn@gengo\bbl@jpn@maybekansuji\bbl@jpn@gengoyear\bbl@jpn@kanjinen
     \bbl@jpn@maybekansuji\month\bbl@jpn@kanjigatsu
     \bbl@jpn@maybekansuji\day\bbl@jpn@kanjinichi}
   \def\bbl@jpn@SeirekiToday{%
@@ -203,10 +211,33 @@
     \number\month\bbl@jpn@kanjigatsu
     \number\day\bbl@jpn@kanjinichi}
   \def\bbl@jpn@WarekiToday{%
-    \bbl@jpn@kanjiheisei\the@heisei\bbl@jpn@kanjinen
+    \bbl@jpn@gengo\number\bbl@jpn@gengoyear\bbl@jpn@kanjinen
     \number\month\bbl@jpn@kanjigatsu
     \number\day\bbl@jpn@kanjinichi}
 \fi
+\def\bbl@jpn@gengo#1\bbl@jpn@gengoyear{%
+  \@tempcnta\year\relax
+  \multiply\@tempcnta100
+  \advance\@tempcnta\month
+  \multiply\@tempcnta100
+  \advance\@tempcnta\day
+  \@tempcntb\year\relax
+  \ifnum\@tempcnta<19890108
+    \bbl@jpn@kanjishowa
+    \advance\@tempcntb-1925
+  \else\ifnum\@tempcnta<20190501
+    \bbl@jpn@kanjiheisei
+    \advance\@tempcntb-1988
+  \else
+    \bbl@jpn@kanjireiwa
+    \advance\@tempcntb-2018
+  \fi\fi
+  \ifnum\@tempcntb=1
+    \bbl@jpn@kanjigan   % 元年は \number も \kansuji も関係ない
+  \else
+    #1\@tempcntb % この #1 は \number または \bbl@jpn@maybekansuji
+  \fi
+}
 \chardef\bbl@jpn@l@catcode=\catcode`\L\relax
 \chardef\bbl@jpn@p@catcode=\catcode`\P\relax
 \chardef\bbl@jpn@x@catcode=\catcode`\X\relax
@@ -233,20 +264,27 @@
 \fi
 \@namedef{date\CurrentOption}{%
   \def\today{%
-P  \iftdir
-L  \ifnum\ltjgetparameter{direction}=3
-X   \ifbbl@jpn@Seireki
-X     \bbl@jpn@TateSeirekiToday
+P   \iftdir\ifmdir % tate-math
+P     \ifbbl@jpn@Seireki
+P       \bbl@jpn@SeirekiToday
+P     \else
+P       \bbl@jpn@WarekiToday
+P     \fi
+P   \else          % tate
+L   \ifnum\ltjgetparameter{direction}=3 % tate
+X     \ifbbl@jpn@Seireki
+X       \bbl@jpn@TateSeirekiToday
+X     \else
+X       \bbl@jpn@TateWarekiToday
+X     \fi
+P   \fi
 X   \else
-X     \bbl@jpn@TateWarekiToday
+      \ifbbl@jpn@Seireki
+        \bbl@jpn@SeirekiToday
+      \else
+        \bbl@jpn@WarekiToday
+      \fi
 X   \fi
-X  \else
-    \ifbbl@jpn@Seireki
-      \bbl@jpn@SeirekiToday
-    \else
-      \bbl@jpn@WarekiToday
-    \fi
-X  \fi
   }%
 }
 \let\bbl@jpn@maybekansuji\number

@@ -4,16 +4,17 @@
 % providing Japanese language support for Babel.
 %
 % Copyright (C) 1999--2007 by ING (Toru INAGAKI)
-%               2016--     by Japanese TeX Development Community
+%               2016--2019 by Japanese TeX Development Community
 %
 % This package 'japanese.dtx' supports the following Babel package:
 %
 % ====================================================================
 %
-% Copyright 2012-2016 Javier Bezos and Johannes L. Braams.
-% Copyright 1989-2012 Johannes L. Braams and any individual authors
-% listed elsewhere in this file.  All rights reserved.
-% 
+% Copyright (C) 2012-2018 Javier Bezos and Johannes L. Braams.
+% Copyright (C) 1989-2012 Johannes L. Braams and
+%           any individual authors listed elsewhere in this file.
+% All rights reserved.
+%
 % It may be distributed and/or modified under the
 % conditions of the LaTeX Project Public License, either version 1.3
 % of this license or (at your option) any later version.
@@ -21,9 +22,9 @@
 %   http://www.latex-project.org/lppl.txt
 % and version 1.3 or later is part of all distributions of LaTeX
 % version 2003/12/01 or later.
-% 
+%
 % This work has the LPPL maintenance status "maintained".
-% 
+%
 % The Current Maintainer of this work is Javier Bezos.
 %
 % ====================================================================
@@ -45,7 +46,7 @@
 %<code>\ProvidesLanguage{japanese}
 %<*!sample>
 %\ProvidesFile{japanese.dtx}
-        [2017/02/05 v2.1 Japanese support for babel (texjporg)]
+        [2019/04/03 v2.2 Japanese support for babel (texjporg)]
 %</!sample>
 %\fi
 %
@@ -303,11 +304,9 @@
 % 再定義します。デフォルトの出力は西暦です。和暦を使用する際は，プリアンブルで 
 % |\和暦| を指定するか，本文で |\和暦\today| のように指定します。
 %
-% フラグの準備，平成の計算。
+% フラグの準備。
 %    \begin{macrocode}
 \newif\ifbbl@jpn@Seireki \bbl@jpn@Seirekitrue
-{\advance\year-1988\relax
- \xdef\the@heisei{\the\year}}
 %    \end{macrocode}
 %
 % Unicodeな\TeX{}エンジン（Xe\TeX{}，Lua\TeX{}）の場合は，
@@ -317,12 +316,16 @@
 \ifx\kanjiskip\@undefined
   \def\西暦{\bbl@jpn@Seirekitrue}%
   \def\和暦{\bbl@jpn@Seirekifalse}%
+  \def\bbl@jpn@kanjishowa{昭和}
+  \def\bbl@jpn@kanjiheisei{平成}
+  \def\bbl@jpn@kanjireiwa{令和}
+  \def\bbl@jpn@kanjigan{元}%
   \def\bbl@jpn@TateSeirekiToday{%
       \bbl@jpn@maybekansuji\year 年%
       \bbl@jpn@maybekansuji\month 月%
       \bbl@jpn@maybekansuji\day 日}
   \def\bbl@jpn@TateWarekiToday{%
-      平成\bbl@jpn@maybekansuji\the@heisei 年%
+      \bbl@jpn@gengo\bbl@jpn@maybekansuji\bbl@jpn@gengoyear 年%
       \bbl@jpn@maybekansuji\month 月%
       \bbl@jpn@maybekansuji\day 日}
   \def\bbl@jpn@SeirekiToday{%
@@ -330,7 +333,7 @@
       \number\month 月%
       \number\day 日}
   \def\bbl@jpn@WarekiToday{%
-      平成\the@heisei 年%
+      \bbl@jpn@gengo\number\bbl@jpn@gengoyear 年%
       \number\month 月%
       \number\day 日}
 %    \end{macrocode}
@@ -339,6 +342,12 @@
 %    \begin{macrocode}
 \else
 \begingroup
+  \kansujichar1=\jis"472F\relax % 年
+  \kansujichar2=\jis"376E\relax % 月
+  \kansujichar3=\jis"467C\relax % 日
+  \xdef\bbl@jpn@kanjinen{\kansuji1}%
+  \xdef\bbl@jpn@kanjigatsu{\kansuji2}%
+  \xdef\bbl@jpn@kanjinichi{\kansuji3}%
   \kansujichar1=\jis"403E\relax % 西
   \kansujichar2=\jis"4F42\relax % 和
   \kansujichar3=\jis"4E71\relax % 暦
@@ -346,22 +355,22 @@
   \expandafter\csname\kansuji13\endcsname{\bbl@jpn@Seirekitrue}%
   \expandafter\expandafter\expandafter\gdef
   \expandafter\csname\kansuji23\endcsname{\bbl@jpn@Seirekifalse}%
-  \kansujichar1=\jis"472F\relax % 年
-  \kansujichar2=\jis"376E\relax % 月
-  \kansujichar3=\jis"467C\relax % 日
   \kansujichar4=\jis"4A3F\relax % 平
   \kansujichar5=\jis"402E\relax % 成
-  \xdef\bbl@jpn@kanjinen{\kansuji1}%
-  \xdef\bbl@jpn@kanjigatsu{\kansuji2}%
-  \xdef\bbl@jpn@kanjinichi{\kansuji3}%
+  \kansujichar6=\jis"3E3C\relax % 昭
+  \kansujichar7=\jis"4E61\relax % 令
+  \xdef\bbl@jpn@kanjishowa{\kansuji62}%
   \xdef\bbl@jpn@kanjiheisei{\kansuji45}%
+  \xdef\bbl@jpn@kanjireiwa{\kansuji72}%
+  \kansujichar0=\jis"3835\relax % 元
+  \xdef\bbl@jpn@kanjigan{\kansuji0}%
 \endgroup
   \def\bbl@jpn@TateSeirekiToday{%
     \bbl@jpn@maybekansuji\year\bbl@jpn@kanjinen
     \bbl@jpn@maybekansuji\month\bbl@jpn@kanjigatsu
     \bbl@jpn@maybekansuji\day\bbl@jpn@kanjinichi}
   \def\bbl@jpn@TateWarekiToday{%
-    \bbl@jpn@kanjiheisei\bbl@jpn@maybekansuji\the@heisei\bbl@jpn@kanjinen
+    \bbl@jpn@gengo\bbl@jpn@maybekansuji\bbl@jpn@gengoyear\bbl@jpn@kanjinen
     \bbl@jpn@maybekansuji\month\bbl@jpn@kanjigatsu
     \bbl@jpn@maybekansuji\day\bbl@jpn@kanjinichi}
   \def\bbl@jpn@SeirekiToday{%
@@ -369,10 +378,39 @@
     \number\month\bbl@jpn@kanjigatsu
     \number\day\bbl@jpn@kanjinichi}
   \def\bbl@jpn@WarekiToday{%
-    \bbl@jpn@kanjiheisei\the@heisei\bbl@jpn@kanjinen
+    \bbl@jpn@gengo\number\bbl@jpn@gengoyear\bbl@jpn@kanjinen
     \number\month\bbl@jpn@kanjigatsu
     \number\day\bbl@jpn@kanjinichi}
 \fi
+%    \end{macrocode}
+%
+% |\bbl@jpn@gengo| の内部で，元号を計算します。
+%
+% [2019-04-03] 2019年5月1日から始まる予定の新元号「令和」に対応しました。
+%    \begin{macrocode}
+\def\bbl@jpn@gengo#1\bbl@jpn@gengoyear{%
+  \@tempcnta\year\relax
+  \multiply\@tempcnta100
+  \advance\@tempcnta\month
+  \multiply\@tempcnta100
+  \advance\@tempcnta\day
+  \@tempcntb\year\relax
+  \ifnum\@tempcnta<19890108
+    \bbl@jpn@kanjishowa
+    \advance\@tempcntb-1925
+  \else\ifnum\@tempcnta<20190501
+    \bbl@jpn@kanjiheisei
+    \advance\@tempcntb-1988
+  \else
+    \bbl@jpn@kanjireiwa
+    \advance\@tempcntb-2018
+  \fi\fi
+  \ifnum\@tempcntb=1
+    \bbl@jpn@kanjigan   % 元年は \number も \kansuji も関係ない
+  \else
+    #1\@tempcntb % この #1 は \number または \bbl@jpn@maybekansuji
+  \fi
+}
 %    \end{macrocode}
 %
 % (u)p\LaTeXe{}とLua\TeX-jaで組方向判定方法が異なるため，|\catcode| のトリックで
@@ -406,23 +444,32 @@
 %    \end{macrocode}
 %
 % 実際に使用する命令にコピーします。
+%
+% [2019-04-03] 縦数式ディレクションは横組と同じ出力とします。
 %    \begin{macrocode}
 \@namedef{date\CurrentOption}{%
   \def\today{%
-P  \iftdir
-L  \ifnum\ltjgetparameter{direction}=3
-X   \ifbbl@jpn@Seireki
-X     \bbl@jpn@TateSeirekiToday
+P   \iftdir\ifmdir % tate-math
+P     \ifbbl@jpn@Seireki
+P       \bbl@jpn@SeirekiToday
+P     \else
+P       \bbl@jpn@WarekiToday
+P     \fi
+P   \else          % tate
+L   \ifnum\ltjgetparameter{direction}=3 % tate
+X     \ifbbl@jpn@Seireki
+X       \bbl@jpn@TateSeirekiToday
+X     \else
+X       \bbl@jpn@TateWarekiToday
+X     \fi
+P   \fi
 X   \else
-X     \bbl@jpn@TateWarekiToday
+      \ifbbl@jpn@Seireki
+        \bbl@jpn@SeirekiToday
+      \else
+        \bbl@jpn@WarekiToday
+      \fi
 X   \fi
-X  \else
-    \ifbbl@jpn@Seireki
-      \bbl@jpn@SeirekiToday
-    \else
-      \bbl@jpn@WarekiToday
-    \fi
-X  \fi
   }%
 }
 %    \end{macrocode}
