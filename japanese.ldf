@@ -263,21 +263,14 @@
   \fi
 \fi
 \@namedef{date\CurrentOption}{%
-  \def\today{%
-P   \iftdir\ifmdir % tate-math
-P     \ifbbl@jpn@Seireki
-P       \bbl@jpn@SeirekiToday
-P     \else
-P       \bbl@jpn@WarekiToday
-P     \fi
-P   \else          % tate
+  \def\today{{%
+P   \ifnum1=\iftdir\ifmdir0\else1\fi\else0\fi % tate
 L   \ifnum\ltjgetparameter{direction}=3 % tate
 X     \ifbbl@jpn@Seireki
 X       \bbl@jpn@TateSeirekiToday
 X     \else
 X       \bbl@jpn@TateWarekiToday
 X     \fi
-P   \fi
 X   \else
       \ifbbl@jpn@Seireki
         \bbl@jpn@SeirekiToday
@@ -285,7 +278,7 @@ X   \else
         \bbl@jpn@WarekiToday
       \fi
 X   \fi
-  }%
+  }}%
 }
 \let\bbl@jpn@maybekansuji\number
 \bbl@declare@ttribute{japanese}{kansujitoday}{\let\bbl@jpn@maybekansuji\kansuji}

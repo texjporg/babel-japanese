@@ -448,21 +448,14 @@
 % [2019-04-03] 縦数式ディレクションは横組と同じ出力とします。
 %    \begin{macrocode}
 \@namedef{date\CurrentOption}{%
-  \def\today{%
-P   \iftdir\ifmdir % tate-math
-P     \ifbbl@jpn@Seireki
-P       \bbl@jpn@SeirekiToday
-P     \else
-P       \bbl@jpn@WarekiToday
-P     \fi
-P   \else          % tate
+  \def\today{{%
+P   \ifnum1=\iftdir\ifmdir0\else1\fi\else0\fi % tate
 L   \ifnum\ltjgetparameter{direction}=3 % tate
 X     \ifbbl@jpn@Seireki
 X       \bbl@jpn@TateSeirekiToday
 X     \else
 X       \bbl@jpn@TateWarekiToday
 X     \fi
-P   \fi
 X   \else
       \ifbbl@jpn@Seireki
         \bbl@jpn@SeirekiToday
@@ -470,7 +463,7 @@ X   \else
         \bbl@jpn@WarekiToday
       \fi
 X   \fi
-  }%
+  }}%
 }
 %    \end{macrocode}
 %
@@ -577,7 +570,7 @@ japaneseパッケージは日本語による見出し語と日付を出力する
 なお，新正書法（\texttt{ngerman}）では\texttt{Leis-tungs-f\"a-hig-keit}のように分綴します。
 
 \sj
-\item ここで日本語（\texttt{japanese}）に変更します。(languageの値は\the\language）
+\item ここで日本語（\texttt{japanese}）に変更します。（languageの値は\the\language）
 \tbcaption
 \item \verb:\和暦: は日付の表示をデフォルトの西暦「\today 」から和暦「\和暦\today 」に変更します。
 \end{itemize}
