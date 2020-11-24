@@ -5,11 +5,11 @@
 %%
 %%
 
-\def\batchfile{japanese.ins}
+\def\batchfile{babel-japanese.ins}
 \input docstrip.tex
 
 \expandafter\ifx\csname declarepreamble\endcsname\relax
-  \Msg{==> This file requires docstrip version 2.4}
+  \Msg{==> This file requires docstrip version 2.4 or later}
   \Msg{}\expandafter\endinput\fi
 
 \keepsilent
@@ -20,7 +20,7 @@ This file is part of the `japanese' package,
 providing Japanese language support for Babel.
 
 Copyright (C) 1999--2007 by ING (Toru INAGAKI)
-              2016--     by Japanese TeX Development Community
+              2016--2020 by Japanese TeX Development Community
 
 This package is free software that can be redistributed and/or
 modified under the terms of the LaTeX Project Public License.
@@ -40,9 +40,11 @@ or, GitHub repository is also available:
 \endpreamble
 
 \Msg{*** Generating files ***}
-\generateFile{japanese.ldf}{f}{\from{japanese.dtx}{code}}
+\generateFile{japanese.ldf}{f}
+   {\from{babel-japanese.dtx}{code}}
 \usepreamble\emptypreamble
-\generateFile{japanese-sample.tex}{f}{\from{japanese.dtx}{sample}}
+\generateFile{babel-japanese-sample.tex}{f}
+   {\from{babel-japanese.dtx}{sample}}
 \endbatchfile
 
 %%

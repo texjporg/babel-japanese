@@ -161,3 +161,4 @@ TSWLatexianTemp*
 
 # tests
 archive/*
+tests/*.pdf

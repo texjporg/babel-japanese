@@ -4,13 +4,13 @@
 %%
 %% The original source files were:
 %%
-%% japanese.dtx  (with options: `code')
+%% babel-japanese.dtx  (with options: `code')
 %% 
 %% This file is part of the `japanese' package,
 %% providing Japanese language support for Babel.
 %% 
 %% Copyright (C) 1999--2007 by ING (Toru INAGAKI)
-%%               2016--     by Japanese TeX Development Community
+%%               2016--2020 by Japanese TeX Development Community
 %% 
 %% This package is free software that can be redistributed and/or
 %% modified under the terms of the LaTeX Project Public License.
