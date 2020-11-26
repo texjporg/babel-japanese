@@ -40,10 +40,19 @@
 \CodelineNumbered
 \MakeShortVerb{\|}
 \OnlyDescription
+\usepackage{minijs}
+\usepackage[japanese]{babel}
 \newcommand*\babel{\textsf{babel}}
 \newcommand*\langvar{$\langle \it lang \rangle$}
 %\newcommand*\Lopt[1]{\textsf{#1}}
 %\newcommand*\file[1]{\texttt{#1}}
+\usepackage{hologo}% for XeLaTeX logo
+\def\XeTeX{\hologo{XeTeX}}
+\def\LuaTeX{\hologo{LuaTeX}}
+\def\XeLaTeX{\hologo{XeLaTeX}}
+\def\LuaLaTeX{\hologo{LuaLaTeX}}
+\def\pLaTeX{p\hologo{LaTeX}}
+\def\upLaTeX{up\hologo{LaTeX}}
 \begin{document}
   \DocInput{babel-japanese.dtx}
 \end{document}
@@ -58,16 +67,64 @@
 % \maketitle
 % \baselineskip=14pt
 %
-% \section*{The Japanese language}
+% \section*{The Japanese language definition file}
 %
-% \file{japanese}パッケージは日本語による見出し語と日付を出力するためのマクロを
+% The package ``babel-japanese'' provides ``\texttt{japanese}''
+% option for Babel package.
+% Currently this package works on \pLaTeX, \upLaTeX, \XeLaTeX,
+% and \LuaLaTeX.
+%
+% \begin{itemize}
+%  \def\textbf#1{{\fontseries{b}\selectfont #1}}
+%  \def\repl#1{``\nobreak#1\nobreak''}
+%  \item \textbf{This package provides only translated
+%     replacement texts for keywords and dates}
+%     (e.g. \repl{Table of contents} $\rightarrow$ \repl{目次},
+%           \verb+\today+ $\rightarrow$ \repl{\和暦\today}).
+%     \textbf{To display such Japanese terms correctly,
+%     you will need to select a proper Japanese font
+%     and set up Japanese typesetting rules beforehand.}
+%     This is because typesetting requirements of Japanese
+%     (including line breaking and spacing) are completely
+%     different from those of Western languages, so setting
+%     parameter values and additional hyphenation patterns
+%     are not enough. You may need to enable some engine
+%     extensions (p\TeX\ family) or use extensive package
+%     with Japanese support (Lua\TeX-ja).
+%  \item Moreover, \textbf{the translations provided by
+%     this package are \emph{incomplete} either}:
+%     to make full use of this package, you will need some
+%     common Japanese classes.\footnote{e.g.
+%       (u)jclasses or jsclasses for (u)\pLaTeX,
+%       ltj(s)classes for \LuaLaTeX\ with Lua\TeX-ja package)}
+%     This is due to the following reasons:
+%   \begin{itemize}
+%    \item The word order in Japanese is sometimes different
+%     from that in most Western languages
+%     (e.g. ``Part 1'' $\rightarrow$ ``第1部'').
+%    \item Common Western classes (article.cls etc)
+%     provide placeholders in front of the numbering
+%     (e.g. \verb+\chaptername+),
+%     but lacks any placeholders behind the numbering.
+%     Therefore, the words like ``Part'' or ``Chapter'' cannot
+%     be simply replaced with Japanese counterpart.
+%   \end{itemize}
+% \end{itemize}
+%
+% The importance of this package is to ``restore'' keywords
+% which may have been redefined by other languages
+% while the main text is written in Japanese, for example
+% \verb+\usepackage[german,english,japanese]{babel}+.
+%
+% \file{japanese}パッケージは，
+% 日本語による見出し語と日付を出力するためのマクロを
 % 定義しています。\babel のオプションの最後で日本語を指定します。
 % \begin{quote}
 % |\usepackage[...,japanese]{babel}|
 % \end{quote}
 %
-% バージョンv2.0以降では，p\TeX{}系（p\LaTeX{}，up\LaTeX{}）に加えて，
-% 新しいUnicodeな\TeX{}エンジン（Xe\TeX{}，Lua\TeX{}）もサポートしました。
+% バージョンv2.0以降では，p\TeX{}系（\pLaTeX{}，\upLaTeX{}）に加えて，
+% 新しいUnicodeな\TeX{}エンジン（\XeTeX{}，\LuaTeX{}）もサポートしました。
 % このため，ファイルはUTF-8エンコーディングで保存するようにしてください。
 %
 % 2016年以降，本パッケージのメンテナンスは日本語\TeX{}開発コミュニティ
@@ -85,14 +142,14 @@
 %
 % \section{この文書について}
 %
-% この文書ファイル(\jobname.pdf)自体はp\LaTeX{}，up\LaTeX{}，Lua\LaTeX{}で
+% この文書ファイル(\jobname.pdf)自体は\pLaTeX{}，\upLaTeX{}，\LuaLaTeX{}で
 % 処理できるようになっています。
 %
 %
 % \section{コード}
 %
-% p\TeX{}系（p\LaTeX{}，up\LaTeX{}）でなく，かつUnicodeな\TeX{}（Xe\LaTeX{}，
-% Lua\LaTeX{}）でもない場合は，最初にエラーを出します。
+% p\TeX{}系（\pLaTeX{}，\upLaTeX{}）でなく，かつUnicodeな\TeX{}（\XeLaTeX{}，
+% \LuaLaTeX{}）でもない場合は，最初にエラーを出します。
 %
 %    \begin{macrocode}
 %<*code>
@@ -147,7 +204,7 @@
 %    \end{macrocode}
 %
 % \DescribeMacro{\captionsjapanese}
-% |\captionsjapanese|マクロはp\LaTeX{}の標準のクラスファイルで使われる
+% |\captionsjapanese|マクロは\pLaTeX{}の標準のクラスファイルで使われる
 % 見出し語を日本語で出力します。\LaTeX{}の標準のクラスファイルでも動作
 % しますが，元が英語用ですので，語順の関係上すべてを日本語化することは
 % できません（たとえば、Part 1→第1部とは変更することは不可能です）。
@@ -155,7 +212,7 @@
 % [2016-12-15] 「証明」と「用語集」も日本語化するようにしました。
 % |\postpartname| がタイポで |\postpartnam| になっていたのを直しました。
 %
-% 新しいUnicodeな\TeX{}エンジン（Xe\TeX{}，Lua\TeX{}）の場合は，
+% 新しいUnicodeな\TeX{}エンジン（\XeTeX{}，\LuaTeX{}）の場合は，
 % UTF-8エンコーディングで直接和文文字を記述します。
 %    \begin{macrocode}
 \ifx\kanjiskip\@undefined
@@ -287,9 +344,9 @@
 \newif\ifbbl@jpn@Seireki \bbl@jpn@Seirekitrue
 %    \end{macrocode}
 %
-% Unicodeな\TeX{}エンジン（Xe\TeX{}，Lua\TeX{}）の場合は，
+% Unicodeな\TeX{}エンジン（\XeTeX{}，\LuaTeX{}）の場合は，
 % UTF-8エンコーディングで直接和文文字を記述します。
-% Xe\TeX{}の場合は |\bbl@jpn@Tate...| の2つは実際には使いません。
+% \XeTeX{}の場合は |\bbl@jpn@Tate...| の2つは実際には使いません。
 %    \begin{macrocode}
 \ifx\kanjiskip\@undefined
   \def\西暦{\bbl@jpn@Seirekitrue}%
@@ -391,8 +448,8 @@
 }
 %    \end{macrocode}
 %
-% (u)p\LaTeXe{}とLua\TeX-jaで組方向判定方法が異なるため，|\catcode| のトリックで
-% 別々のコードを使い分けます。Xe\LaTeX{}の場合，およびLua\LaTeX{}でLua\TeX-ja不使用の
+% (u)\pLaTeX{}とLua\TeX-jaで組方向判定方法が異なるため，|\catcode| のトリックで
+% 別々のコードを使い分けます。\XeLaTeX{}の場合，および\LuaLaTeX{}でLua\TeX-ja不使用の
 % 場合は，縦組をサポートしません。
 %    \begin{macrocode}
 \chardef\bbl@jpn@l@catcode=\catcode`\L\relax
