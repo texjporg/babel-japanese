@@ -23,35 +23,36 @@ jsclasses, ltj(s)classes in LuaTeX-ja are well-supported.
 ## Installation
 
 1) Process babel-japanese.ins with some tex engine.
-For example, using lualatex:
+   For example, using lualatex:
 
         lualatex babel-japanese.ins
 
-When you use platex, give -kanji=utf8 option.
+   When you use platex, give -kanji=utf8 option.
 
         platex -kanji=utf8 babel-japanese.ins
 
-You will get japanese.ldf (the main code) and
-babel-japanese-sample.tex (sample document for pLaTeX).
+   You will get japanese.ldf (the main code) and
+   babel-japanese-sample.tex (sample document for pLaTeX).
 
 2) Process documentation, babel-japanese.dtx and
-babel-japanese-sample.tex, as you wish.
-babel-japanese.dtx can be processed with pLaTeX, upLaTeX or LuaLaTeX.
-babel-japanese-sample.tex is written for pLaTeX or LuaLaTeX.
+   babel-japanese-sample.tex, as you wish.
+   babel-japanese.dtx can be processed with pLaTeX, upLaTeX or LuaLaTeX.
+   babel-japanese-sample.tex is written for pLaTeX or LuaLaTeX.
 
-If you use lualatex:
+   If you use lualatex:
 
         lualatex babel-japanese.dtx
         lualatex babel-japanese-sample.tex
 
-If you use platex:
+   If you use platex:
 
         platex -kanji=utf8 babel-japanese.dtx
         dvipdfmx babel-japanese.dvi
         platex -kanji=utf8 babel-japanese-sample.tex
         dvipdfmx babel-japanese-sample.dvi
 
-3) Deploy the directory or files in an appropriate place under the TEXMF tree.
+3) Deploy the directory or files in an appropriate place under
+   the TEXMF tree.
 
         * japanese.ldf
                => $TEXMF/tex/generic/babel-japanese/
