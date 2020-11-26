@@ -22,41 +22,43 @@ jsclasses, ltj(s)classes in LuaTeX-ja are well-supported.
 
 ## Installation
 
-1) Process japanese.ins with some tex engine. For example, using lualatex:
+1) Process babel-japanese.ins with some tex engine.
+For example, using lualatex:
 
-        lualatex japanese.ins
+        lualatex babel-japanese.ins
 
 When you use platex, give -kanji=utf8 option.
 
-        platex -kanji=utf8 japanese.ins
+        platex -kanji=utf8 babel-japanese.ins
 
-You will get japanese.ldf (the main code) and japanese-sample.tex (sample
-document for pLaTeX).
+You will get japanese.ldf (the main code) and
+babel-japanese-sample.tex (sample document for pLaTeX).
 
-2) Process documentation, japanese.dtx and japanese-sample.tex, as you wish.
-japanese.dtx can be processed with pLaTeX, upLaTeX or LuaLaTeX.
-japanese-sample.tex is written for pLaTeX or LuaLaTeX.
+2) Process documentation, babel-japanese.dtx and
+babel-japanese-sample.tex, as you wish.
+babel-japanese.dtx can be processed with pLaTeX, upLaTeX or LuaLaTeX.
+babel-japanese-sample.tex is written for pLaTeX or LuaLaTeX.
 
 If you use lualatex:
 
-        lualatex japanese.dtx
-        lualatex japanese-sample.tex
+        lualatex babel-japanese.dtx
+        lualatex babel-japanese-sample.tex
 
 If you use platex:
 
-        platex -kanji=utf8 japanese.dtx
-        dvipdfmx japanese.dvi
-        platex -kanji=utf8 japanese-sample.tex
-        dvipdfmx japanese-sample.dvi
+        platex -kanji=utf8 babel-japanese.dtx
+        dvipdfmx babel-japanese.dvi
+        platex -kanji=utf8 babel-japanese-sample.tex
+        dvipdfmx babel-japanese-sample.dvi
 
 3) Deploy the directory or files in an appropriate place under the TEXMF tree.
 
         * japanese.ldf
-               => $TEXMF/tex/latex/japanese
-        * japanese.dtx
-               => $TEXMF/source/latex/japanese
-        * japanese.pdf, japanese-sample.tex, japanese-sample.pdf
-               => $TEXMF/doc/latex/japanese
+               => $TEXMF/tex/generic/babel-japanese/
+        * babel-japanese.dtx
+               => $TEXMF/source/generic/babel-japanese/
+        * babel-japanese.pdf, babel-japanese-sample.tex, babel-japanese-sample.pdf
+               => $TEXMF/doc/generic/babel-japanese/
 
 4) Execute mktexlsr.
 
