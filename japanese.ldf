@@ -29,13 +29,6 @@
 \fi
 \ProvidesLanguage{japanese}
         [2020/11/26 v2.3 Japanese support for babel (texjporg)]
-\ifx\kanjiskip\@undefined\ifx\directlua\@undefined
-\ifx\XeTeXversion\@undefined
-  \@latex@error{Option '\CurrentOption' requires one of the followings:\MessageBreak
-                pTeX, upTeX, XeTeX, LuaTeX\MessageBreak
-                It seems you are running unsupported engine!}\@ehc
-\fi
-\fi\fi
 \LdfInit\CurrentOption{captions\CurrentOption}
 \ifx\l@japanese\@undefined
   \PackageInfo{babel}{%
@@ -43,83 +36,25 @@
     so I will use the patterns preloaded for \bbl@nulllanguage\MessageBreak
     instead}
   \adddialect\l@japanese0\fi
-\ifx\kanjiskip\@undefined
-  \def\bbl@jpn@prefacename{前書き}%
-  \def\bbl@jpn@refname{参考文献}%
-  \def\bbl@jpn@abstractname{概要}%
-  \def\bbl@jpn@bibname{参考文献}%
-  %\def\bbl@jpn@chaptername{Chapter}%
-  \def\bbl@jpn@prechaptername{第}%    -- added
-  \def\bbl@jpn@postchaptername{章}%   -- added
-  \def\bbl@jpn@presectionname{}%  第  -- added
-  \def\bbl@jpn@postsectionname{}% 節  -- added
-  \def\bbl@jpn@appendixname{付録}%
-  \def\bbl@jpn@contentsname{目次}%
-  \def\bbl@jpn@listfigurename{図目次}%
-  \def\bbl@jpn@listtablename{表目次}%
-  \def\bbl@jpn@indexname{索引}%
-  \def\bbl@jpn@figurename{図}%
-  \def\bbl@jpn@tablename{表}%
-  %\def\bbl@jpn@partname{Part}%
-  \def\bbl@jpn@prepartname{第}%       -- added
-  \def\bbl@jpn@postpartname{部}%      -- added
-  %\def\bbl@jpn@enclname{encl}%     同封物
-  %\def\bbl@jpn@ccname{cc}%         Cc
-  %\def\bbl@jpn@headtoname{To}%     To（宛先）
-  %\def\bbl@jpn@pagename{Page}%     ページ
-  %\def\bbl@jpn@seename{see}%       参照
-  %\def\bbl@jpn@alsoname{see also}% も参照
-  \def\bbl@jpn@proofname{証明}%
-  \def\bbl@jpn@glossaryname{用語集}%
-\else
-\begingroup
-  \kansujichar1=\jis"4130\relax % 前
-  \kansujichar2=\jis"3D71\relax % 書
-  \kansujichar3=\jis"242D\relax % き
-  \kansujichar4=\jis"3B32\relax % 参
-  \kansujichar5=\jis"394D\relax % 考
-  \kansujichar6=\jis"4A38\relax % 文
-  \kansujichar7=\jis"3825\relax % 献
-  \kansujichar8=\jis"3335\relax % 概
-  \kansujichar9=\jis"4D57\relax % 要
-  \xdef\bbl@jpn@prefacename{\kansuji123}%
-  \xdef\bbl@jpn@refname{\kansuji4567}%
-  \xdef\bbl@jpn@abstractname{\kansuji89}%
-  \xdef\bbl@jpn@bibname{\kansuji4567}%
-  \kansujichar1=\jis"4268\relax % 第
-  \kansujichar2=\jis"3E4F\relax % 章
-  \kansujichar3=\jis"4061\relax % 節
-  \kansujichar4=\jis"4955\relax % 付
-  \kansujichar5=\jis"4F3F\relax % 録
-  \kansujichar6=\jis"3A77\relax % 索
-  \kansujichar7=\jis"307A\relax % 引
-  \kansujichar8=\jis"4974\relax % 部
-  \xdef\bbl@jpn@prechaptername{\kansuji1}%
-  \xdef\bbl@jpn@postchaptername{\kansuji2}%
-  \xdef\bbl@jpn@presectionname{}%
-  \xdef\bbl@jpn@postsectionname{}%
-  \xdef\bbl@jpn@appendixname{\kansuji45}%
-  \xdef\bbl@jpn@indexname{\kansuji67}%
-  \xdef\bbl@jpn@prepartname{\kansuji1}%
-  \xdef\bbl@jpn@postpartname{\kansuji8}%
-  \kansujichar1=\jis"4C5C\relax % 目
-  \kansujichar2=\jis"3C21\relax % 次
-  \kansujichar3=\jis"3F5E\relax % 図
-  \kansujichar4=\jis"493D\relax % 表
-  \kansujichar5=\jis"3E5A\relax % 証
-  \kansujichar6=\jis"4C40\relax % 明
-  \kansujichar7=\jis"4D51\relax % 用
-  \kansujichar8=\jis"386C\relax % 語
-  \kansujichar9=\jis"3D38\relax % 集
-  \xdef\bbl@jpn@contentsname{\kansuji12}%
-  \xdef\bbl@jpn@listfigurename{\kansuji312}%
-  \xdef\bbl@jpn@listtablename{\kansuji412}%
-  \xdef\bbl@jpn@figurename{\kansuji3}%
-  \xdef\bbl@jpn@tablename{\kansuji4}%
-  \xdef\bbl@jpn@proofname{\kansuji56}%
-  \xdef\bbl@jpn@glossaryname{\kansuji789}%
-\endgroup
-\fi
+\def\bbl@jpn@prefacename{前書き}%
+\def\bbl@jpn@refname{参考文献}%
+\def\bbl@jpn@abstractname{概要}%
+\def\bbl@jpn@bibname{参考文献}%
+\def\bbl@jpn@prechaptername{第}%    -- added
+\def\bbl@jpn@postchaptername{章}%   -- added
+\def\bbl@jpn@presectionname{}%  第  -- added
+\def\bbl@jpn@postsectionname{}% 節  -- added
+\def\bbl@jpn@appendixname{付録}%
+\def\bbl@jpn@contentsname{目次}%
+\def\bbl@jpn@listfigurename{図目次}%
+\def\bbl@jpn@listtablename{表目次}%
+\def\bbl@jpn@indexname{索引}%
+\def\bbl@jpn@figurename{図}%
+\def\bbl@jpn@tablename{表}%
+\def\bbl@jpn@prepartname{第}%       -- added
+\def\bbl@jpn@postpartname{部}%      -- added
+\def\bbl@jpn@proofname{証明}%
+\def\bbl@jpn@glossaryname{用語集}%
 \@namedef{captions\CurrentOption}{%
   \let\prefacename\bbl@jpn@prefacename
   \let\refname\bbl@jpn@refname
@@ -150,71 +85,28 @@
   \let\glossaryname\bbl@jpn@glossaryname
   }
 \newif\ifbbl@jpn@Seireki \bbl@jpn@Seirekitrue
-\ifx\kanjiskip\@undefined
-  \def\西暦{\bbl@jpn@Seirekitrue}%
-  \def\和暦{\bbl@jpn@Seirekifalse}%
-  \def\bbl@jpn@kanjishowa{昭和}
-  \def\bbl@jpn@kanjiheisei{平成}
-  \def\bbl@jpn@kanjireiwa{令和}
-  \def\bbl@jpn@kanjigan{元}%
-  \def\bbl@jpn@TateSeirekiToday{%
-      \bbl@jpn@maybekansuji\year 年%
-      \bbl@jpn@maybekansuji\month 月%
-      \bbl@jpn@maybekansuji\day 日}
-  \def\bbl@jpn@TateWarekiToday{%
-      \bbl@jpn@gengo\bbl@jpn@maybekansuji\bbl@jpn@gengoyear 年%
-      \bbl@jpn@maybekansuji\month 月%
-      \bbl@jpn@maybekansuji\day 日}
-  \def\bbl@jpn@SeirekiToday{%
-      \number\year 年%
-      \number\month 月%
-      \number\day 日}
-  \def\bbl@jpn@WarekiToday{%
-      \bbl@jpn@gengo\number\bbl@jpn@gengoyear 年%
-      \number\month 月%
-      \number\day 日}
-\else
-\begingroup
-  \kansujichar1=\jis"472F\relax % 年
-  \kansujichar2=\jis"376E\relax % 月
-  \kansujichar3=\jis"467C\relax % 日
-  \xdef\bbl@jpn@kanjinen{\kansuji1}%
-  \xdef\bbl@jpn@kanjigatsu{\kansuji2}%
-  \xdef\bbl@jpn@kanjinichi{\kansuji3}%
-  \kansujichar1=\jis"403E\relax % 西
-  \kansujichar2=\jis"4F42\relax % 和
-  \kansujichar3=\jis"4E71\relax % 暦
-  \expandafter\expandafter\expandafter\gdef
-  \expandafter\csname\kansuji13\endcsname{\bbl@jpn@Seirekitrue}%
-  \expandafter\expandafter\expandafter\gdef
-  \expandafter\csname\kansuji23\endcsname{\bbl@jpn@Seirekifalse}%
-  \kansujichar4=\jis"4A3F\relax % 平
-  \kansujichar5=\jis"402E\relax % 成
-  \kansujichar6=\jis"3E3C\relax % 昭
-  \kansujichar7=\jis"4E61\relax % 令
-  \xdef\bbl@jpn@kanjishowa{\kansuji62}%
-  \xdef\bbl@jpn@kanjiheisei{\kansuji45}%
-  \xdef\bbl@jpn@kanjireiwa{\kansuji72}%
-  \kansujichar0=\jis"3835\relax % 元
-  \xdef\bbl@jpn@kanjigan{\kansuji0}%
-\endgroup
-  \def\bbl@jpn@TateSeirekiToday{%
-    \bbl@jpn@maybekansuji\year\bbl@jpn@kanjinen
-    \bbl@jpn@maybekansuji\month\bbl@jpn@kanjigatsu
-    \bbl@jpn@maybekansuji\day\bbl@jpn@kanjinichi}
-  \def\bbl@jpn@TateWarekiToday{%
-    \bbl@jpn@gengo\bbl@jpn@maybekansuji\bbl@jpn@gengoyear\bbl@jpn@kanjinen
-    \bbl@jpn@maybekansuji\month\bbl@jpn@kanjigatsu
-    \bbl@jpn@maybekansuji\day\bbl@jpn@kanjinichi}
-  \def\bbl@jpn@SeirekiToday{%
-    \number\year\bbl@jpn@kanjinen
-    \number\month\bbl@jpn@kanjigatsu
-    \number\day\bbl@jpn@kanjinichi}
-  \def\bbl@jpn@WarekiToday{%
-    \bbl@jpn@gengo\number\bbl@jpn@gengoyear\bbl@jpn@kanjinen
-    \number\month\bbl@jpn@kanjigatsu
-    \number\day\bbl@jpn@kanjinichi}
-\fi
+\def\西暦{\bbl@jpn@Seirekitrue}%
+\def\和暦{\bbl@jpn@Seirekifalse}%
+\def\bbl@jpn@kanjishowa{昭和}
+\def\bbl@jpn@kanjiheisei{平成}
+\def\bbl@jpn@kanjireiwa{令和}
+\def\bbl@jpn@kanjigan{元}%
+\def\bbl@jpn@TateSeirekiToday{%
+    \bbl@jpn@maybekansuji\year 年%
+    \bbl@jpn@maybekansuji\month 月%
+    \bbl@jpn@maybekansuji\day 日}
+\def\bbl@jpn@TateWarekiToday{%
+    \bbl@jpn@gengo\bbl@jpn@maybekansuji\bbl@jpn@gengoyear 年%
+    \bbl@jpn@maybekansuji\month 月%
+    \bbl@jpn@maybekansuji\day 日}
+\def\bbl@jpn@SeirekiToday{%
+    \number\year 年%
+    \number\month 月%
+    \number\day 日}
+\def\bbl@jpn@WarekiToday{%
+    \bbl@jpn@gengo\number\bbl@jpn@gengoyear 年%
+    \number\month 月%
+    \number\day 日}
 \def\bbl@jpn@gengo#1\bbl@jpn@gengoyear{%
   \@tempcnta\year\relax
   \multiply\@tempcnta100
