@@ -44,8 +44,6 @@
 \usepackage[japanese]{babel}
 \newcommand*\babel{\textsf{babel}}
 \newcommand*\langvar{$\langle \it lang \rangle$}
-%\newcommand*\Lopt[1]{\textsf{#1}}
-%\newcommand*\file[1]{\texttt{#1}}
 \usepackage{hologo}% for XeLaTeX logo
 \def\XeTeX{\hologo{XeTeX}}
 \def\LuaTeX{\hologo{LuaTeX}}
@@ -104,8 +102,13 @@
 %     (e.g. ``Part 1'' $\rightarrow$ ``第1部'').
 %    \item Common Western classes (article.cls etc)
 %     provide placeholders in front of the numbering
-%     (e.g. \verb+\chaptername+),
-%     but lack any placeholders behind the numbering.
+%     (e.g. \cs{chaptername}), but lack any placeholders
+%     behind the numbering.\footnote{Starting from
+%     Babel v3.48 (2020-09-01), a new feature to adjust
+%     e.g. chapter format to have placeholders like
+%     \cs{prechaptername} ... \cs{postchaptername} is
+%     going to be added. However, it's still tentative so
+%     currently unused in \file{japanese.ldf}.}
 %     Therefore, the keywords like ``Part'' or ``Chapter''
 %     cannot be simply replaced with Japanese counterpart.
 %   \end{itemize}
@@ -114,8 +117,13 @@
 % The importance of this package is to ``restore'' Japanese
 % keywords which have been defined by Japanese classes
 % but redefined by other languages while the main text is
-% in Japanese. Example:
-% \verb+\usepackage[german,english,japanese]{babel}+.
+% in Japanese. Example usage:
+%\begin{verbatim}
+% \documentclass{jbook}
+% \usepackage[german,english,japanese]{babel}
+%\end{verbatim}
+%
+% \section*{Babel日本語定義ファイル}
 %
 % \file{japanese}パッケージは，
 % 日本語による見出し語と日付を出力するためのマクロを
