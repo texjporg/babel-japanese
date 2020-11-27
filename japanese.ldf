@@ -28,7 +28,7 @@
   \epTeXinputencoding utf8
 \fi
 \ProvidesLanguage{japanese}
-        [2019/04/03 v2.2 Japanese support for babel (texjporg)]
+        [2020/11/26 v2.3 Japanese support for babel (texjporg)]
 \ifx\kanjiskip\@undefined\ifx\directlua\@undefined
 \ifx\XeTeXversion\@undefined
   \@latex@error{Option '\CurrentOption' requires one of the followings:\MessageBreak
