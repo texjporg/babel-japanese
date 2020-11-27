@@ -45,8 +45,11 @@
 \newcommand*\babel{\textsf{babel}}
 \newcommand*\langvar{$\langle \it lang \rangle$}
 \usepackage{hologo}% for XeLaTeX logo
+\def\pTeX{p\kern-.05ex\TeX}
+\def\pdfTeX{\hologo{pdfTeX}}
 \def\XeTeX{\hologo{XeTeX}}
 \def\LuaTeX{\hologo{LuaTeX}}
+\def\pdfLaTeX{\hologo{pdfLaTeX}}
 \def\XeLaTeX{\hologo{XeLaTeX}}
 \def\LuaLaTeX{\hologo{LuaLaTeX}}
 \def\pLaTeX{p\hologo{LaTeX}}
@@ -87,7 +90,7 @@
 %     different from those of Western languages, so setting
 %     parameter values and additional hyphenation patterns
 %     are not enough. You may need to enable some engine
-%     extensions (p\TeX\ family) or use extensive package
+%     extensions (\pTeX\ family) or use extensive package
 %     with Japanese support (Lua\TeX-ja).
 %  \item Moreover, \textbf{the translations provided by
 %     this package are \emph{incomplete} either}:
@@ -132,8 +135,9 @@
 % |\usepackage[...,japanese]{babel}|
 % \end{quote}
 %
-% バージョンv2.0以降では，p\TeX{}系（\pLaTeX{}，\upLaTeX{}）に加えて，
-% 新しいUnicodeな\TeX{}エンジン（\XeTeX{}，\LuaTeX{}）もサポートしました。
+% バージョンv2.0以降では，\pTeX{}系（\pLaTeX{}，\upLaTeX{}）に加えて，
+% ネイティブUnicodeなエンジン（\XeTeX{}，\LuaTeX{}）もサポートしました。
+% また，バージョンv3.0以降では\pdfLaTeX{}でも動作します。
 % このため，ファイルはUTF-8エンコーディングで保存するようにしてください。
 %
 % 2016年以降，本パッケージのメンテナンスは日本語\TeX{}開発コミュニティ
@@ -151,14 +155,14 @@
 %
 % \section{この文書について}
 %
-% この文書ファイル(\jobname.pdf)自体は\pLaTeX{}，\upLaTeX{}，\LuaLaTeX{}で
-% 処理できるようになっています。
+% このソースコード説明書(\jobname.pdf)自体は
+% \pLaTeX{}，\upLaTeX{}，\LuaLaTeX{}で処理できるようになっています。
 %
 %
 % \section{コード}
 %
 % エンジン検査は削除しました。
-% ^^A p\TeX{}系（\pLaTeX{}，\upLaTeX{}）でなく，
+% ^^A \pTeX{}系（\pLaTeX{}，\upLaTeX{}）でなく，
 % ^^A かつUnicodeな\TeX{}（\XeLaTeX{}，
 % ^^A \LuaLaTeX{}）でもない場合は，最初にエラーを出します。
 %
@@ -298,7 +302,8 @@
 %    \end{macrocode}
 %
 % UTF-8エンコーディングで直接和文文字を記述します。
-% \XeTeX{}の場合は |\bbl@jpn@Tate...| の2つは実際には使いません。
+% \pdfLaTeX{}や\XeLaTeX{}の場合は
+% |\bbl@jpn@Tate...| の2つは実際には使いません。
 %    \begin{macrocode}
 \def\西暦{\bbl@jpn@Seirekitrue}%
 \def\和暦{\bbl@jpn@Seirekifalse}%
@@ -353,22 +358,23 @@
 }
 %    \end{macrocode}
 %
-% (u)\pLaTeX{}とLua\TeX-jaで組方向判定方法が異なるため，|\catcode| のトリックで
-% 別々のコードを使い分けます。\XeLaTeX{}の場合，および\LuaLaTeX{}でLua\TeX-ja不使用の
-% 場合は，縦組をサポートしません。
+% (u)\pLaTeX{}とLua\TeX-jaで組方向判定方法が異なるため，
+% |\catcode| のトリックで別々のコードを使い分けます。
+% \pdfLaTeX{}や\XeLaTeX{}の場合，および\LuaLaTeX{}で
+% Lua\TeX-ja不使用の場合は，縦組をサポートしません。
 %    \begin{macrocode}
 \chardef\bbl@jpn@l@catcode=\catcode`\L\relax
 \chardef\bbl@jpn@p@catcode=\catcode`\P\relax
 \chardef\bbl@jpn@x@catcode=\catcode`\X\relax
 \ifx\directlua\@undefined
-  \ifx\XeTeXversion\@undefined    % ptex/uptex
-    \catcode`\L=14\relax
-    \catcode`\P=9\relax
-    \catcode`\X=9\relax
-  \else                           % xetex
+  \ifx\kanjiskip\@undefined       % pdftex/xetex
     \catcode`\L=14\relax
     \catcode`\P=14\relax
     \catcode`\X=14\relax
+  \else                           % ptex/uptex
+    \catcode`\L=14\relax
+    \catcode`\P=9\relax
+    \catcode`\X=9\relax
   \fi
 \else
   \ifx\luatexjaLoaded\@undefined  % luatex
@@ -456,9 +462,30 @@ X   \fi
 %    \begin{macrocode}
 %<*sample>
 \ifx\directlua\undefined
-  \documentclass{jbook}
+ \ifx\kanjiskip\undefined
+  \ifx\XeTeXversion\undefined
+    % pdfLaTeX: not beautiful
+    \documentclass{book}
+    \usepackage[whole]{bxcjkjatype}
+  \else
+    % XeLaTeX: not beautiful
+    \documentclass{book}
+    \usepackage{zxjatype}
+    \setCJKmainfont{ipaexm.ttf}
+  \fi
+ \else
+  \ifx\ucs\undefined
+    % pLaTeX: OK
+    \documentclass{jbook}
+    \usepackage{minijs}
+  \else
+    % upLaTeX: OK
+    \documentclass{ujbook}
+  \fi
+ \fi
 \else
-  \documentclass{ltjbook}
+    % LuaLaTeX: OK
+    \documentclass{ltjbook}
 \fi
 \usepackage[german,english,japanese]{babel}
 \makeatletter

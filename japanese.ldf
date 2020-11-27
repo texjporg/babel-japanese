@@ -134,14 +134,14 @@
 \chardef\bbl@jpn@p@catcode=\catcode`\P\relax
 \chardef\bbl@jpn@x@catcode=\catcode`\X\relax
 \ifx\directlua\@undefined
-  \ifx\XeTeXversion\@undefined    % ptex/uptex
-    \catcode`\L=14\relax
-    \catcode`\P=9\relax
-    \catcode`\X=9\relax
-  \else                           % xetex
+  \ifx\kanjiskip\@undefined       % pdftex/xetex
     \catcode`\L=14\relax
     \catcode`\P=14\relax
     \catcode`\X=14\relax
+  \else                           % ptex/uptex
+    \catcode`\L=14\relax
+    \catcode`\P=9\relax
+    \catcode`\X=9\relax
   \fi
 \else
   \ifx\luatexjaLoaded\@undefined  % luatex

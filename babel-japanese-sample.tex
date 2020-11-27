@@ -10,9 +10,30 @@
   \epTeXinputencoding utf8
 \fi
 \ifx\directlua\undefined
-  \documentclass{jbook}
+ \ifx\kanjiskip\undefined
+  \ifx\XeTeXversion\undefined
+    % pdfLaTeX: not beautiful
+    \documentclass{book}
+    \usepackage[whole]{bxcjkjatype}
+  \else
+    % XeLaTeX: not beautiful
+    \documentclass{book}
+    \usepackage{zxjatype}
+    \setCJKmainfont{ipaexm.ttf}
+  \fi
+ \else
+  \ifx\ucs\undefined
+    % pLaTeX: OK
+    \documentclass{jbook}
+    \usepackage{minijs}
+  \else
+    % upLaTeX: OK
+    \documentclass{ujbook}
+  \fi
+ \fi
 \else
-  \documentclass{ltjbook}
+    % LuaLaTeX: OK
+    \documentclass{ltjbook}
 \fi
 \usepackage[german,english,japanese]{babel}
 \makeatletter
