@@ -32,16 +32,16 @@
 %<*filedriver>
 \ifx\directlua\undefined
   \documentclass{jltxdoc}
+  \usepackage{minijs}
 \else
   \documentclass{ltjltxdoc}
 \fi
+\usepackage[japanese]{babel}% load it
 \GetFileInfo{babel-japanese.dtx}
 \setcounter{StandardModuleDepth}{1}
 \CodelineNumbered
 \MakeShortVerb{\|}
 \OnlyDescription
-\usepackage{minijs}
-\usepackage[japanese]{babel}
 \newcommand*\babel{\textsf{babel}}
 \newcommand*\langvar{$\langle \it lang \rangle$}
 \usepackage{hologo}% for XeLaTeX logo
@@ -94,7 +94,7 @@
 %     to make full use of this package, you will need some
 %     common Japanese classes.\footnote{e.g.
 %       (u)jclasses or jsclasses for (u)\pLaTeX,
-%       ltj(s)classes for \LuaLaTeX\ with Lua\TeX-ja package)}
+%       ltj(s)classes for \LuaLaTeX\ with Lua\TeX-ja package.}
 %     This is due to the following reasons:
 %   \begin{itemize}
 %    \item The word order in Japanese is sometimes different
