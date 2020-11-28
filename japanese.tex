@@ -1,0 +1,321 @@
+%#!lualatex
+\documentclass[lualatex,a4paper,11pt]{jlreq}
+
+%%%%%%%%%%%%%%%%
+% additional packages
+\usepackage{amsmath}
+\usepackage{array}
+\usepackage[defaultsups]{newpxtext}
+\usepackage[zerostyle=c,straightquotes]{newtxtt}
+\usepackage{newpxmath}
+\usepackage[svgnames]{xcolor}
+\usepackage[hyperfootnotes=false]{hyperref}
+\usepackage{hologo}
+\usepackage{xspace}
+
+\def\Pkg#1{\textsf{#1}}
+\def\Opt#1{\texttt{#1}}
+\def\ClsY#1{\Pkg{\textcolor{Black}{#1}}}
+\def\ClsT#1{\Pkg{\textcolor{Green}{#1}}}
+\def\ClsYT#1{\Pkg{\textcolor{Blue}{#1}}}
+\def\file#1{\textsf{#1}}
+\def\code#1{\texttt{#1}}
+
+\usepackage[english]{babel}% References in English
+
+\usepackage{shortvrb}
+\MakeShortVerb*{|}
+%%%%%%%%%%%%%%%%
+
+% logos
+\def\eTeX{$\varepsilon$-\TeX}
+\def\pTeX{p\kern-.10em\TeX}
+\def\upTeX{u\pTeX}
+\def\epTeX{$\varepsilon$-\pTeX}
+\def\eupTeX{$\varepsilon$-\upTeX}
+\def\pLaTeX{p\LaTeX}\def\pLaTeXe{p\LaTeXe}
+\def\upLaTeX{u\pLaTeX}\def\upLaTeXe{u\pLaTeXe}
+\def\pdfTeX{\hologo{pdfTeX}}
+\def\pdfLaTeX{\hologo{pdfLaTeX}}
+\def\XeTeX{\hologo{XeTeX}}
+\def\XeLaTeX{\hologo{XeLaTeX}}
+\def\LuaTeX{\hologo{LuaTeX}}
+\def\LuaLaTeX{\hologo{LuaLaTeX}}
+
+\def\TL{\TeX\ Live\xspace}
+\def\JTDC{Japanese \TeX\ Development Community}
+
+\def\_{\leavevmode\vrule width .45em height -.2ex depth .3ex\relax}
+
+\frenchspacing
+\begin{document}
+
+\title{\textsf{\textbf{Guide to Japanese typesetting with \LaTeX}}}
+\author{\JTDC\null
+\thanks{\url{https://texjp.org},\ e-mail: \texttt{issue(at)texjp.org}}}
+\maketitle
+
+% 日本語組版は西欧言語とは全然違う
+Typesetting requirements of Japanese are completely different from
+those of Western languages, so setting parameter values and additional
+hyphenation patterns are not enough.
+
+% babel-japanese (japanese.ldf) は訳語を登録するだけ
+% 日本語組版に必要な設定は行わない
+The package \Pkg{babel-japanese} provides ``\Opt{japanese}''
+option for Babel package.
+However, it provides only translated replacement texts for keywords
+and dates (e.g. ``Table of contents'' $\rightarrow$ ``目次'',
+\verb+\today+ $\rightarrow$ ``\和暦\today'')
+and it does not care about any Japanese typesetting requirements.
+
+
+% とりあえず LuaLaTeX + \usepackage{luatexja} オススメ
+\section{Short introduction: using \LuaLaTeX}
+
+To obtain a properly formatted Japanese document, the easiest way
+is to use \LuaLaTeX\ with Lua\TeX-ja package.
+
+\begin{itemize}
+  \item Using \Pkg{jlreq} class:
+\begin{verbatim}
+    \documentclass[book]{jlreq}
+    \begin{document}
+    \chapter{日本語の文書}% Japanese document
+    こんにちは，日本。% Hello, Japan.
+    \end{document}
+\end{verbatim}
+    Save the above as \file{jp1.tex} and run a command.
+\begin{verbatim}
+    $ lualatex jp1
+\end{verbatim}
+    You will get \file{jp1.pdf} which is properly formatted and
+    a Japanese font family ``HaranoAji Mincho/Gothic'' is embedded.
+ \item If you prefer Western classes, you can load \Pkg{luatexja} directly:
+\begin{verbatim}
+    \documentclass{book}
+    \usepackage{luatexja}
+    \begin{document}
+    ...
+\end{verbatim}
+\end{itemize}
+
+
+% 他の選択肢：upLaTeX が先
+\section{Relatively stable alternative: \upLaTeX}
+
+\LuaLaTeX\ is relatively new,
+and Lua\TeX-ja is under active development.
+As a more stable alternative, you can use \upLaTeX.
+It is a somewhat legacy implementation, which requires TFM files
+for typesetting Japanese characters (called JFM).
+If you use only two fixed-width Japanese fonts, using a standard
+class is enough:
+\begin{verbatim}
+    \documentclass[uplatex]{jsbook}% or, \documentclass{ujbook}
+    \begin{document}
+    ...
+\end{verbatim}
+Save the above as \file{jp2.tex} and run a command.
+\begin{verbatim}
+    $ uplatex jp2
+\end{verbatim}
+You will get \file{jp2.dvi}.\bigskip
+
+\upLaTeX\ and \pLaTeX\ (explained later) are often referred to
+as (u)\pLaTeX. The output is always a DVI file.
+To convert DVI containing Japanese characters into PDF,
+the easiest way is to use \emph{dvipdfmx}.
+If you have \file{jp2.dvi}, running a command.
+\begin{verbatim}
+    $ dvipdfmx jp2
+\end{verbatim}
+will generate \file{jp2.pdf}.\bigskip
+
+Since the default DVI driver in \TL is set to
+\Opt{dvips},\footnote{Though dvips supports DVI with Japanese fonts,
+additional settings for Ghostscript are required to convert
+the resulting PostScript file into PDF.}
+it is recommended to add a global driver option
+to be passed to all driver-dependent packages
+(e.g. \Pkg{graphicx}, \Pkg{color}, \Pkg{hyperref}):
+\begin{verbatim}
+    \documentclass[uplatex,dvipdfmx]{jsbook}
+    \usepackage{graphicx}
+    \begin{document}
+    ...
+\end{verbatim}
+
+
+% レガシーな pLaTeX は最後
+\section{Using legacy \pLaTeX}
+
+Some old Japanese journal classes may require \pLaTeX.
+It is a legacy implementation which was born in 1980s,
+before the publication of Unicode 1.0.
+\pLaTeX\ only supports limited character set JIS~X~0208
+(6879 characters).
+\begin{verbatim}
+    \documentclass{jsbook}% or, \documentclass{jbook}
+    \begin{document}
+    ...
+\end{verbatim}
+Save the above as \file{jp3.tex} and run a command.
+\begin{verbatim}
+    $ platex jp3
+\end{verbatim}
+You will get \file{jp3.dvi}.
+
+
+%% 各種文書への導線をはる
+\section{Further readings}
+
+There are some documentations in both English and Japanese.
+
+\begin{itemize}
+  \item ``The Lua\TeX-ja package'' (\file{luatexja-en.pdf}, in English)
+    \begin{itemize}
+      \item For beginners, refer to Part I ``User's manual.''
+      \item For more interested users, refer to Part II ``Reference.''
+      \item For developers, refer to Part III ``Implementations.''
+      \item Japanese edition: \file{luatexja-ja.pdf}
+    \end{itemize}
+  \item ``Guide to \pTeX\ for developers unfamiliar with Japanese''
+        (\file{ptex-guide-en.pdf}, in English)
+    \begin{itemize}
+      \item For developers who aim to support
+        \pTeX/\pLaTeX\ and its variants \upTeX/\upLaTeX.
+    \end{itemize}
+  \item ``About \upLaTeXe''
+        (\file{uplatex-en.pdf}, in English)
+    \begin{itemize}
+      \item For users of \upLaTeX, but a somewhat legacy document.
+      \item Japanese edition: \file{uplatex-en.pdf}
+    \end{itemize}
+  \item ``About \pLaTeXe''
+        (\file{platex-en.pdf}, in English)
+    \begin{itemize}
+      \item For users of \pLaTeX, but a somewhat legacy document.
+      \item Japanese edition: \file{platex-en.pdf}
+    \end{itemize}
+  \item ``Babel-Option \Opt{japanese}''
+        (\file{babel-japanese.pdf}, in both English and Japanese)
+    \begin{itemize}
+      \item Basic introduction of \Opt{japanese} option of \Pkg{babel}.
+      \item Provides translated replacement texts for keywords and date.
+    \end{itemize}
+\end{itemize}
+
+
+%% 日本の成果物
+\section{Japanese deliverables in \TL}
+
+For more details, please refer to individual documentation.
+
+\subsection{Document classes}
+
+Japanese texts can be aligned vertically, called ``tate-gumi'' (縦組).
+The horizontal alignment of texts is called ``yoko-gumi'' (横組).
+The list below shows \ClsT{tate classes in green}
+and \ClsYT{yoko/tate classes in blue} (default is yoko
+and class option \Opt{[tate]} enables tate mode).
+
+All the major frameworks for Japanese typesetting provide
+``standard class'':
+\begin{itemize}
+  \item Lua\TeX-ja (\Pkg{luatexja} by Lua\TeX-ja project team)
+    \begin{itemize}
+      \item Bundle: \Pkg{ltjsclasses}
+         (\ClsY{ltjsarticle}, \ClsY{ltjsbook}, \ClsY{ltjsreport})
+      \item Bundle: \Pkg{ltjclasses}
+         (\ClsY{ltjarticle}, \ClsY{ltjbook}, \ClsY{ltjreport},
+          \ClsT{ltjtarticle}, \ClsT{ltjtbook}, \ClsT{ltjtreport})
+    \end{itemize}
+  \item \upLaTeX\ (\Pkg{uplatex} by \JTDC)
+    \begin{itemize}
+      \item Bundle: \Pkg{ujclasses}
+         (\ClsY{ujarticle}, \ClsY{ujbook}, \ClsY{ujreport},
+          \ClsT{utarticle}, \ClsT{utbook}, \ClsT{utreport})
+    \end{itemize}
+  \item \pLaTeX\ (\Pkg{platex} by \JTDC)
+    \begin{itemize}
+      \item Bundle: \Pkg{jclasses}
+         (\ClsY{jarticle}, \ClsY{jbook}, \ClsY{jreport},
+          \ClsT{tarticle}, \ClsT{tbook}, \ClsT{treport})
+    \end{itemize}
+\end{itemize}
+
+Other major classes:
+\begin{itemize}
+  \item Class: \ClsYT{jlreq} (by Noriyuki Abe)
+    \begin{itemize}
+      \item Supports \LuaLaTeX, \upLaTeX\ and \pLaTeX.
+      \item This package aims to implement
+        ``Requirements for Japanese Text Layout''
+        (JLReq, 日本語組版処理の要件, \cite{w3c-jlreq}).
+        The class file and necessary JFM (Japanese font metric) files
+        are included.
+    \end{itemize}
+  \item Bundle: \Pkg{jsclasses} (by Haruhiko Okumura \& \JTDC)
+    \begin{itemize}
+      \item Class: \ClsY{jsarticle}, \ClsY{jsbook}, \ClsY{jsreport}
+      \begin{itemize}
+        \item Supports only \upLaTeX\ (with option \Opt{[uplatex]}) and \pLaTeX.
+        \item In addition to layout adjustments, these classes use
+          newly developed JFM set (jis metrics) to avoid strange
+          behaviors of standard \pTeX\ JFM set (min10 etc).
+          For more details, please refer to \cite{ajt2008okumura}.
+        \item Note: when font size other than 10pt is specified,
+          the engine primitive \verb+\mag+ is employed.
+          Conflicts with other packages can lead to inconsistent
+          results in graphics and/or page size.
+          To avoid this, specify \Opt{nomag} or \Opt{nomag*} option.
+      \end{itemize}
+    \end{itemize}
+\end{itemize}
+
+\subsection{Packages}
+
+\begin{itemize}
+  \item Package: \Pkg{plautopatch} (by Hironobu Yamashita)
+    \begin{itemize}
+      \item Supports \upLaTeX\ and \pLaTeX, but
+        does no harm on other \LaTeX\ (silently ignored).
+      \item (u)\pLaTeX\ users are recommended to load this package
+        \emph{always}, to resolve errors and incompatibilities with
+        Western \LaTeX\ packages which are not aware of (u)\pLaTeX.
+    \end{itemize}
+
+\end{itemize}
+
+\subsection{Other support files}
+
+\begin{itemize}
+  \item \Pkg{ptex-fontmaps}
+    \begin{itemize}
+      \item Provides map files to be used with dvipdfmx and dvips.
+      \item To customize Japanese fonts to be used in the output,
+        please use the command \code{kanji-config-updmap}.
+    \end{itemize}
+  \item \Pkg{cjk-gs-integrate}
+    \begin{itemize}
+      \item Supports easy configuration of Ghostscript for
+        CJK (Chinese, Japanese and Korean) fonts, which is
+        necessary for processing of PostScript file output from dvips.
+    \end{itemize}
+\end{itemize}
+
+%% 参考文献
+\begin{thebibliography}{99}
+  \bibitem{w3c-jlreq}
+    W3C Working Group,
+    \newblock ``{\em Requirements for Japanese Text Layout}''.\\
+    \url{https://www.w3.org/TR/jlreq/?lang=en}
+  \bibitem{ajt2008okumura}
+    Haruhiko Okumura,
+    \newblock ``{\em \pTeX\ and Japanese Typesetting}''.
+    \newblock The Asian Journal of \TeX, Volume~2, No.~1, 2008.\\
+    \url{http://ajt.ktug.org/2008/0201okumura.pdf}
+\end{thebibliography}
+
+\end{document}
