@@ -1,5 +1,6 @@
 %#!lualatex
 \documentclass[lualatex,a4paper,11pt]{jlreq}
+\usepackage{luatexja-fontspec}
 
 %%%%%%%%%%%%%%%%
 % additional packages
@@ -22,6 +23,21 @@
 \def\code#1{\texttt{#1}}
 
 \usepackage[english]{babel}% References in English
+
+\usepackage{listings}
+\lstset{%
+  language=[LaTeX]{TeX},
+  basicstyle={\small\ttfamily},
+  texcsstyle={*\color{blue}},
+  commentstyle={\color{Green}},
+  columns=[l]{fullflexible},
+  numbers=left,
+  xrightmargin=0\zw,
+  xleftmargin=3\zw,
+  aboveskip=3pt,
+  belowskip=3pt,
+  moretexcs={setlength,setmainfont}
+}
 
 \usepackage{shortvrb}
 \MakeShortVerb*{|}
@@ -78,13 +94,13 @@ is to use \LuaLaTeX\ with Lua\TeX-ja package.
 
 \begin{itemize}
   \item Using \Pkg{jlreq} class:
-\begin{verbatim}
-    \documentclass[book]{jlreq}
-    \begin{document}
-    \chapter{日本語の文書}% Japanese document
-    こんにちは，日本。% Hello, Japan.
-    \end{document}
-\end{verbatim}
+\begin{lstlisting}
+  \documentclass[book]{jlreq}
+  \begin{document}
+  \chapter{日本語の文書}% Japanese document
+  こんにちは，日本。% Hello, Japan.
+  \end{document}
+\end{lstlisting}
     Save the above as \file{jp1.tex} and run a command.
 \begin{verbatim}
     $ lualatex jp1
@@ -92,12 +108,12 @@ is to use \LuaLaTeX\ with Lua\TeX-ja package.
     You will get \file{jp1.pdf} which is properly formatted and
     a Japanese font family ``HaranoAji Mincho/Gothic'' is embedded.
  \item If you prefer Western classes, you can load \Pkg{luatexja} directly:
-\begin{verbatim}
-    \documentclass{book}
-    \usepackage{luatexja}
-    \begin{document}
-    ...
-\end{verbatim}
+\begin{lstlisting}
+  \documentclass{book}
+  \usepackage{luatexja}
+  \begin{document}
+  ...
+\end{lstlisting}
 \end{itemize}
 
 
@@ -111,11 +127,11 @@ It is a somewhat legacy implementation, which requires TFM files
 for typesetting Japanese characters (called JFM).
 If you use only two fixed-width Japanese fonts, using a standard
 class is enough:
-\begin{verbatim}
-    \documentclass[uplatex]{jsbook}% or, \documentclass{ujbook}
-    \begin{document}
-    ...
-\end{verbatim}
+\begin{lstlisting}
+  \documentclass[uplatex]{jsbook}% or, \documentclass{ujbook}
+  \begin{document}
+  ...
+\end{lstlisting}
 Save the above as \file{jp2.tex} and run a command.
 \begin{verbatim}
     $ uplatex jp2
@@ -139,12 +155,12 @@ the resulting PostScript file into PDF.}
 it is recommended to add a global driver option
 to be passed to all driver-dependent packages
 (e.g. \Pkg{graphicx}, \Pkg{color}, \Pkg{hyperref}):
-\begin{verbatim}
-    \documentclass[uplatex,dvipdfmx]{jsbook}
-    \usepackage{graphicx}
-    \begin{document}
-    ...
-\end{verbatim}
+\begin{lstlisting}
+  \documentclass[uplatex,dvipdfmx]{jsbook}
+  \usepackage{graphicx}
+  \begin{document}
+  ...
+\end{lstlisting}
 
 
 % レガシーな pLaTeX は最後
@@ -155,16 +171,149 @@ It is a legacy implementation which was born in 1980s,
 before the publication of Unicode 1.0.
 \pLaTeX\ only supports limited character set JIS~X~0208
 (6879 characters).
-\begin{verbatim}
-    \documentclass{jsbook}% or, \documentclass{jbook}
-    \begin{document}
-    ...
-\end{verbatim}
+\begin{lstlisting}
+  \documentclass{jsbook}% or, \documentclass{jbook}
+  \begin{document}
+  ...
+\end{lstlisting}
 Save the above as \file{jp3.tex} and run a command.
 \begin{verbatim}
     $ platex jp3
 \end{verbatim}
 You will get \file{jp3.dvi}.
+
+
+%% ちゃんと日本語を組むには？ -- 禁則文字を除く任意箇所での
+\section{What is the minimum requirement for Japanese typesetting?}
+
+The sections above described practical ways to achieve ``acceptable''
+Japanese typesetting results.
+So, what are the minimum requirements for ``acceptable'' results
+for native Japanese readers?
+
+The W3C Working Group Note ``Requirements for Japanese Text Layout''
+\cite{w3c-jlreq} is one of the comprehensive documentation which
+describes issues of text composition in the Japanese writing system.
+However, they are too complicated to explain here thoroughly,\footnote{They
+include specification of basic page layout (\emph{kihon-hanmen}; 基本版面),
+vertical alignment of Japanese text (\emph{tate-gumi}; 縦組),
+small-sized supplementary text (\emph{ruby}; ルビ), inline cutting note
+(\emph{Warichu}; 割注) etc.} so we focus on the main issues regarding
+simple and short horizontal writing.
+
+\newbox\JEXBOX % stores example output
+\newbox\JJgridbox
+\def\JJsq{%
+  \hbox to 1\zw{\hss\fboxsep=-.5\fboxrule\fbox{%
+  　\hskip\dimexpr-.5\zw-.2pt\vrule width.4pt height.08\zw depth.12\zw%
+  \hskip\dimexpr.5\zw-.2pt\relax}\hss}}
+\def\JJsb{\hbox to 1\zw{\hss\fboxsep=-.5\fboxrule\fbox{%
+  ■\hskip\dimexpr-.5\zw-.2pt\vrule width.4pt height.08\zw depth.12\zw%
+  \hskip\dimexpr.5\zw-.2pt\relax}\hss}}
+\setbox\JJgridbox=\hbox to 12\zw{%
+  \JJsq\JJsq\JJsq\JJsq\JJsb\JJsq\JJsq\JJsq\JJsq\JJsb\JJsq\JJsq}
+\def\JJoutbox#1{{%
+  \ltjsetparameter{kanjiskip=0pt plus .2\zw minus .2\zw}%
+  \hbox{\textcolor{cyan}{\copy\JJgridbox}\hskip-12\zw%
+  \vbox{\hsize=12\zw\noindent\leftskip0pt\rightskip0pt\parfillskip0pt#1\hss}\vrule}%
+}}
+
+Consider the following input, Listing \ref{list:src1}. Using \LuaLaTeX,
+it is allowed to include any Unicode character out-of-the-box,
+though a suitable Japanese font should be declared.
+
+\begingroup
+\ltjsetparameter{kanjiskip=0pt,xkanjiskip=0pt}
+\begin{lstlisting}[caption={Example input using \LuaLaTeX},label={list:src1}]
+  %#!lualatex
+  \documentclass{article}
+  \usepackage{fontspec}
+  \setmainfont{HaranoAjiMincho-Regular}
+  \setlength{\textwidth}{250pt}
+  \setlength{\overfullrule}{5pt}
+  \begin{document}
+  \noindent
+  % first line = exactly 250pt (= 10pt x 25)
+  ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆\\
+  改行後
+  空白が入る。日本語が連続すると改行できず、はみ出す。\\
+  句読点と、（括弧）の間隔が広い。%
+  日本語とEnglishの間が空かない。
+  \end{document}
+\end{lstlisting}
+\endgroup
+
+Figure \ref{fig:src1} shows the exact output from the input above.
+It is not acceptable, especially for the following reasons:
+\begin{itemize}
+  \item Japanese text has no interword spaces, but
+    line break is allowed between any Japanese characters
+    (except before some punctuation marks).
+    The overfull rules that appeared in Figure \ref{fig:src1} comes
+    from not knowing such line breaking rules.
+  \item Similarly, it is common to insert a new line character after
+    arbitrary Japanese characters in the input source.
+    Such a new line character should not be treated as a blank space.\\
+    Wrong: \JJoutbox{改行後 空白が入る。…\hfill}\quad
+    Correct: \JJoutbox{改行後空白が入る。…\hfill}
+  \item Ordinary Japanese characters are designed to have virtual
+    full-width (\emph{zenkaku}) bounding box. However, spacing
+    between adjacent punctuation marks must be truncated.\\
+    Wrong: \JJoutbox{句読点と、\null （括弧）の間…\hfill}\quad
+    Correct: \JJoutbox{句読点と、（括弧）の間…\hfill}
+  \item It is preferred to insert a quarter space (\emph{shibuaki})
+    between Japanese and Latin characters.\\
+    Wrong: \JJoutbox{日本語と\null English\null の間…\hfill}\quad
+    Correct: \JJoutbox{日本語とEnglishの間…\hfill}
+\end{itemize}
+Figure \ref{fig:src1-mod} shows an acceptable output of the same text.
+You will see that choosing a Japanese font on Unicode-enabled engine
+is not enough for obtaining properly formatted result.
+
+All of the methods explained in the previous sections,
+\begin{enumerate}
+  \item \LuaLaTeX\ with Lua\TeX-ja package,
+  \item \upLaTeX,
+  \item \pLaTeX,
+\end{enumerate}
+are developed to support (most of) the requirements mentioned above,
+and their output is most likely to be acceptable.
+Therefore, we recommend to use one of those platforms.
+
+\begingroup
+\ltjsetparameter{jacharrange={-1,-2,-3,-4,-5,-6,-7,-8,-9}}
+\setmainfont{HaranoAjiMincho-Regular}
+\global\setbox\JEXBOX=\vbox{\hsize=250pt\fontsize{10pt}{12pt}\selectfont
+\setlength{\overfullrule}{5pt}\noindent
+  ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆\\
+  改行後
+  空白が入る。日本語が連続すると改行できず、はみ出す。\\
+  句読点と、（括弧）の間隔が広い。%
+  日本語とEnglishの間が空かない。}
+\endgroup
+
+\begin{figure}[tbp]
+\centering\leavevmode\box\JEXBOX
+\caption{Output from Listing \ref{list:src1} (not acceptable)}
+\label{fig:src1}
+\end{figure}
+
+\begingroup
+\setmainfont{HaranoAjiMincho-Regular}
+\global\setbox\JEXBOX=\vbox{\hsize=250pt\fontsize{10pt}{12pt}\selectfont
+\setlength{\overfullrule}{5pt}\noindent
+  ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆\\
+  改行後
+  空白が入る。日本語が連続すると改行できず、はみ出す。\\
+  句読点と、（括弧）の間隔が広い。%
+  日本語とEnglishの間が空かない。}
+\endgroup
+
+\begin{figure}[tbp]
+\centering\leavevmode\box\JEXBOX
+\caption{Acceptable output of the above text}
+\label{fig:src1-mod}
+\end{figure}
 
 
 %% 各種文書への導線をはる
@@ -304,6 +453,7 @@ Other major classes:
         necessary for processing of PostScript file output from dvips.
     \end{itemize}
 \end{itemize}
+
 
 %% 参考文献
 \begin{thebibliography}{99}
