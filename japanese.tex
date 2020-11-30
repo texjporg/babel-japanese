@@ -85,6 +85,11 @@ and dates (e.g. ``Table of contents'' $\rightarrow$ ``目次'',
 \verb+\today+ $\rightarrow$ ``\和暦\today'')
 and it does not care about any Japanese typesetting requirements.
 
+% この文書の目的：ちゃんと日本語する簡単な方法の紹介
+This document describes how to get an ``acceptable'' Japanese
+typesetting results and the minimum requirements that are
+considered ``acceptable'' for most purposes.
+
 
 % とりあえず LuaLaTeX + \usepackage{luatexja} オススメ
 \section{Short introduction: using \LuaLaTeX}
@@ -114,6 +119,8 @@ is to use \LuaLaTeX\ with Lua\TeX-ja package.
   \begin{document}
   ...
 \end{lstlisting}
+    * Note that using Western classes will lead to unnatural page layouts
+    for Japanese books, especially regarding line gaps and line lengths.
 \end{itemize}
 
 
@@ -181,13 +188,14 @@ Save the above as \file{jp3.tex} and run a command.
     $ platex jp3
 \end{verbatim}
 You will get \file{jp3.dvi}.
+Again the DVI file can be converted into PDF using dvipdfmx.
 
 
 %% ちゃんと日本語を組むには？ -- 禁則文字を除く任意箇所での
-\section{What is the minimum requirement for Japanese typesetting?}
+\section{What is the minimum requirements for Japanese typesetting?}
 
-The sections above described practical ways to achieve ``acceptable''
-Japanese typesetting results.
+The sections above described some practical ways to achieve
+``acceptable'' Japanese typesetting results.
 So, what are the minimum requirements for ``acceptable'' results
 for native Japanese readers?
 
@@ -223,6 +231,7 @@ it is allowed to include any Unicode character out-of-the-box,
 though a suitable Japanese font should be declared.
 
 \begingroup
+\begin{figure}[tbp]
 \ltjsetparameter{kanjiskip=0pt,xkanjiskip=0pt}
 \begin{lstlisting}[caption={Example input using \LuaLaTeX},label={list:src1}]
   %#!lualatex
@@ -241,6 +250,7 @@ though a suitable Japanese font should be declared.
   日本語とEnglishの間が空かない。
   \end{document}
 \end{lstlisting}
+\end{figure}
 \endgroup
 
 Figure \ref{fig:src1} shows the exact output from the input above.
@@ -293,7 +303,7 @@ Therefore, we recommend to use one of those platforms.
 \endgroup
 
 \begin{figure}[tbp]
-\centering\leavevmode\box\JEXBOX
+\centering\leavevmode\fbox{\box\JEXBOX}
 \caption{Output from Listing \ref{list:src1} (not acceptable)}
 \label{fig:src1}
 \end{figure}
@@ -310,7 +320,7 @@ Therefore, we recommend to use one of those platforms.
 \endgroup
 
 \begin{figure}[tbp]
-\centering\leavevmode\box\JEXBOX
+\centering\leavevmode\fbox{\box\JEXBOX}
 \caption{Acceptable output of the above text}
 \label{fig:src1-mod}
 \end{figure}
