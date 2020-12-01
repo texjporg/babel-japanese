@@ -152,7 +152,7 @@ You will get \file{jp2.dvi}.\bigskip
 \upLaTeX\ and \pLaTeX\ (explained later) are often referred to
 as (u)\pLaTeX. The output is always a DVI file.
 To convert DVI containing Japanese characters into PDF,
-the easiest way is to use \emph{dvipdfmx}.
+the easiest way is to use dvipdfmx.
 If you have \file{jp2.dvi}, running a command.
 \begin{verbatim}
     $ dvipdfmx jp2
@@ -456,7 +456,32 @@ Other major classes:
         \emph{always}, to resolve errors and incompatibilities with
         Western \LaTeX\ packages which are not aware of (u)\pLaTeX.
     \end{itemize}
-
+  \item Package: \Pkg{pxchfon} (by Takayuki Yato)
+    \begin{itemize}
+      \item Supports \upLaTeX\ and \pLaTeX.
+      \item Helps users to declate physical fonts embedded in
+        dvipdfmx's PDF output. It utilizes
+        \verb+\special{pdf:mapline}+ or
+        \verb+\special{pdf:mapfile}+ syntaxes.
+    \end{itemize}
+  \item Package: \Pkg{otf}
+    (\Pkg{japanese-otf}, \Pkg{japanese-otf-uptex} by Shuzaburo Saito \& TTK)
+    \begin{itemize}
+      \item Supports only \upLaTeX\ (with option \Opt{[uplatex]}) and \pLaTeX.
+      \item Main feature 1: allows switching between seven different
+        typefaces, compared to the standard of two typefaces.
+        This function is realized by shipping seven ``logical fonts''
+        (= set of a JFM and a virtual font).
+      \item Main feature 2: provides commands for outputting
+        many characters by specifying Unicode (\verb+\UTF{....}+)
+        or Adobe CID (\verb+\CID{....}+), even with \pLaTeX.
+        This function is realized by mapping a huge real font from
+        lots of smaller subset virtual fonts.
+        A series of shorthand commands (\verb+\aj...+) are
+        also available.
+      \item Lua\TeX-ja provides \Pkg{luatexja-otf} to partially emulate
+        this package.
+    \end{itemize}
 \end{itemize}
 
 \subsection{Other support files}
