@@ -86,6 +86,10 @@ and dates (e.g. ``Table of contents'' $\rightarrow$ ``目次'',
 and it does not care about any Japanese typesetting requirements.
 
 % この文書の目的：ちゃんと日本語する簡単な方法の紹介
+%-- 日本語を「ちゃんと」組むことが西欧言語とは全く異なることを伝える。
+%-- ほんの数文字・数行の行組版だけでも組版規則が全く異なる。
+%-- ページレイアウトに関わる設定値（段落字下げ，行長，行送りなど）が
+%-- 異なるのは，想像の範囲内と思われる。
 This document describes how to get an ``acceptable'' Japanese
 typesetting result and the minimum requirements that are
 considered ``acceptable'' for most purposes.
@@ -367,6 +371,9 @@ There are some documentations in both English and Japanese.
     \begin{itemize}
       \item Basic introduction of \Opt{japanese} option of \Pkg{babel}.
       \item Provides translated replacement texts for keywords and date.
+      \item Note: the translations provided by this package may not
+        become effective on most of Western classes, due to lack of
+        appropriate placeholders inside captions.
     \end{itemize}
 \end{itemize}
 
