@@ -87,7 +87,7 @@ and it does not care about any Japanese typesetting requirements.
 
 % この文書の目的：ちゃんと日本語する簡単な方法の紹介
 This document describes how to get an ``acceptable'' Japanese
-typesetting results and the minimum requirements that are
+typesetting result and the minimum requirements that are
 considered ``acceptable'' for most purposes.
 
 
@@ -191,7 +191,11 @@ You will get \file{jp3.dvi}.
 Again the DVI file can be converted into PDF using dvipdfmx.
 
 
-%% ちゃんと日本語を組むには？ -- 禁則文字を除く任意箇所での
+%% ちゃんと日本語を組むには？
+%-- 禁則文字を除く任意箇所での行分割が可能
+%-- 和文文字直後の改行文字は空白にならない
+%-- 約物どうしの字間調整
+%-- 和欧文間空白の挿入
 \section{What is the minimum requirements for Japanese typesetting?}
 
 The sections above described some practical ways to achieve
@@ -258,8 +262,8 @@ It is not acceptable, especially for the following reasons:
 \begin{itemize}
   \item Japanese text has no interword spaces, but
     line break is allowed between any Japanese characters
-    (except before some punctuation marks).
-    The overfull rules that appeared in Figure \ref{fig:src1} comes
+    except before some punctuation marks (\emph{kinsoku}; 禁則).
+    The overfull rules that appeared in Figure \ref{fig:src1} come
     from not knowing such line breaking rules.
   \item Similarly, it is common to insert a new line character after
     arbitrary Japanese characters in the input source.
@@ -271,9 +275,8 @@ It is not acceptable, especially for the following reasons:
     between adjacent punctuation marks must be truncated.\\
     Wrong: \JJoutbox{句読点と、\null （括弧）の間…\hfill}\quad
     Correct: \JJoutbox{句読点と、（括弧）の間…\hfill}
-  \item It is preferred to insert a quarter em space (\emph{shibu aki})
-    between Japanese and Latin characters.\footnote{Such a space
-    is often called ``xkanjiskip'' glue in Japanese \TeX\ world.}\\
+  \item It is preferred to insert a quarter space (\emph{shibuaki})
+    between Japanese and Latin characters.\\
     Wrong: \JJoutbox{日本語と\null English\null の間…\hfill}\quad
     Correct: \JJoutbox{日本語とEnglishの間…\hfill}
 \end{itemize}
