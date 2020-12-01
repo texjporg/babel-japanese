@@ -211,7 +211,7 @@ include specification of basic page layout (\emph{kihon-hanmen}; 基本版面),
 vertical alignment of Japanese text (\emph{tate-gumi}; 縦組),
 small-sized supplementary text (\emph{ruby}; ルビ), inline cutting note
 (\emph{Warichu}; 割注) etc.} so we focus on the main issues regarding
-simple and short horizontal writing.
+simple and short horizontal writing within a few lines.
 
 \newbox\JEXBOX % stores example output
 \newbox\JJgridbox
@@ -275,8 +275,9 @@ It is not acceptable, especially for the following reasons:
     between adjacent punctuation marks must be truncated.\\
     Wrong: \JJoutbox{句読点と、\null （括弧）の間…\hfill}\quad
     Correct: \JJoutbox{句読点と、（括弧）の間…\hfill}
-  \item It is preferred to insert a quarter space (\emph{shibuaki})
-    between Japanese and Latin characters.\\
+  \item It is preferred to insert a quarter em space (\emph{shibu aki})
+    between Japanese and Latin characters.\footnote{Such a space
+    is often called ``xkanjiskip'' glue in Japanese \TeX\ world.}\\
     Wrong: \JJoutbox{日本語と\null English\null の間…\hfill}\quad
     Correct: \JJoutbox{日本語とEnglishの間…\hfill}
 \end{itemize}
