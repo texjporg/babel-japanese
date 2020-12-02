@@ -21,6 +21,7 @@
 \def\ClsYT#1{\Pkg{\textcolor{Blue}{#1}}}
 \def\file#1{\textsf{#1}}
 \def\code#1{\texttt{#1}}
+\def\note#1{{\small #1}}
 
 \usepackage[japanese,english]{babel}% References in English
 
@@ -125,8 +126,9 @@ is to use \LuaLaTeX\ with Lua\TeX-ja package.
   \begin{document}
   ...
 \end{lstlisting}
-    * Note that using Western classes will lead to unnatural page layouts
-    for Japanese books, especially regarding line gaps and line lengths.
+    * Note that using non-Japanese classes will lead to unnatural
+    page layouts for Japanese books, especially regarding line gaps
+    and line lengths.
 \end{itemize}
 
 
@@ -216,7 +218,7 @@ However, they are too complicated to explain here thoroughly,\footnote{They
 include specification of basic page layout (\emph{kihon-hanmen}; 基本版面),
 vertical alignment of Japanese text (\emph{tate-gumi}; 縦組),
 small-sized supplementary text (\emph{ruby}; ルビ), inline cutting note
-(\emph{Warichu}; 割注) etc.} so we focus on the main issues regarding
+(\emph{warichu}; 割注) etc.} so we focus on the main issues regarding
 simple and short horizontal writing within a few lines.
 
 \newbox\JEXBOX % stores example output
@@ -381,15 +383,21 @@ Therefore, we recommend to use one of those platforms.
 %% 日本の成果物
 \section{Japanese deliverables in \TL}
 
+There are many packages developed specially for Japanese typesetting
+in \TL; most of these are installed as part of
+\Pkg{collection-langjapanese}.
+Only a subset of these useful packages are shown below.
 For more details, please refer to individual documentation.
 
 \subsection{Document classes}
 
-Japanese texts can be aligned vertically, called \emph{tate-gumi} (縦組).
-The horizontal alignment of texts is called \emph{yoko-gumi} (横組).
+Japanese text can be aligned in two directions.
+One is horizontal direction, called \emph{yoko-gumi} (横組),
+the other is vertical direction, called \emph{tate-gumi} (縦組).
 The list below shows \ClsT{\emph{tate} classes in green}
-and \ClsYT{\emph{yoko}/\emph{tate} classes in blue} (default is \emph{yoko}
-and class option \Opt{[tate]} enables \emph{tate} mode).
+and \ClsYT{\emph{yoko}/\emph{tate} classes in blue} (default is
+\emph{yoko}, and the class option \Opt{[tate]} switches to
+\emph{tate} mode).
 
 All the major frameworks for Japanese typesetting provide
 ``standard classes'':
@@ -406,22 +414,25 @@ All the major frameworks for Japanese typesetting provide
     \begin{itemize}
       \item Bundle: \Pkg{ujclasses}
          (\ClsY{ujarticle}, \ClsY{ujbook}, \ClsY{ujreport},
-          \ClsT{utarticle}, \ClsT{utbook}, \ClsT{utreport})
+          \ClsT{utarticle}, \ClsT{utbook}, \ClsT{utreport})*
     \end{itemize}
   \item \pLaTeX\ (\Pkg{platex} by \JTDC)
     \begin{itemize}
       \item Bundle: \Pkg{jclasses}
          (\ClsY{jarticle}, \ClsY{jbook}, \ClsY{jreport},
-          \ClsT{tarticle}, \ClsT{tbook}, \ClsT{treport})
+          \ClsT{tarticle}, \ClsT{tbook}, \ClsT{treport})*
     \end{itemize}
+    * Due to historical reasons, \Pkg{ujclasses} and \Pkg{jclasses}
+    are left with some inconvenient behaviors. You may need to adjust
+    some layout parameters by hand, or use other classes mentioned below.
 \end{itemize}
 
-Other major classes:
+Other major classes designed for Japanese:
 \begin{itemize}
   \item Class: \ClsYT{jlreq} (by Noriyuki Abe)
     \begin{itemize}
       \item Supports \LuaLaTeX, \upLaTeX\ and \pLaTeX.
-      \item This package aims to implement
+      \item This class aims to implement
         ``Requirements for Japanese Text Layout''
         (JLReq, 日本語組版処理の要件, \cite{w3c-jlreq}).
         The class file and necessary JFM (Japanese font metric) files
