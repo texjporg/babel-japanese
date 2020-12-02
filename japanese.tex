@@ -22,7 +22,7 @@
 \def\file#1{\textsf{#1}}
 \def\code#1{\texttt{#1}}
 
-\usepackage[english]{babel}% References in English
+\usepackage[japanese,english]{babel}% References in English
 
 \usepackage{listings}
 \lstset{%
@@ -80,9 +80,10 @@ hyphenation patterns are not enough.
 % 日本語組版に必要な設定は行わない
 The package \Pkg{babel-japanese} provides ``\Opt{japanese}''
 option for Babel package.
-However, it provides only translated replacement texts for keywords
-and dates (e.g. ``Table of contents'' $\rightarrow$ ``目次'',
-\verb+\today+ $\rightarrow$ ``\和暦\today'')
+However, it only defines translated replacement texts for
+keywords and dates (e.g. ``\contentsname'' $\rightarrow$
+``{\selectlanguage{japanese}\contentsname}'',
+\verb+\today+ $\rightarrow$ ``{\selectlanguage{japanese}\和暦\today}'')
 and it does not care about any Japanese typesetting requirements.
 
 % この文書の目的：ちゃんと日本語する簡単な方法の紹介
@@ -91,8 +92,8 @@ and it does not care about any Japanese typesetting requirements.
 %-- ページレイアウトに関わる設定値（段落字下げ，行長，行送りなど）が
 %-- 異なるのは，想像の範囲内と思われる。
 This document describes how to get an ``acceptable'' Japanese
-typesetting result and the minimum requirements that are
-considered ``acceptable'' for most purposes.
+typesetting result and the eminent differences between Western
+and Japanese typesetting requirements.
 
 
 % とりあえず LuaLaTeX + \usepackage{luatexja} オススメ
@@ -102,7 +103,7 @@ To obtain a properly formatted Japanese document, the easiest way
 is to use \LuaLaTeX\ with Lua\TeX-ja package.
 
 \begin{itemize}
-  \item Using \Pkg{jlreq} class:
+  \item Using the \Pkg{jlreq} class:
 \begin{lstlisting}
   \documentclass[book]{jlreq}
   \begin{document}
@@ -110,13 +111,14 @@ is to use \LuaLaTeX\ with Lua\TeX-ja package.
   こんにちは，日本。% Hello, Japan.
   \end{document}
 \end{lstlisting}
-    Save the above as \file{jp1.tex} and run a command.
+    Save the above as \file{jp1.tex} and run the following command.
 \begin{verbatim}
     $ lualatex jp1
 \end{verbatim}
     You will get \file{jp1.pdf} which is properly formatted and
     a Japanese font family ``HaranoAji Mincho/Gothic'' is embedded.
- \item If you prefer Western classes, you can load \Pkg{luatexja} directly:
+ \item If you prefer classes not for Japanese,
+    you can load \Pkg{luatexja} directly:
 \begin{lstlisting}
   \documentclass{book}
   \usepackage{luatexja}
@@ -143,17 +145,17 @@ class is enough:
   \begin{document}
   ...
 \end{lstlisting}
-Save the above as \file{jp2.tex} and run a command.
+Save the above as \file{jp2.tex} and run the following command.
 \begin{verbatim}
     $ uplatex jp2
 \end{verbatim}
 You will get \file{jp2.dvi}.\bigskip
 
 \upLaTeX\ and \pLaTeX\ (explained later) are often referred to
-as (u)\pLaTeX. The output is always a DVI file.
+as (u)\pLaTeX. They always output DVI files.
 To convert DVI containing Japanese characters into PDF,
 the easiest way is to use dvipdfmx.
-If you have \file{jp2.dvi}, running a command.
+If you have \file{jp2.dvi}, running the following command
 \begin{verbatim}
     $ dvipdfmx jp2
 \end{verbatim}
@@ -179,20 +181,20 @@ to be passed to all driver-dependent packages
 
 Some old Japanese journal classes may require \pLaTeX.
 It is a legacy implementation which was born in 1980s,
-before the publication of Unicode 1.0.
-\pLaTeX\ only supports limited character set JIS~X~0208
+before the release of Unicode 1.0.
+\pLaTeX\ only supports a limited character set, JIS~X~0208
 (6879 characters).
 \begin{lstlisting}
   \documentclass{jsbook}% or, \documentclass{jbook}
   \begin{document}
   ...
 \end{lstlisting}
-Save the above as \file{jp3.tex} and run a command.
+Save the above as \file{jp3.tex} and run the following command.
 \begin{verbatim}
     $ platex jp3
 \end{verbatim}
 You will get \file{jp3.dvi}.
-Again the DVI file can be converted into PDF using dvipdfmx.
+Again, the DVI file can be converted into PDF using dvipdfmx.
 
 
 %% ちゃんと日本語を組むには？
@@ -200,7 +202,7 @@ Again the DVI file can be converted into PDF using dvipdfmx.
 %-- 和文文字直後の改行文字は空白にならない
 %-- 約物どうしの字間調整
 %-- 和欧文間空白の挿入
-\section{What is the minimum requirements for Japanese typesetting?}
+\section{A short summary of differences between Western and Japanese typesetting}
 
 The sections above described some practical ways to achieve
 ``acceptable'' Japanese typesetting results.
@@ -255,7 +257,7 @@ though a suitable Japanese font should be declared.
   改行後
   空白が入る。日本語が連続すると改行できず、はみ出す。\\
   句読点と、（括弧）の間隔が広い。%
-  日本語とEnglishの間が空かない。
+  日本語とLatinの間が空かない。
   \end{document}
 \end{lstlisting}
 \end{figure}
@@ -282,8 +284,8 @@ It is not acceptable, especially for the following reasons:
   \item It is preferred to insert a quarter em space (\emph{shibu aki})
     between Japanese and Latin characters.\footnote{Such a space
     is often called ``xkanjiskip'' glue in Japanese \TeX\ world.}\\
-    Wrong: \JJoutbox{日本語と\null English\null の間…\hfill}\quad
-    Correct: \JJoutbox{日本語とEnglishの間…\hfill}
+    Wrong: \JJoutbox{日本語と\null Latin\null の間…\hfill}\quad
+    Correct: \JJoutbox{日本語とLatinの間…\hfill}
 \end{itemize}
 Figure \ref{fig:src1-mod} shows an acceptable output of the same text.
 You will see that choosing a Japanese font on Unicode-enabled engine
@@ -308,7 +310,7 @@ Therefore, we recommend to use one of those platforms.
   改行後
   空白が入る。日本語が連続すると改行できず、はみ出す。\\
   句読点と、（括弧）の間隔が広い。%
-  日本語とEnglishの間が空かない。}
+  日本語とLatinの間が空かない。}
 \endgroup
 
 \begin{figure}[tbp]
@@ -325,7 +327,7 @@ Therefore, we recommend to use one of those platforms.
   改行後
   空白が入る。日本語が連続すると改行できず、はみ出す。\\
   句読点と、（括弧）の間隔が広い。%
-  日本語とEnglishの間が空かない。}
+  日本語とLatinの間が空かない。}
 \endgroup
 
 \begin{figure}[tbp]
@@ -337,8 +339,6 @@ Therefore, we recommend to use one of those platforms.
 
 %% 各種文書への導線をはる
 \section{Further readings}
-
-There are some documentations in both English and Japanese.
 
 \begin{itemize}
   \item ``The Lua\TeX-ja package'' (\file{luatexja-en.pdf}, in English)
@@ -385,14 +385,14 @@ For more details, please refer to individual documentation.
 
 \subsection{Document classes}
 
-Japanese texts can be aligned vertically, called ``tate-gumi'' (縦組).
-The horizontal alignment of texts is called ``yoko-gumi'' (横組).
-The list below shows \ClsT{tate classes in green}
-and \ClsYT{yoko/tate classes in blue} (default is yoko
-and class option \Opt{[tate]} enables tate mode).
+Japanese texts can be aligned vertically, called \emph{tate-gumi} (縦組).
+The horizontal alignment of texts is called \emph{yoko-gumi} (横組).
+The list below shows \ClsT{\emph{tate} classes in green}
+and \ClsYT{\emph{yoko}/\emph{tate} classes in blue} (default is \emph{yoko}
+and class option \Opt{[tate]} enables \emph{tate} mode).
 
 All the major frameworks for Japanese typesetting provide
-``standard class'':
+``standard classes'':
 \begin{itemize}
   \item Lua\TeX-ja (\Pkg{luatexja} by Lua\TeX-ja project team)
     \begin{itemize}
