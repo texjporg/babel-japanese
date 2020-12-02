@@ -21,7 +21,6 @@
 \def\ClsYT#1{\Pkg{\textcolor{Blue}{#1}}}
 \def\file#1{\textsf{#1}}
 \def\code#1{\texttt{#1}}
-\def\note#1{{\small #1}}
 
 \usepackage[japanese,english]{babel}% References in English
 
@@ -37,7 +36,7 @@
   xleftmargin=3\zw,
   aboveskip=3pt,
   belowskip=3pt,
-  moretexcs={setlength,setmainfont}
+  moretexcs={setlength,setmainfont,maketitle,RequirePackage}
 }
 
 \usepackage{shortvrb}
@@ -204,7 +203,7 @@ Again, the DVI file can be converted into PDF using dvipdfmx.
 %-- 和文文字直後の改行文字は空白にならない
 %-- 約物どうしの字間調整
 %-- 和欧文間空白の挿入
-\section{A short summary of differences between Western and Japanese typesetting}
+\section{Differences between Western and Japanese typesetting}
 
 The sections above described some practical ways to achieve
 ``acceptable'' Japanese typesetting results.
@@ -512,6 +511,148 @@ Other major classes designed for Japanese:
     \end{itemize}
 \end{itemize}
 
+
+\clearpage
+\appendix
+
+\section{Examples of acceptable Japanese typesetting results}
+
+\subsection{A simple Japanese document}
+
+Using \LuaLaTeX:
+\begin{lstlisting}
+  \documentclass[book]{jlreq}
+  \begin{document}
+  \chapter{日本語がメインのシンプルな文書}
+  こんにちは，日本語に少しEnglishを含めてみます。
+  \end{document}
+\end{lstlisting}
+
+Using \upLaTeX\ (or \pLaTeX) + dvipdfmx:
+\begin{lstlisting}
+  \RequirePackage{plautopatch}% recommended
+  \documentclass[book,dvipdfmx]{jlreq}% driver option
+  \begin{document}
+  \chapter{日本語がメインのシンプルな文書}
+  こんにちは，日本語に少しEnglishを含めてみます。
+  \end{document}
+\end{lstlisting}
+
+Using \pdfLaTeX\ or \XeLaTeX:
+though they have only limited Japanese typesetting capabilities,
+\ClsY{bxjsbook} (from \Pkg{bxjscls} bundle by Takayuki Yato)
+aims to emulate \Pkg{jsclasses} as much as possible.
+Due to technical constraints, manual adjustments are often
+required in the input.\footnote{\pdfTeX\ and \XeTeX\ cannot
+insert a quarter em space (\emph{shibu aki}) automatically, so
+the active character \code{\~} is redefined to a macro to
+insert it manually.}
+\begin{lstlisting}
+  \documentclass[pdflatex,ja=standard]{bxjsbook}
+  %\documentclass[xelatex,ja=standard]{bxjsbook}
+  \begin{document}
+  \chapter{日本語がメインのシンプルな文書}
+  こんにちは，日本語に少し~English~を含めてみます。
+  \end{document}
+\end{lstlisting}
+
+\subsection{Changing Japanese fonts}
+
+The default Japanese font family is ``HaranoAji Mincho/Gothic''
+which is derived from Source Han (or Noto) fonts.
+Suppose you want to switch to ``IPAex Mincho/Gothic'' ...
+
+Using \LuaLaTeX:
+\begin{lstlisting}
+  \documentclass[book]{jlreq}
+  \usepackage[ipaex]{luatexja-preset}% pre-defined
+  ...
+\end{lstlisting}
+
+Using \upLaTeX\ (or \pLaTeX) + dvipdfmx:
+\begin{lstlisting}
+  \RequirePackage{plautopatch}% recommended
+  \documentclass[book,dvipdfmx]{jlreq}% driver option
+  \usepackage[ipaex]{pxchfon}% pre-defined
+  ...
+\end{lstlisting}
+
+\subsection{More typefaces}
+
+[TODO] どうする？（ソース中のコメント参照）
+% LuaLaTeX: \usepackage[deluxe]{luatexja-preset}
+%  * 多書体化は luatexja-otf でないことに注意
+% (u)pLaTeX + jlreq: \usepackage{jlreq-deluxe}
+% (u)pLaTeX + j(s)classes: \usepackage[deluxe]{otf}
+
+\subsection{Vertical writing}
+
+As a Japanese version of \Pkg{lipsum}, here we use
+\Pkg{bxjalipsum}. It provides several sample texts.
+
+Using \LuaLaTeX:
+\begin{lstlisting}
+  \documentclass[article,tate]{jlreq}
+  \usepackage{bxjalipsum}
+  \begin{document}
+  \title{吾輩は猫である}% I Am A Cat
+  \author{夏目漱石}% Natsume Soseki
+  \maketitle
+  \jalipsum{wagahai}% 吾輩は猫である。名前… (33 paragraphs)
+  \end{document}
+\end{lstlisting}
+
+Using \upLaTeX\ (or \pLaTeX) + dvipdfmx:
+\begin{lstlisting}
+  \documentclass[article,tate,dvipdfmx]{jlreq}% driver option
+  \usepackage{bxjalipsum}
+  \begin{document}
+  % The preamble of the Constitution of Japan
+  \jalipsum{preamble}% 日本国民は、正当に選… (4 paragraphs)
+  \end{document}
+\end{lstlisting}
+
+\subsection{Beamer with Japanese}
+
+Note that the class \Pkg{beamer} is not designed for Japanese.
+% https://qiita.com/zr_tex8r/items/69e8cc32038ff29f5ac3
+% update: \usepackage{pxjahyper} -> supported by plautopatch
+
+Using \LuaLaTeX:\footnote{Sinve \Pkg{hyperref} 2020-08-14 v7.00f,
+the option \Opt{unicode} is enabled by default, so the explicit
+option is already redundant.}
+\begin{lstlisting}
+  \documentclass[unicode,12pt]{beamer}% ensure unicode for hyperref
+  \usepackage{luatexja}% for Japanese
+  \renewcommand{\kanjifamilydefault}{\gtdefault}% san-serif also for Japanese
+  \usetheme{Copenhagen}% as you like!
+  \begin{document}
+  \section{日本語のサンプル}
+  \begin{frame}{日本語でBeamerを使う}
+  こんにちは，日本語に少しEnglishを含めてみます。
+  \end{frame}
+  \end{document}
+\end{lstlisting}
+
+Using \upLaTeX\ + dvipdfmx:
+% based on pLaTeX settings
+\begin{lstlisting}
+  \RequirePackage{plautopatch}% loads (at least) the pxjahyper package
+  \documentclass[dvipdfmx,12pt]{beamer}% driver option
+  \usepackage{bxdpx-beamer}% additional settings for dvipdfmx
+  \renewcommand{\kanjifamilydefault}{\gtdefault}% san-serif also for Japanese
+  ...
+\end{lstlisting}
+
+Using \pLaTeX\ + dvipdfmx:
+\begin{lstlisting}
+  \RequirePackage{plautopatch}% loads (at least) the pxjahyper package
+  \documentclass[dvipdfmx,12pt]{beamer}% driver option
+  \usepackage{bxdpx-beamer}% additional settings for dvipdfmx
+  \usepackage{minijs}% avoid \pTeX's standard JFM (min10 etc.)
+  \renewcommand{\kanjifamilydefault}{\gtdefault}% san-serif also for Japanese
+  ...
+\end{lstlisting}
 
 %% 参考文献
 \begin{thebibliography}{99}
