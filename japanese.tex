@@ -198,6 +198,31 @@ You will get \file{jp3.dvi}.
 Again, the DVI file can be converted into PDF using dvipdfmx.
 
 
+% CJK package はサポート外
+\newenvironment{NOTE}{\StartNOTE\small}{\EndNOTE}
+\newcommand*{\NOTEline}[1]{%
+  \par\noindent\makebox[0pt][l]{\rule[.5ex]{\linewidth}{.4pt}}%
+  \makebox{\hspace{.05\linewidth}\rule[#1ex]{.9\linewidth}{.2pt}}\par}
+\newcommand*{\StartNOTE}{\NOTEline{.1}\nobreak}
+\newcommand*{\EndNOTE}{\nobreak\NOTEline{.9}}
+
+\begin{NOTE}
+Note for users who know the \Pkg{CJK} package:
+(u)\pLaTeX\ does \emph{not} support the \Pkg{CJK} package!
+The reasons are the followings:
+\begin{itemize}
+  \item Both the (u)\pLaTeX\ kernel and \file{CJK.sty} redefine
+    the command \verb+\selectfont+, and those definitions are
+    incompatible.
+  \item The input handling of (u)\pTeX\ engine is different
+    from that of Western \TeX\ engines, and Japanese tokens
+    are no longer treated as active characters.
+\end{itemize}
+Anyway, you will not need the \Pkg{CJK} package at all
+when using (u)\pLaTeX.
+\end{NOTE}
+
+
 %% ちゃんと日本語を組むには？
 %-- 禁則文字を除く任意箇所での行分割が可能
 %-- 和文文字直後の改行文字は空白にならない
@@ -264,8 +289,9 @@ though a suitable Japanese font should be declared.
 \end{figure}
 \endgroup
 
-Figure \ref{fig:src1} shows the exact output from the input above.
-It is not acceptable, especially for the following reasons:
+However, the result (Figure \ref{fig:src1}) is not acceptable,
+especially for the following reasons:
+
 \begin{itemize}
   \item Japanese text has no interword spaces, but
     line break is allowed between any Japanese characters
@@ -292,7 +318,7 @@ Figure \ref{fig:src1-mod} shows an acceptable output of the same text.
 You will see that choosing a Japanese font on Unicode-enabled engine
 is not enough for obtaining properly formatted result.
 
-All of the methods explained in the previous sections,
+All of the methods explained in the previous sections, namely
 \begin{enumerate}
   \item \LuaLaTeX\ with Lua\TeX-ja package,
   \item \upLaTeX,
