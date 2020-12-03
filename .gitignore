@@ -159,6 +159,9 @@ pythontex-files-*/
 # Latexian
 TSWLatexianTemp*
 
+# LuaTeX-ja documents
+*.ltjruby
+
 # tests
 archive/*
 tests/*.pdf

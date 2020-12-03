@@ -1,6 +1,37 @@
 %#!lualatex
 \documentclass[lualatex,a4paper,11pt]{jlreq}
 \usepackage{luatexja-fontspec}
+\newjfontfamily{\HaraMC}[
+    FontFace = {l}{n}{*-Light},
+    FontFace = {m}{n}{*-Regular},
+    FontFace = {b}{n}{*-Bold},
+    BoldFont = {*-Bold},
+  ]{HaranoAjiMincho}
+\newjfontfamily{\HaraGT}[
+    FontFace = {m}{n}{*-Regular},
+    FontFace = {b}{n}{*-Bold},
+    FontFace = {eb}{n}{*-Heavy},
+    BoldFont = {*-Bold},
+  ]{HaranoAjiGothic}
+\newjfontfamily{\HaraMG}[
+    FontFace = {m}{n}{*-Medium},
+  ]{HaranoAjiGothic}
+
+%\usepackage{luatexja-ruby}% for kenten
+% [TODO] https://ja.osdn.net/projects/luatex-ja/ticket/41023
+% => based on okumacro.sty
+\makeatletter
+\def\kenten#1{%
+  \setbox1=\hbox to\z@{\hbox to 1\zw{\hss ・\hss}\hss}%
+  \ht1=.63\zw
+  \@kenten#1\end\relax}
+\def\@kenten#1#2{%
+  \ifx#1\end \let\next=\relax \else
+    \raise.75\zw\copy1\nobreak #1\ifx#2\end\else
+    \hskip\ltjgetparameter{kanjiskip}\relax\fi
+    \let\next=\@kenten
+  \fi\next#2}
+\makeatother
 
 %%%%%%%%%%%%%%%%
 % additional packages
@@ -42,6 +73,9 @@
 \usepackage{shortvrb}
 \MakeShortVerb*{|}
 %%%%%%%%%%%%%%%%
+
+% foreign text -> italic
+\def\Foreign#1{\textit{#1}}
 
 % logos
 \def\eTeX{$\varepsilon$-\TeX}
@@ -139,8 +173,10 @@ and Lua\TeX-ja is under active development.
 As a more stable alternative, you can use \upLaTeX.
 It is a somewhat legacy implementation, which requires TFM files
 for typesetting Japanese characters (called JFM).
-If you use only two fixed-width Japanese fonts, using a standard
-class is enough:
+
+The \Pkg{jlreq} class also supports \upLaTeX, but here
+we provide an example using an relatively old class \Pkg{jsclasses},
+which has been widely used for over a decade:
 \begin{lstlisting}
   \documentclass[uplatex]{jsbook}% or, \documentclass{ujbook}
   \begin{document}
@@ -239,10 +275,10 @@ The W3C Working Group Note ``Requirements for Japanese Text Layout''
 \cite{w3c-jlreq} is one of the comprehensive documentation which
 describes issues of text composition in the Japanese writing system.
 However, they are too complicated to explain here thoroughly,\footnote{They
-include specification of basic page layout (\emph{kihon-hanmen}; 基本版面),
-vertical alignment of Japanese text (\emph{tate-gumi}; 縦組),
-small-sized supplementary text (\emph{ruby}; ルビ), inline cutting note
-(\emph{warichu}; 割注) etc.} so we focus on the main issues regarding
+include specification of basic page layout (\Foreign{kihon-hanmen}; 基本版面),
+vertical alignment of Japanese text (\Foreign{tate-gumi}; 縦組),
+small-sized supplementary text (\Foreign{ruby}; ルビ), inline cutting note
+(\Foreign{warichu}; 割注) etc.} so we focus on the main issues regarding
 simple and short horizontal writing within a few lines.
 
 \newbox\JEXBOX % stores example output
@@ -295,7 +331,7 @@ especially for the following reasons:
 \begin{itemize}
   \item Japanese text has no interword spaces, but
     line break is allowed between any Japanese characters
-    except before some punctuation marks (\emph{kinsoku}; 禁則).
+    except before some punctuation marks (\Foreign{kinsoku}; 禁則).
     The overfull rules that appeared in Figure \ref{fig:src1} come
     from not knowing such line breaking rules.
   \item Similarly, it is common to insert a new line character after
@@ -304,11 +340,11 @@ especially for the following reasons:
     Wrong: \JJoutbox{改行後 空白が入る。…\hfill}\quad
     Correct: \JJoutbox{改行後空白が入る。…\hfill}
   \item Ordinary Japanese characters are designed to have virtual
-    full-width (\emph{zenkaku}) bounding box. However, spacing
+    full-width (\Foreign{zenkaku}) bounding box. However, spacing
     between adjacent punctuation marks must be truncated.\\
     Wrong: \JJoutbox{句読点と、\null （括弧）の間…\hfill}\quad
     Correct: \JJoutbox{句読点と、（括弧）の間…\hfill}
-  \item It is preferred to insert a quarter em space (\emph{shibu aki})
+  \item It is preferred to insert a quarter em space (\Foreign{shibu aki})
     between Japanese and Latin characters.\footnote{Such a space
     is often called ``xkanjiskip'' glue in Japanese \TeX\ world.}\\
     Wrong: \JJoutbox{日本語と\null Latin\null の間…\hfill}\quad
@@ -364,6 +400,74 @@ Therefore, we recommend to use one of those platforms.
 \end{figure}
 
 
+%% 日本語組版における多書体化の必要性
+%-- 欧文組版で「セリフ体からのイタリック化」に相当するのは
+%-- 和文組版では「明朝体（セリフ）からのゴシック（サンセリフ）化」
+\section{Using multi-weight typefaces for Japanese typesetting}
+
+Latin font families used in Western typesetting consist of
+many typefaces:
+\begin{itemize}
+  \def\FACES{Upright, \textit{Italic},
+    \textbf{Bold}, \textbf{\textit{BoldItalic}}}
+  \item {\rmfamily Serif: \FACES}
+  \item {\sffamily Sans Serif: \FACES}
+  \item {\ttfamily Typewriter: \FACES}
+\end{itemize}
+
+In contrast, Japanese font families provide limited typefaces.
+Most Japanese font families do not provide italic or slanted shapes.
+Rather, these shapes look strange and have rarely been used in
+traditional typesetting.
+Also, there is no typewriter font; ordinary Japanese typefaces are
+inherently designed to have a fixed width.
+\begin{itemize}
+  \item {\mcfamily 明朝 (\Foreign{Mincho}; Japanese Serif)}
+  \item {\gtfamily ゴシック (\Foreign{Gothic}; Japanese Sans Serif)}
+\end{itemize}
+
+Therefore, the typeface used to emphasize in Japanese text is
+different from those often used in Western text:
+\begin{itemize}
+  \item Normal text (in upright shape) and
+    \emph{Emphasized text (in italic shape)}
+  \item 通常の文(in \Foreign{Mincho})と，
+    \emph{強調された文}(in \Foreign{Gothic})か
+    \kenten{強調された文}(with \Foreign{Kenten}; 圏点)
+\end{itemize}
+
+Most of common Japanese classes, including those used in the
+previous sections, use \Foreign{Mincho} and \Foreign{Gothic} with
+a single weight each.
+Nowadays, some multi-weight Japanese fonts are available for free,
+so using them is a good way to overcome the situation.
+The \Opt{[deluxe]} option of packages
+\Pkg{luatexja-preset} (on \LuaLaTeX) or \Pkg{otf} (on (u)\pLaTeX)
+supports maximum of 7 typefaces:
+\begin{itemize}
+  \item {\HaraMC \fontseries{l}\selectfont 細明朝，
+                 \fontseries{m}\selectfont 明朝，
+                 \fontseries{b}\selectfont 太明朝}
+                 (\Foreign{Mincho} Light, Medium and Bold)
+  \item {\HaraGT \fontseries{m}\selectfont ゴシック，
+                 \fontseries{b}\selectfont 太ゴシック，
+                 \fontseries{eb}\selectfont 極太ゴシック}
+                 (\Foreign{Gothic} Medium, Bold and Extra Bold)
+  \item {\HaraMG \fontseries{m}\selectfont 丸ゴシック}
+                 (\Foreign{Maru Gothic} Medium)\footnote{The
+    HaranoAji family used in this documentation does not provide
+    \Foreign{Maru Gothic} (rounded \Foreign{Gothic}) typefaces.}
+\end{itemize}
+With the help of these packages, you can emphasize Japanese text
+by changing to bold, instead of changing Serif to Sans Serif.
+\begin{itemize}
+  \item {\HaraMC 通常の文(in \Foreign{Mincho})と，
+    \textbf{強調された文}(in \Foreign{Mincho} Bold)}
+  \item {\HaraGT 通常の文(in \Foreign{Gothic})と，
+    \textbf{強調された文}(in \Foreign{Gothic} Bold)}
+\end{itemize}
+
+
 %% 各種文書への導線をはる
 \section{Further readings}
 
@@ -417,12 +521,12 @@ For more details, please refer to individual documentation.
 \subsection{Document classes}
 
 Japanese text can be aligned in two directions.
-One is horizontal direction, called \emph{yoko-gumi} (横組),
-the other is vertical direction, called \emph{tate-gumi} (縦組).
-The list below shows \ClsT{\emph{tate} classes in green}
-and \ClsYT{\emph{yoko}/\emph{tate} classes in blue} (default is
-\emph{yoko}, and the class option \Opt{[tate]} switches to
-\emph{tate} mode).
+One is horizontal direction, called \Foreign{yoko-gumi} (横組),
+the other is vertical direction, called \Foreign{tate-gumi} (縦組).
+The list below shows \ClsT{\Foreign{tate} classes in green}
+and \ClsYT{\Foreign{yoko}/\Foreign{tate} classes in blue} (default is
+\Foreign{yoko}, and the class option \Opt{[tate]} switches to
+\Foreign{tate} mode).
 
 All the major frameworks for Japanese typesetting provide
 ``standard classes'':
@@ -570,7 +674,7 @@ though they have only limited Japanese typesetting capabilities,
 aims to emulate \Pkg{jsclasses} as much as possible.
 Due to technical constraints, manual adjustments are often
 required in the input.\footnote{\pdfTeX\ and \XeTeX\ cannot
-insert a quarter em space (\emph{shibu aki}) automatically, so
+insert a quarter em space (\Foreign{shibu aki}) automatically, so
 the active character \code{\~} is redefined to a macro to
 insert it manually.}
 \begin{lstlisting}
@@ -650,7 +754,7 @@ option is already redundant.}
 \begin{lstlisting}
   \documentclass[unicode,12pt]{beamer}% ensure unicode for hyperref
   \usepackage{luatexja}% for Japanese
-  \renewcommand{\kanjifamilydefault}{\gtdefault}% san-serif also for Japanese
+  \renewcommand{\kanjifamilydefault}{\gtdefault}% sans-serif also for Japanese
   \usetheme{Copenhagen}% as you like!
   \begin{document}
   \section{日本語のサンプル}
@@ -666,7 +770,7 @@ Using \upLaTeX\ + dvipdfmx:
   \RequirePackage{plautopatch}% loads (at least) the pxjahyper package
   \documentclass[dvipdfmx,12pt]{beamer}% driver option
   \usepackage{bxdpx-beamer}% additional settings for dvipdfmx
-  \renewcommand{\kanjifamilydefault}{\gtdefault}% san-serif also for Japanese
+  \renewcommand{\kanjifamilydefault}{\gtdefault}% sans-serif also for Japanese
   ...
 \end{lstlisting}
 
@@ -676,7 +780,7 @@ Using \pLaTeX\ + dvipdfmx:
   \documentclass[dvipdfmx,12pt]{beamer}% driver option
   \usepackage{bxdpx-beamer}% additional settings for dvipdfmx
   \usepackage{minijs}% avoid \pTeX's standard JFM (min10 etc.)
-  \renewcommand{\kanjifamilydefault}{\gtdefault}% san-serif also for Japanese
+  \renewcommand{\kanjifamilydefault}{\gtdefault}% sans-serif also for Japanese
   ...
 \end{lstlisting}
 
