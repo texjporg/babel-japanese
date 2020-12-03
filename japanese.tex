@@ -620,7 +620,7 @@ Other major classes designed for Japanese:
         A series of shorthand commands (\verb+\aj...+) are
         also available.
       \item Lua\TeX-ja provides \Pkg{luatexja-otf} to partially emulate
-        this package.
+        feature 2 of this package.
     \end{itemize}
 \end{itemize}
 
@@ -640,6 +640,20 @@ Other major classes designed for Japanese:
         necessary for processing of PostScript file output from dvips.
     \end{itemize}
 \end{itemize}
+
+
+%% 参考文献
+\begin{thebibliography}{99}
+  \bibitem{w3c-jlreq}
+    W3C Working Group,
+    \newblock ``{\em Requirements for Japanese Text Layout}''.\\
+    \url{https://www.w3.org/TR/jlreq/?lang=en}
+  \bibitem{ajt2008okumura}
+    Haruhiko Okumura,
+    \newblock ``{\em \pTeX\ and Japanese Typesetting}''.
+    \newblock The Asian Journal of \TeX, Volume~2, No.~1, 2008.\\
+    \url{http://ajt.ktug.org/2008/0201okumura.pdf}
+\end{thebibliography}
 
 
 \clearpage
@@ -709,11 +723,57 @@ Using \upLaTeX\ (or \pLaTeX) + dvipdfmx:
 
 \subsection{More typefaces}
 
-[TODO] どうする？（ソース中のコメント参照）
-% LuaLaTeX: \usepackage[deluxe]{luatexja-preset}
-%  * 多書体化は luatexja-otf でないことに注意
-% (u)pLaTeX + jlreq: \usepackage{jlreq-deluxe}
-% (u)pLaTeX + j(s)classes: \usepackage[deluxe]{otf}
+Using \LuaLaTeX:
+\begin{lstlisting}
+  \documentclass[article]{jlreq}
+  \usepackage{jlreq-deluxe}% multi weight
+  \begin{document}
+  \section{簡単な文章}
+  通常のテキストにはSerifと明朝体を使います。
+  \textbf{太字も使うことができます。}
+  \textsf{Sans Serifにはゴシック体が似合います。
+  \textbf{太字にも対応します。}}
+  \end{document}
+\end{lstlisting}
+
+If you are using \LuaLaTeX\ with classes other than \Pkg{jlreq},
+you can also use \Pkg{luatexja-preset}:
+\begin{lstlisting}
+  \documentclass{ltjsarticle}
+  \usepackage[deluxe]{luatexja-preset}% multi weight
+  \begin{document}
+  ...
+\end{lstlisting}
+
+Using \upLaTeX\ (or \pLaTeX) + dvipdfmx:
+\begin{lstlisting}
+  \documentclass[article,dvipdfmx]{jlreq}% driver option
+  \usepackage{jlreq-deluxe}% multi weight
+  \begin{document}
+  ...
+\end{lstlisting}
+
+The package \Pkg{jlreq-deluxe} is relatively new, and it is
+designed to be used with the \Pkg{jlreq} class.
+Traditionally the \Pkg{otf} package has been widely used
+for over a decade.
+
+Using \upLaTeX\ + dvipdfmx:
+\begin{lstlisting}
+  \documentclass[uplatex,dvipdfmx]{jsarticle}
+  \usepackage[deluxe]{otf}% multi weight
+  \begin{document}
+  ...
+\end{lstlisting}
+
+Using \pLaTeX\ + dvipdfmx:
+\begin{lstlisting}
+  \documentclass[dvipdfmx]{jsarticle}
+  \usepackage[deluxe]{otf}% multi weight
+  \begin{document}
+  ...
+\end{lstlisting}
+
 
 \subsection{Vertical writing}
 
@@ -779,22 +839,9 @@ Using \pLaTeX\ + dvipdfmx:
   \RequirePackage{plautopatch}% loads (at least) the pxjahyper package
   \documentclass[dvipdfmx,12pt]{beamer}% driver option
   \usepackage{bxdpx-beamer}% additional settings for dvipdfmx
-  \usepackage{minijs}% avoid \pTeX's standard JFM (min10 etc.)
+  \usepackage{minijs}% avoid pTeX's standard JFM (min10 etc.)
   \renewcommand{\kanjifamilydefault}{\gtdefault}% sans-serif also for Japanese
   ...
 \end{lstlisting}
-
-%% 参考文献
-\begin{thebibliography}{99}
-  \bibitem{w3c-jlreq}
-    W3C Working Group,
-    \newblock ``{\em Requirements for Japanese Text Layout}''.\\
-    \url{https://www.w3.org/TR/jlreq/?lang=en}
-  \bibitem{ajt2008okumura}
-    Haruhiko Okumura,
-    \newblock ``{\em \pTeX\ and Japanese Typesetting}''.
-    \newblock The Asian Journal of \TeX, Volume~2, No.~1, 2008.\\
-    \url{http://ajt.ktug.org/2008/0201okumura.pdf}
-\end{thebibliography}
 
 \end{document}
