@@ -28,7 +28,7 @@
   \epTeXinputencoding utf8
 \fi
 \ProvidesLanguage{japanese}
-        [2020/11/26 v2.3 Japanese support for babel (texjporg)]
+        [2020/12/06 v3.0 Japanese support for babel (texjporg)]
 \LdfInit\CurrentOption{captions\CurrentOption}
 \ifx\l@japanese\@undefined
   \PackageInfo{babel}{%

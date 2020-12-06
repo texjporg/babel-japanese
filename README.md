@@ -4,8 +4,6 @@ The package "babel-japanese" (or shortly, "japanese" package) provides
 `japanese` option for Babel package. It defines all the language
 definition macros in Japanese.
 
-Currently this package works on pLaTeX, upLaTeX, XeLaTeX and LuaLaTeX.
-
 
 ## Limitations
 
@@ -58,7 +56,7 @@ jsclasses, ltj(s)classes in LuaTeX-ja are well-supported.
                => $TEXMF/tex/generic/babel-japanese/
         * babel-japanese.dtx
                => $TEXMF/source/generic/babel-japanese/
-        * babel-japanese.pdf, babel-japanese-sample.tex, babel-japanese-sample.pdf
+        * babel-japanese-sample.tex, japanese.tex and PDF files
                => $TEXMF/doc/generic/babel-japanese/
 
 4) Execute mktexlsr.
@@ -74,8 +72,8 @@ If you have issues, please let us know from the above page.
 
 ## License
 
-Copyright (C) 1999-2007 by ING (Toru Inagaki)
-Copyright (C) 2016-     by Japanese TeX Development Community
+Copyright (C) 1999-2007 by ING (Toru Inagaki)  
+Copyright (C) 2016-     by Japanese TeX Development Community  
 
 This package is free software that can be redistributed and/or
 modified under the terms of the LaTeX Project Public License 1.3.
