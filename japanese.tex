@@ -52,8 +52,10 @@
 \def\ClsYT#1{\Pkg{\textcolor{Blue}{#1}}}
 \def\file#1{\textsf{#1}}
 \def\code#1{\texttt{#1}}
+\def\cs#1{\texttt{\textbackslash#1}}
 
 \usepackage[japanese,english]{babel}% References in English
+\AtBeginDocument{\def\figurename{Figure~}}% add a space
 
 \usepackage{listings}
 \lstset{%
@@ -110,15 +112,20 @@ Typesetting requirements of Japanese are completely different from
 those of Western languages, so setting parameter values and additional
 hyphenation patterns are not enough.
 
-% babel-japanese (japanese.ldf) は訳語を登録するだけ
-% 日本語組版に必要な設定は行わない
-The package \Pkg{babel-japanese} provides ``\Opt{japanese}''
-option for Babel package.
-However, it only defines translated replacement texts for
-keywords and dates (e.g. ``\contentsname'' $\rightarrow$
-``{\selectlanguage{japanese}\contentsname}'',
-\verb+\today+ $\rightarrow$ ``{\selectlanguage{japanese}\和暦\today}'')
-and it does not care about any Japanese typesetting requirements.
+\begin{itemize}
+ % babel-japanese (japanese.ldf) は訳語を登録するだけ
+ % 日本語組版に必要な設定は行わない
+ \item The \Opt{japanese} option of Babel package only defines
+   translated replacement texts for
+   keywords and dates (e.g. ``\contentsname'' $\rightarrow$
+   ``{\selectlanguage{japanese}\contentsname}'',
+   \verb+\today+ $\rightarrow$ ``{\selectlanguage{japanese}\和暦\today}'');
+   it does not care about any Japanese typesetting requirements.
+ % CJK パッケージも不十分
+ \item It may seem sufficient to use a package such as \Pkg{CJK} or
+   \Pkg{xeCJK}, or switch to Japanese fonts with a Unicode-enabled engine;
+   however, that's not the case.
+\end{itemize}
 
 % この文書の目的：ちゃんと日本語する簡単な方法の紹介
 %-- 日本語を「ちゃんと」組むことが西欧言語とは全く異なることを伝える。
@@ -129,17 +136,23 @@ This document describes how to get an ``acceptable'' Japanese
 typesetting result and the eminent differences between Western
 and Japanese typesetting requirements.
 
+\tableofcontents
+\clearpage
+
 
 % とりあえず LuaLaTeX + \usepackage{luatexja} オススメ
+%-- 対象読者が「日本語組版を全く知らない海外の人」なので
+%-- 資産（＝解説書，周囲の経験，歴史等）の面が日本と真逆である！
+%-- つまり LuaTeX 最強＋資産も最強
 \section{Short introduction: using \LuaLaTeX}
 
 To obtain a properly formatted Japanese document, the easiest way
 is to use \LuaLaTeX\ with Lua\TeX-ja package.
 
 \begin{itemize}
-  \item Using the \Pkg{jlreq} class:
+  \item Using the \Pkg{jlreq} class (it loads \Pkg{luatexja} internally):
 \begin{lstlisting}
-  \documentclass[book]{jlreq}
+  \documentclass[book]{jlreq}% loads luatexja.sty internally
   \begin{document}
   \chapter{日本語の文書}% Japanese document
   こんにちは，日本。% Hello, Japan.
@@ -186,7 +199,7 @@ Save the above as \file{jp2.tex} and run the following command.
 \begin{verbatim}
     $ uplatex jp2
 \end{verbatim}
-You will get \file{jp2.dvi}.\bigskip
+You will get \file{jp2.dvi}.
 
 \upLaTeX\ and \pLaTeX\ (explained later) are often referred to
 as (u)\pLaTeX. They always output DVI files.
@@ -196,7 +209,14 @@ If you have \file{jp2.dvi}, running the following command
 \begin{verbatim}
     $ dvipdfmx jp2
 \end{verbatim}
-will generate \file{jp2.pdf}.\bigskip
+will generate \file{jp2.pdf}.
+
+If you want to simplify the procedure, you can use the command
+\begin{verbatim}
+    $ ptex2pdf -l -u jp2
+\end{verbatim}
+which runs \code{uplatex} and \code{dvipdfmx} in sequence.
+\bigskip
 
 Since the default DVI driver in \TL is set to
 \Opt{dvips},\footnote{Though dvips supports DVI with Japanese fonts,
@@ -218,8 +238,8 @@ to be passed to all driver-dependent packages
 
 Some old Japanese journal classes may require \pLaTeX.
 It is a legacy implementation which was born in 1980s,
-before the release of Unicode 1.0.
-\pLaTeX\ only supports a limited character set, JIS~X~0208
+before the release of Unicode 1.0,
+and it only supports a limited character set, JIS~X~0208
 (6879 characters).
 \begin{lstlisting}
   \documentclass{jsbook}% or, \documentclass{jbook}
@@ -232,6 +252,12 @@ Save the above as \file{jp3.tex} and run the following command.
 \end{verbatim}
 You will get \file{jp3.dvi}.
 Again, the DVI file can be converted into PDF using dvipdfmx.
+
+If you want to simplify the procedure, you can use the command
+\begin{verbatim}
+    $ ptex2pdf -l jp3
+\end{verbatim}
+which runs \code{platex} and \code{dvipdfmx} in sequence.
 
 
 % CJK package はサポート外
@@ -247,27 +273,25 @@ Note for users who know the \Pkg{CJK} package:
 (u)\pLaTeX\ does \emph{not} support the \Pkg{CJK} package!
 The reasons are the followings:
 \begin{itemize}
+  \item The input handling of (u)\pTeX\ engine is different
+    from that of Western \TeX\ engines. Since Japanese tokens
+    are no longer treated as active characters,
+    the subsequent processing becomes inconsistent.
   \item Both the (u)\pLaTeX\ kernel and \file{CJK.sty} redefine
     the command \verb+\selectfont+, and those definitions are
     incompatible.
-  \item The input handling of (u)\pTeX\ engine is different
-    from that of Western \TeX\ engines, and Japanese tokens
-    are no longer treated as active characters.
 \end{itemize}
-Anyway, you will not need the \Pkg{CJK} package at all
-when using (u)\pLaTeX.
+Anyway, if you use (u)\pLaTeX, which provides better Japanese support,
+you will not need the \Pkg{CJK} package at all.
 \end{NOTE}
 
 
-%% ちゃんと日本語を組むには？
-%-- 禁則文字を除く任意箇所での行分割が可能
-%-- 和文文字直後の改行文字は空白にならない
-%-- 約物どうしの字間調整
-%-- 和欧文間空白の挿入
+% 本書のメイン：西欧組版と日本語組版の違い；ちゃんと日本語を組むには？
 \section{Differences between Western and Japanese typesetting}
 
 The sections above described some practical ways to achieve
 ``acceptable'' Japanese typesetting results.
+In the Appendix, you will find more examples.
 So, what are the minimum requirements for ``acceptable'' results
 for native Japanese readers?
 
@@ -280,6 +304,13 @@ vertical alignment of Japanese text (\Foreign{tate-gumi}; 縦組),
 small-sized supplementary text (\Foreign{ruby}; ルビ), inline cutting note
 (\Foreign{warichu}; 割注) etc.} so we focus on the main issues regarding
 simple and short horizontal writing within a few lines.
+
+%% 行分割と空白挿入
+%-- 禁則文字を除く任意箇所での行分割が可能
+%-- 和文文字直後の改行文字は空白にならない
+%-- 約物どうしの字間調整
+%-- 和欧文間空白の挿入
+\subsection{Line breaks and spacing}
 
 \newbox\JEXBOX % stores example output
 \newbox\JJgridbox
@@ -298,9 +329,12 @@ simple and short horizontal writing within a few lines.
   \vbox{\hsize=12\zw\noindent\leftskip0pt\rightskip0pt\parfillskip0pt#1\hss}\vrule}%
 }}
 
-Consider the following input, Listing \ref{list:src1}. Using \LuaLaTeX,
+This is the most notable aspect of Japanese typesetting, and a concept
+that would not be found in Western typesetting.
+Consider the input list, Listing \ref{list:src1}. Using \LuaLaTeX,
 it is allowed to include any Unicode character out-of-the-box,
-though a suitable Japanese font should be declared.
+and they are actually displayed correctly in the output when a suitable
+Japanese font is declared.
 
 \begingroup
 \begin{figure}[tbp]
@@ -364,6 +398,28 @@ are developed to support (most of) the requirements mentioned above,
 and their output is most likely to be acceptable.
 Therefore, we recommend to use one of those platforms.
 
+%% レイアウト
+%-- 前節の「ベタ組で任意箇所での行分割」「xkanjiskip」などは
+%-- 西欧組版には相当概念が存在しないと思われる。
+%-- 一方，レイアウトパラメータ（行送り・字下げ・行長）は
+%-- 西欧の TeX でも変更可能なパラメータ化されているので，次元が低い。
+\subsection{Page layout (brief description)}
+
+% 正方形が和文書体の基本的デザイン指向であり，欧文書体と顕著に異なる
+% 書体のデザインの違いが，後述の字下げや行長の慣習に寄与している
+Also, if the main language of the document is Japanese, it is common
+to choose a properly designed Japanese class.
+Unlike Latin typefaces, most of Japanese typefaces are designed in squares
+with a width of \Foreign{zenkaku}.
+This difference greatly contributes to the overall page layout in
+Japanese typesetting.
+
+For example, the typesetting procedure can be simplified by setting
+\cs{textwidth} to a multiple of \Foreign{zenkaku},
+and \cs{parindent} to 1~\Foreign{zenkaku}.
+Many recent Japanese classes determine margins accordingly, and
+adjust other layout parameters to improve readability.
+
 \begingroup
 \ltjsetparameter{jacharrange={-1,-2,-3,-4,-5,-6,-7,-8,-9}}
 \setmainfont{HaranoAjiMincho-Regular}
@@ -399,11 +455,10 @@ Therefore, we recommend to use one of those platforms.
 \label{fig:src1-mod}
 \end{figure}
 
-
 %% 日本語組版における多書体化の必要性
 %-- 欧文組版で「セリフ体からのイタリック化」に相当するのは
 %-- 和文組版では「明朝体（セリフ）からのゴシック（サンセリフ）化」
-\section{Using multi-weight typefaces for Japanese typesetting}
+\subsection{Using multi-weight typefaces for Japanese typesetting}
 
 Latin font families used in Western typesetting consist of
 many typefaces:
@@ -659,13 +714,13 @@ Other major classes designed for Japanese:
 \clearpage
 \appendix
 
-\section{Examples of acceptable Japanese typesetting results}
+\section{Code Gallery --- acceptable Japanese typesetting results}
 
 \subsection{A simple Japanese document}
 
 Using \LuaLaTeX:
 \begin{lstlisting}
-  \documentclass[book]{jlreq}
+  \documentclass[book]{jlreq}% loads luatexja.sty internally
   \begin{document}
   \chapter{日本語がメインのシンプルな文書}
   こんにちは，日本語に少しEnglishを含めてみます。
@@ -726,7 +781,7 @@ Using \upLaTeX\ (or \pLaTeX) + dvipdfmx:
 Using \LuaLaTeX:
 \begin{lstlisting}
   \documentclass[article]{jlreq}
-  \usepackage{jlreq-deluxe}% multi weight
+  \usepackage[deluxe]{luatexja-preset}% multi weight
   \begin{document}
   \section{簡単な文章}
   通常のテキストにはSerifと明朝体を使います。
@@ -736,30 +791,22 @@ Using \LuaLaTeX:
   \end{document}
 \end{lstlisting}
 
-If you are using \LuaLaTeX\ with classes other than \Pkg{jlreq},
-you can also use \Pkg{luatexja-preset}:
+Using \upLaTeX\ (or \pLaTeX) + dvipdfmx with the \Pkg{jlreq} class:
+the package \Pkg{jlreq-deluxe} is recommended.
 \begin{lstlisting}
-  \documentclass{ltjsarticle}
-  \usepackage[deluxe]{luatexja-preset}% multi weight
-  \begin{document}
-  ...
-\end{lstlisting}
-
-Using \upLaTeX\ (or \pLaTeX) + dvipdfmx:
-\begin{lstlisting}
+  \RequirePackage{plautopatch}% recommended
   \documentclass[article,dvipdfmx]{jlreq}% driver option
   \usepackage{jlreq-deluxe}% multi weight
   \begin{document}
   ...
 \end{lstlisting}
 
-The package \Pkg{jlreq-deluxe} is relatively new, and it is
-designed to be used with the \Pkg{jlreq} class.
-Traditionally the \Pkg{otf} package has been widely used
-for over a decade.
+Traditionally, the \Pkg{otf} package (distributed as \Pkg{japanese-otf}
+on CTAN/\TL) has been widely used for over a decade on (u)\pLaTeX.
 
 Using \upLaTeX\ + dvipdfmx:
 \begin{lstlisting}
+  \RequirePackage{plautopatch}% recommended
   \documentclass[uplatex,dvipdfmx]{jsarticle}
   \usepackage[deluxe]{otf}% multi weight
   \begin{document}
@@ -768,12 +815,12 @@ Using \upLaTeX\ + dvipdfmx:
 
 Using \pLaTeX\ + dvipdfmx:
 \begin{lstlisting}
+  \RequirePackage{plautopatch}% recommended
   \documentclass[dvipdfmx]{jsarticle}
   \usepackage[deluxe]{otf}% multi weight
   \begin{document}
   ...
 \end{lstlisting}
-
 
 \subsection{Vertical writing}
 
@@ -794,6 +841,7 @@ Using \LuaLaTeX:
 
 Using \upLaTeX\ (or \pLaTeX) + dvipdfmx:
 \begin{lstlisting}
+  \RequirePackage{plautopatch}% recommended
   \documentclass[article,tate,dvipdfmx]{jlreq}% driver option
   \usepackage{bxjalipsum}
   \begin{document}
