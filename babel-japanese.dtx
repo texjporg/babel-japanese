@@ -4,7 +4,7 @@
 % providing Japanese language support for Babel.
 %
 % Copyright (C) 1999--2007 by ING (Toru INAGAKI)
-%               2016--2020 by Japanese TeX Development Community
+%               2016--2021 by Japanese TeX Development Community
 %
 % \fi
 %
@@ -23,7 +23,7 @@
 %<code>\ProvidesLanguage{japanese}
 %<*!sample>
 %\ProvidesFile{babel-japanese.dtx}
-        [2020/12/06 v3.0 Japanese support for babel (texjporg)]
+        [2021/02/06 v3.1 Japanese support for babel (texjporg)]
 %</!sample>
 %\fi
 %
@@ -63,7 +63,7 @@
 %
 % \title{Babel-Option {\sffamily japanese} version \fileversion}
 % \author{\copyright\ 1999--2007 ING\\
-%                     2016--2020 Japanese \TeX\ Development Community}
+%                     2016--2021 Japanese \TeX\ Development Community}
 % \date{\filedate}
 % \maketitle
 % \baselineskip=14pt
@@ -105,12 +105,11 @@
 %    \item Common Western classes (article.cls etc)
 %     provide placeholders in front of the numbering
 %     (e.g. \cs{chaptername}), but lack any placeholders
-%     behind the numbering.\footnote{Starting from
-%     Babel v3.48 (2020-09-01), a new feature to adjust
+%     behind the numbering.\footnote{Update: starting from
+%     Babel v3.53 (2021-01-26), a new feature to adjust
 %     e.g. chapter format to have placeholders like
 %     \cs{prechaptername} ... \cs{postchaptername} is
-%     going to be added. However, it's still tentative so
-%     currently unused in \file{japanese.ldf}.}
+%     available, which seems to work with standard classes.}
 %     Therefore, the keywords like ``Part'' or ``Chapter''
 %     cannot be simply replaced with Japanese counterpart.
 %   \end{itemize}
@@ -219,12 +218,18 @@
 %
 % \DescribeMacro{\captionsjapanese}
 % |\captionsjapanese|マクロは\pLaTeX{}の標準のクラスファイルで使われる
-% 見出し語を日本語で出力します。\LaTeX{}の標準のクラスファイルでも動作
-% しますが，元が英語用ですので，語順の関係上すべてを日本語化することは
-% できません（たとえば，Part 1→第1部とは変更することは不可能です）。
+% 見出し語を日本語で出力します。\LaTeX{}の標準のクラスファイルなど，
+% 西欧で開発されたものでも一部しますが，
+% 語順の関係上すべてが日本語化されない場合があります
+% （たとえば，Part 1→第1部とは変更することは不可能です）。
 %
 % [2016-12-15] 「証明」と「用語集」も日本語化するようにしました。
 % |\postpartname| がタイポで |\postpartnam| になっていたのを直しました。
+%
+% [2021-02-06] Babel v3.53で追加された新機能により，西欧で開発された
+% クラスファイルでも見出しの日本語化サポートが改善されました。
+% 少なくとも\LaTeX{}の標準のクラスファイルでは動作するようです。
+% 後の |\setlocalecaption| のコードを参照してください。
 %
 % UTF-8エンコーディングで直接和文文字を記述します。
 %    \begin{macrocode}
@@ -426,6 +431,19 @@ X   \fi
 \catcode`\X=\bbl@jpn@x@catcode\relax
 %    \end{macrocode}
 %
+% \DescribeMacro{\setlocalecaption}
+% [2021-02-06] Babel v3.53の新機能を使い，
+% 西欧のクラスファイルの |\part| と |\chapter| の形式を
+% |\pre...name| と |\post...name| で挟む形式に変更します。
+%    \begin{macrocode}
+\ifx\setlocalecaption\@undefined \else
+\setlocalecaption{\CurrentOption}{part.template}%
+  {[[prepart]] [part] [[postpart]]}
+\setlocalecaption{\CurrentOption}{chapter.template}%
+  {[[prechapter]] [chapter] [[postchapter]]}
+\fi
+%    \end{macrocode}
+%
 %    \begin{macrocode}
 \@namedef{extras\CurrentOption}{}
 \@namedef{noextras\CurrentOption}{}
@@ -458,6 +476,7 @@ X   \fi
 %   また，このドキュメントを\file{japanese.pdf}から
 %   \file{babel-japanese.pdf}にリネームし，新たに「ちゃんと日本語
 %   する方法」を概説する新版\file{japanese.pdf}を追加しました。
+% \item 2021年2月：Babel v3.53の新機能を活用しました。
 % \end{itemize}
 %
 % \StopEventually{}
