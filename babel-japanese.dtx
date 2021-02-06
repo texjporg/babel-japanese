@@ -435,6 +435,16 @@ X   \fi
 % [2021-02-06] Babel v3.53の新機能を使い，
 % 西欧のクラスファイルの |\part| と |\chapter| の形式を
 % |\pre...name| と |\post...name| で挟む形式に変更します。
+%
+% [TODO]: |\xkanjiskip| の自動挿入に頼るために
+%\begin{verbatim}
+%   [[prechapter]] [chapter] [[postchapter]]
+%\end{verbatim}
+% よりも
+%\begin{verbatim}
+%   [[prechapter]][chapter][[postchapter]]
+%\end{verbatim}
+% に変えたほうが良いか？
 %    \begin{macrocode}
 \ifx\setlocalecaption\@undefined \else
 \setlocalecaption{\CurrentOption}{part.template}%
