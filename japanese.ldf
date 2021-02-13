@@ -28,7 +28,7 @@
   \epTeXinputencoding utf8
 \fi
 \ProvidesLanguage{japanese}
-        [2021/02/06 v3.1 Japanese support for babel (texjporg)]
+        [2021/02/13 v3.1 Japanese support for babel (texjporg)]
 \LdfInit\CurrentOption{captions\CurrentOption}
 \ifx\l@japanese\@undefined
   \PackageInfo{babel}{%
@@ -179,9 +179,9 @@ X   \fi
 \catcode`\X=\bbl@jpn@x@catcode\relax
 \ifx\setlocalecaption\@undefined \else
 \setlocalecaption{\CurrentOption}{part.template}%
-  {[[prepart]] [part] [[postpart]]}
+  {[[prepart]][part][[postpart]]}
 \setlocalecaption{\CurrentOption}{chapter.template}%
-  {[[prechapter]] [chapter] [[postchapter]]}
+  {[[prechapter]][chapter][[postchapter]]}
 \fi
 \@namedef{extras\CurrentOption}{}
 \@namedef{noextras\CurrentOption}{}

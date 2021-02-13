@@ -23,7 +23,7 @@
 %<code>\ProvidesLanguage{japanese}
 %<*!sample>
 %\ProvidesFile{babel-japanese.dtx}
-        [2021/02/06 v3.1 Japanese support for babel (texjporg)]
+        [2021/02/13 v3.1 Japanese support for babel (texjporg)]
 %</!sample>
 %\fi
 %
@@ -436,21 +436,23 @@ X   \fi
 % 西欧のクラスファイルの |\part| と |\chapter| の形式を
 % |\pre...name| と |\post...name| で挟む形式に変更します。
 %
-% [TODO]: |\xkanjiskip| の自動挿入に頼るために
+% 参考：|\xkanjiskip| の自動挿入が不可能なエンジンでは
 %\begin{verbatim}
-%   [[prechapter]] [chapter] [[postchapter]]
-%\end{verbatim}
-% よりも
-%\begin{verbatim}
+%   [[prepart]][part][[postpart]]
 %   [[prechapter]][chapter][[postchapter]]
 %\end{verbatim}
-% に変えたほうが良いか？
+% ではなく
+%\begin{verbatim}
+%   [[prepart]] [part] [[postpart]]
+%   [[prechapter]] [chapter] [[postchapter]]
+%\end{verbatim}
+% のほうが見栄えが良いかもしれません。
 %    \begin{macrocode}
 \ifx\setlocalecaption\@undefined \else
 \setlocalecaption{\CurrentOption}{part.template}%
-  {[[prepart]] [part] [[postpart]]}
+  {[[prepart]][part][[postpart]]}
 \setlocalecaption{\CurrentOption}{chapter.template}%
-  {[[prechapter]] [chapter] [[postchapter]]}
+  {[[prechapter]][chapter][[postchapter]]}
 \fi
 %    \end{macrocode}
 %
