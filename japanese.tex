@@ -17,21 +17,7 @@
     FontFace = {m}{n}{*-Medium},
   ]{HaranoAjiGothic}
 
-%\usepackage{luatexja-ruby}% for kenten
-% [TODO] https://ja.osdn.net/projects/luatex-ja/ticket/41023
-% => based on okumacro.sty
-\makeatletter
-\def\kenten#1{%
-  \setbox1=\hbox to\z@{\hbox to 1\zw{\hss ・\hss}\hss}%
-  \ht1=.63\zw
-  \@kenten#1\end\relax}
-\def\@kenten#1#2{%
-  \ifx#1\end \let\next=\relax \else
-    \raise.75\zw\copy1\nobreak #1\ifx#2\end\else
-    \hskip\ltjgetparameter{kanjiskip}\relax\fi
-    \let\next=\@kenten
-  \fi\next#2}
-\makeatother
+\usepackage{luatexja-ruby}% for kenten
 
 %%%%%%%%%%%%%%%%
 % additional packages
