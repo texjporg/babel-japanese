@@ -725,10 +725,12 @@ though they have only limited Japanese typesetting capabilities,
 \ClsY{bxjsbook} (from \Pkg{bxjscls} bundle by Takayuki Yato)
 aims to emulate \Pkg{jsclasses} as much as possible.
 Due to technical constraints, manual adjustments are often
-required in the input.\footnote{\pdfTeX\ and \XeTeX\ cannot
+required in the input.\footnote{For example, \pdfTeX\ cannot
 insert a quarter em space (\Foreign{shibu aki}) automatically, so
 the active character \code{\~} is redefined to a macro to
-insert it manually.}
+insert it manually. \XeTeX\ has more advanced capability than
+\pdfTeX, but interfaces for Japanese \LaTeX\ users (packages, etc.)
+are limited.}
 \begin{lstlisting}
   \documentclass[pdflatex,ja=standard]{bxjsbook}
   %\documentclass[xelatex,ja=standard]{bxjsbook}
