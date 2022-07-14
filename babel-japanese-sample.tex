@@ -22,13 +22,13 @@
     \setCJKmainfont{ipaexm.ttf}
   \fi
  \else
-  \ifx\ucs\undefined
+  \ifnum\jis"2121="3000 %% upTeX check
+    % upLaTeX: OK
+    \documentclass{ujbook}
+  \else
     % pLaTeX: OK
     \documentclass{jbook}
     \usepackage{minijs}
-  \else
-    % upLaTeX: OK
-    \documentclass{ujbook}
   \fi
  \fi
 \else

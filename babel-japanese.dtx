@@ -31,7 +31,8 @@
 %
 %<*filedriver>
 \ifx\directlua\undefined
-  \documentclass{jltxdoc}
+  \RequirePackage{plautopatch}
+  \documentclass[dvipdfmx,a4paper]{jltxdoc}
   \usepackage{minijs}
 \else
   \documentclass{ltjltxdoc}
@@ -508,13 +509,13 @@ X   \fi
     \setCJKmainfont{ipaexm.ttf}
   \fi
  \else
-  \ifx\ucs\undefined
+  \ifnum\jis"2121="3000 %% upTeX check
+    % upLaTeX: OK
+    \documentclass{ujbook}
+  \else
     % pLaTeX: OK
     \documentclass{jbook}
     \usepackage{minijs}
-  \else
-    % upLaTeX: OK
-    \documentclass{ujbook}
   \fi
  \fi
 \else
