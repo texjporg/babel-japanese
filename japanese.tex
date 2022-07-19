@@ -1,6 +1,6 @@
 %#!lualatex
 \documentclass[lualatex,a4paper,11pt]{jlreq}
-\usepackage{luatexja-fontspec}
+\usepackage[match]{luatexja-fontspec}
 \newjfontfamily{\HaraMC}[
     FontFace = {l}{n}{*-Light},
     FontFace = {m}{n}{*-Regular},
@@ -23,7 +23,7 @@
 % additional packages
 \usepackage{amsmath}
 \usepackage{array}
-\usepackage[defaultsups]{newpxtext}
+\usepackage[nofontspec,defaultsups]{newpxtext}
 \usepackage[zerostyle=c,straightquotes]{newtxtt}
 \usepackage{newpxmath}
 \usepackage[svgnames]{xcolor}
